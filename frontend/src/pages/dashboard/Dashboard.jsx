@@ -1,4 +1,5 @@
 import React from 'react'
+import FormComp from '@/components/FormComp'
 
 const Dashboard = () => {
   return (
