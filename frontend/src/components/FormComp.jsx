@@ -117,7 +117,7 @@ const FormComp = forwardRef(
                       const hasSuccess = !error && hasValue;
 
                       return (
-                        <FormItem className={ `${className || ''} w-full`}>
+                        <FormItem className={ `${className || ''}  w-full`}>
                           <FormLabel>{label}</FormLabel>
                           <FormControl>
                             {type === "select" ? (
@@ -249,9 +249,9 @@ const FormComp = forwardRef(
                               </div>
                             )}
                           </FormControl>
-                          <div className="py-0 text-sm">
+                          <div className="py-0 h-[10px] text-sm">
                           {error && (
-                            <FormMessage className="text-xs text-red-600 -mb-3">
+                            <FormMessage className="text-xs text-red-600 ">
                               {error.message}
                             </FormMessage>
                             

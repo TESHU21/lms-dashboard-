@@ -12,7 +12,7 @@ export const SignUpSchema = z
     password: z
       .string()
       .min(8, "Password must be at least 8 characters")
-      .regex(passwordRegex, "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"),
+      .regex(passwordRegex, "Password must include uppercase, lowercase, number, and special character"),
     confirmPassword: z.string(),
     contact: z.string().regex(/^(\+251|0)?9\d{8}$/, {
       message: "Invalid Ethiopian phone number",
