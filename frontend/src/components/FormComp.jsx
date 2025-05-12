@@ -71,6 +71,7 @@ const FormComp = forwardRef(
       // Expose form reset if needed externally
       reset: (values) => reset(values),
     }));
+    const { isValid } = formState; // Destructure isValid from formState
 
     const handlePasswordVisibility = () =>
       setShowPassword((prev) => !prev);
@@ -111,8 +112,7 @@ const FormComp = forwardRef(
                     render={({ field, fieldState }) => {
                       const { error } = fieldState;
 
-                      // Determine success based on absence of error and presence of value
-                      // This check will only be meaningful AFTER validation has run for the field
+                     
                       const hasValue = field.value !== "" && field.value != null;
                       const hasSuccess = !error && hasValue;
 
@@ -162,26 +162,22 @@ const FormComp = forwardRef(
                                 value={field.value || ""}
                                 onChange={(e) => {
                                     field.onChange(e);
-                                    trigger(name); // Trigger validation on change
+                                    trigger(name); //
                                 }}
-                                onBlur={() => trigger(name)} // Trigger validation on blur
-                                className={`bg-[#F5F5F5] ${hasSuccess ? 'bg-green-200 border-green-500' : ''} ${error ? 'bg-red-200 border-red-500' : ''}`}
+                                onBlur={() => trigger(name)} //ur
+                                className={`bg-[#F5F5F5] border-b-[#999999] ${hasSuccess ? 'bg-[#EDF7E8] ' : ''} ${error ? 'bg-red-200 border-red-500' : ''}`}
                               />
                             ) : type === "file" ? (
-                                // Note: File inputs are often uncontrolled.
-                                // This might need a different approach depending on how handleInputChange is used with RHF validation.
+                                
                               <Input
-                                // For file inputs, you might want to handle validation differently,
-                                // possibly outside the standard RHF onChange/onBlur flow if just detecting file presence.
-                                // If validating based on file properties, RHF's Controller might be more appropriate.
+                               
                                 onChange={(e) => {
                                     if (handleInputChange) handleInputChange(e);
-                                    // Trigger validation, though file input validation in RHF is specific
                                     trigger(name);
                                 }}
                                 placeholder={placeholder}
                                 type="file"
-                                className={` ${hasSuccess ? "bg-green-200 border-green-500" : "bg-[#E6E6E6]"} ${
+                                className={`  ${hasSuccess ? "bg-[#EDF7E8] border-b-[#999999]" : "bg-[#E6E6E6]"} ${
                                   error ? "bg-red-200 border-red-500" : ""
                                 }`}
                               />
@@ -220,8 +216,8 @@ const FormComp = forwardRef(
                                         field.onChange(e);
                                         trigger(name); // Trigger validation on change
                                     }}
-                                  className={` px-10 py-2 h-[48px] w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-200 focus:border-indigo-500
-                                    ${ hasSuccess ? "bg-green-400 border-green-500" : "border-[#E6E6E6]  bg-[#F5F5F5]" }
+                                  className={` px-10 py-2 h-[48px] w-full border rounded-t-sm focus:outline-none focus:ring-1 focus:ring-indigo-200 focus:border-indigo-500
+                                    ${ hasSuccess ? "bg-[#EDF7E8] border-b-[#999999]" : "border-[#E6E6E6]  bg-[#F5F5F5]" }
                                     ${ error ? "bg-red-200 border-red-500" : "" }
                                   `}
                                 />
@@ -282,7 +278,7 @@ const FormComp = forwardRef(
                 <Button
                   disabled={isLoading}
                   type="submit"
-                  className="w-full h-[48px] px-6 bg-blue-600 hover:bg-blue-primary text-white py-3 cursor-pointer flex items-center justify-center gap-2"
+                  className={`w-full h-[48px] px-6 ${isValid?"bg-[#01589A]":"bg-[#E6E6E6]"} hover:bg-blue-primary text-white py-3 cursor-pointer flex items-center justify-center gap-2`}
                 >
                   {isLoading ? <Loader /> : <>
                     {submitBtnText}

@@ -5,7 +5,7 @@ import Person from "../assets/person.svg";
 
 const LeftHero = () => {
   return (
-    <div className="relative flex flex-col w-[534px] h-screen bg-[#01589A] overflow-visible">
+    <div className="relative flex flex-col w-[574px] h-screen bg-[#01589A] overflow-visible">
       
       {/* Header Section */}
       <div className="flex flex-col pt-10 pl-[75px] z-20">
