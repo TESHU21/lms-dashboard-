@@ -10,6 +10,7 @@ import { Routes,Route } from 'react-router-dom'
 import Login from "../pages/login/Login"
 import ForgotPassword from '@/pages/login/forgotpassword/ForgotPassword'
 import OtpVerification from '@/pages/login/forgotpassword/OtpVerification'
+import PasswordRest from '@/pages/login/forgotpassword/PasswordRest'
 
 const AppRoutes = () => {
   return (
@@ -27,6 +28,7 @@ const AppRoutes = () => {
          <Route path='login' element={<Login/>}/>
          <Route path="forgot-password" element={<ForgotPassword/>}/>
          <Route path='otp' element={<OtpVerification/>}/>
+         <Route path='password' element={<PasswordRest/>}/>
 
         </Routes>
 
