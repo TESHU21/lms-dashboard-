@@ -266,7 +266,7 @@ const FormComp = forwardRef(
             </div>
 
             {showForgotPassword && (
-              <div className="w-full flex justify-start mt-2 py-6">
+              <div className="w-full flex justify-start mt-2 ">
                 <NavLink
                   to="/forgotpassword"
                   className="text-sm text-[#177DDC] hover:underline"

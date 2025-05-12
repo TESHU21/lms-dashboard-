@@ -7,6 +7,7 @@ import Report from '@/pages/report/Report'
 import Tracks from '@/pages/tracks/Tracks'
 import SignUp from '@/pages/registration/SignUp'
 import { Routes,Route } from 'react-router-dom'
+import Login from "../pages/login/Login"
 
 const AppRoutes = () => {
   return (
@@ -21,6 +22,7 @@ const AppRoutes = () => {
 
             </Route>
          <Route path='signup' element={<SignUp/>}/>
+         <Route path='login' element={<Login/>}/>
 
         </Routes>
 
