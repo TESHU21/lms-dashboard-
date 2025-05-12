@@ -5,6 +5,7 @@ import Invoices from '@/pages/invoices/Invoices'
 import Learners from '@/pages/learners/Learners'
 import Report from '@/pages/report/Report'
 import Tracks from '@/pages/tracks/Tracks'
+import SignUp from '@/pages/registration/SignUp'
 import { Routes,Route } from 'react-router-dom'
 
 const AppRoutes = () => {
@@ -19,6 +20,8 @@ const AppRoutes = () => {
              <Route path="tracks" element={<Tracks/>}/>
 
             </Route>
+         <Route path='signup' element={<SignUp/>}/>
+
         </Routes>
 
 
