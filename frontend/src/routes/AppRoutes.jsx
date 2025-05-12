@@ -9,6 +9,7 @@ import SignUp from '@/pages/registration/SignUp'
 import { Routes,Route } from 'react-router-dom'
 import Login from "../pages/login/Login"
 import ForgotPassword from '@/pages/login/forgotpassword/ForgotPassword'
+import OtpVerification from '@/pages/login/forgotpassword/OtpVerification'
 
 const AppRoutes = () => {
   return (
@@ -25,6 +26,7 @@ const AppRoutes = () => {
          <Route path='signup' element={<SignUp/>}/>
          <Route path='login' element={<Login/>}/>
          <Route path="forgot-password" element={<ForgotPassword/>}/>
+         <Route path='otp' element={<OtpVerification/>}/>
 
         </Routes>
 

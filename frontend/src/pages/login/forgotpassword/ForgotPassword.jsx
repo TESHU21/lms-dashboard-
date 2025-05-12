@@ -27,7 +27,7 @@ const initialValues = {email: "",};
       <div className='w-full'>
         <div className='flex  h-12   mt-[56px]  ml-[85px]'>
           
-          <Button className=" flex gap-3 bg-white border text-[#01589A] border-[#01589A] py-3 px-6 w-[125px] h-[48px]"> <span><ArrowLeft/></span> Back</Button>
+          <Button className=" flex gap-3 bg-white hover:bg-white border text-[#01589A] border-[#01589A] py-3 px-6 w-[125px] h-[48px]"> <span><ArrowLeft/></span> Back</Button>
           
           
         </div>
