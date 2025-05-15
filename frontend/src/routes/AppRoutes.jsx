@@ -5,6 +5,7 @@ import Invoices from '@/pages/invoices/Invoices'
 import Learners from '@/pages/learners/Learners'
 import Report from '@/pages/report/Report'
 import Tracks from '@/pages/tracks/Tracks'
+import Courses from '@/pages/courses/Courses'
 import SignUp from '@/pages/registration/SignUp'
 import { Routes,Route } from 'react-router-dom'
 import Login from "../pages/login/Login"
@@ -22,6 +23,7 @@ const AppRoutes = () => {
              <Route path="learners" element={<Learners/>}/>
              <Route path="report" element={<Report/>}/>
              <Route path="tracks" element={<Tracks/>}/>
+             <Route path="courses" element={<Courses/>}/>
 
             </Route>
          <Route path='signup' element={<SignUp/>}/>

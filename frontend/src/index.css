@@ -12,32 +12,21 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  /*
-   * Change the box-shadow color to match your desired success background (green-200)
-   * Tailwind's default green-200 is #D1FAE5
-   * Use !important to ensure it overrides Chrome's styles
-   */
   box-shadow: 0 0 0px 1000px #EDF7E8 inset !important;
   -webkit-box-shadow: 0 0 0px 1000px #EDF7E8 inset !important;
-
-  /*
-   * You might also want to ensure the text color is readable on the new background.
-   * Tailwind's default gray-900 is #1F2937, which works well on green-200.
-   * Adjust if your text color is different.
-   */
   -webkit-text-fill-color: #1F2937 !important;
 }
 
 /* Add any other global custom styles here */
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-
-@theme inline {
+/* Theme Customizations for Dark Mode */
+@theme {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -96,11 +85,11 @@ select:-webkit-autofill:focus {
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
+  --sidebar: #01589A;
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent: #01589A;
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
@@ -134,7 +123,7 @@ select:-webkit-autofill:focus {
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent: #ffff;
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
@@ -146,12 +135,17 @@ select:-webkit-autofill:focus {
   }
   body {
     @apply bg-background text-foreground;
-     font-family: 'Inter', sans-serif;
+    font-family: 'Inter', sans-serif;
   }
 }
-@theme{
-  --font-inter:"Inter", sans-serif;
-  --font-lato:"Lato", sans-serif;
-  --font-lusitana:"Lusitana",sans-serif;
+
+/* Custom Font Usage */
+@theme {
+  --font-inter: 'Inter', sans-serif;
+  --font-lato: 'Lato', sans-serif;
+  --font-lusitana: 'Lusitana', sans-serif;
 }
 
+@theme {
+  --color-blue-primary: #01589A;
+}
