@@ -8,9 +8,9 @@ const TopBar = () => {
     <div >
          <div className=' flex  justify-end '>
     <div className=" flex  w-[200px] gap-4  p-2 rounded-md">
-  <button className=" rounded-md bg-muted p-1 cursor-pointer transition">
+  <div className=" rounded-md bg-muted p-1 cursor-pointer transition">
     <ModeToggle/>
-  </button>
+  </div>
   <div className="flex items-center p-2 bg-muted gap-2 rounded-md cursor-pointer" onClick={()=>setOpen(true)} >
     <div className="w-8 h-8 rounded-full bg-sidebar flex items-center justify-center text-white font-bold">
       JD
