@@ -2,6 +2,7 @@ import React from 'react'
 import CourseCard from './components/CourseCard'
 import { courses } from './components/data'
 import TrackHeader from './components/TrackHeader'
+import DescriptionStacksSection from './components/Description'
 
 const Tracks = () => {
   return (
@@ -13,6 +14,7 @@ const Tracks = () => {
       {courses.map(course => (
         <CourseCard key={course.id} course={course} />
       ))}
+      <DescriptionStacksSection/>
       </div>
     </div>
   )

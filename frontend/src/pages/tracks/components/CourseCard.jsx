@@ -38,7 +38,7 @@ const CourseCard = ({ course }) => {
 
           <div className="flex justify-between">
             <span>Price:</span>
-            <span className="font-medium ">${price.toFixed(2)}</span> {/* Format price */}
+            <span className="font-medium ">${price}</span> {/* Format price */}
           </div>
           <Separator/>
           <div className="flex justify-between">

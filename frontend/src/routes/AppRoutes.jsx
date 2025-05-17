@@ -14,6 +14,7 @@ import OtpVerification from '@/pages/login/forgotpassword/OtpVerification'
 import PasswordRest from '@/pages/login/forgotpassword/PasswordRest'
 import CreateLearner from '@/pages/learners/components/CreateLearner'
 import CreateInvoices from '@/pages/invoices/components/CreateInvoices'
+import CourseDetail from '@/pages/tracks/components/CourseDetail'
 
 const AppRoutes = () => {
   return (
@@ -28,6 +29,7 @@ const AppRoutes = () => {
              <Route path="courses" element={<Courses/>}/>
              <Route path="create-learner" element={<CreateLearner/>}/>
              <Route path="create-invoice" element={<CreateInvoices/>}/>
+             <Route path="course-detail" element={<CourseDetail/>}/>
              {/* not important */}
 
             </Route>
