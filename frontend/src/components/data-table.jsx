@@ -60,7 +60,7 @@ export function DataTable({ columns, data, showFiltering }) {
         </div>
       )}
       <div className=" rounded-md border">
-        <Table className=" table-auto ">
+        <Table className=" w-full table-auto ">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

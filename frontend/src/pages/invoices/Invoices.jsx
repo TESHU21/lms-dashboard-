@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-// Assuming DataTable component is correctly imported
 import { DataTable } from "@/components/data-table";
-// Importing the columns definition which should now include the size property for email
 import { columns } from "./components/columns";
+import InvoiceHeader from "./components/InvoiceHeader";
 
 const Invoices = () => {
   // State to hold the invoice data
@@ -75,21 +74,26 @@ const Invoices = () => {
   };
 
   return (
-    <div className="flex justify-center">
-      {/* Container to control the overall width of the table */}
-      <div className="w-max-[100px]">
-        {/* The DataTable component */}
-        <DataTable
-          data={data} // Pass the data to the table
-          // Pass the columns definition and the handler functions
-          columns={columns({
-            handleConfirm,
-            handleEdit,
-            handleDelete,
-          })}
-        />
+    // Main container for centering content
+    <div className="flex flex-col justify-center items-center">
+   
+      <div className="w-full px-30">
+        <h6 className="leading-8 text-[20px] font-semibold mb-[36px]">Invoices</h6>
+        <InvoiceHeader/>
+        
+     
+          {/* The DataTable component */}
+          <DataTable
+            data={data} 
+            columns={columns({
+              handleConfirm,
+              handleEdit,
+              handleDelete,
+            })}
+          />
+        </div>
       </div>
-    </div>
+    
   );
 };
 
