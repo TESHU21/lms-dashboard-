@@ -9,7 +9,7 @@ export const navLinks=[
     {
         id:"1",
         name:"Dashboard",
-        path:"",
+        path:"dashboard",
         icon:LayoutDashboard
     }
     ,

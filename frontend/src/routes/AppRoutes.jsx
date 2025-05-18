@@ -36,7 +36,7 @@ const AppRoutes = () => {
 
         <Route path="/app" element={<Layout />}>
        
-          <Route index element={<Dashboard />} />
+          <Route path='dashboard' element={<Dashboard />} />
        
           <Route path="invoices" element={<Invoices />} />
           <Route path="learners" element={<Learners />} />
