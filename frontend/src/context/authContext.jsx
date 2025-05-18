@@ -50,6 +50,52 @@ const storeUser=(user)=>{
     }
 
   }
-const value={storeToken,storeUser,signup,signin,verifyEmail}
+    // Resend Verification Token
+  const resendVerificationToken=async(data)=>{
+    try{
+      const response=await axiosInstance.post('/auth/resend-token',data)
+      return response
+    }
+    catch(error){
+      throw error
+    }
+
+  }
+  // Forgot password Function
+  const forgotPassword=async(data)=>{
+    try{
+      const response= await axiosInstance.post(`/auth/forgot-password`,data)
+      return response
+    }
+    catch(error){
+      throw error
+    }
+
+  }
+  // Reset Password
+  const resetPassword=async(data)=>{
+    try{
+      const response= await axiosInstance.post(`/auth/reset-password`,data)
+      return response
+    }
+    catch(error){
+      throw error
+    }
+
+  }
+  // Confirm OTP
+  const confirmOTP=async(data)=>{
+    try{
+      const response= await axiosInstance.post(`/auth/reset-password`,data)
+      return response
+    }
+    catch(error){
+     
+      return error
+
+    }
+
+  }
+const value={storeToken,storeUser,signup,signin,verifyEmail,resendVerificationToken,forgotPassword,resetPassword,confirmOTP}
 return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
