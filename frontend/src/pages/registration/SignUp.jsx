@@ -5,16 +5,21 @@ import LeftHero from '@/components/LeftHero'
 import { Button } from '@/components/ui/button'
 import { ChevronRight } from 'lucide-react'
 import { useAuth } from '@/context/authContext'
+import { useNavigate } from 'react-router-dom'
 
 const SignUp = () => {
    const [isLoading,setIsLoading]=useState(false)
   const [successMessage,setSuccessMessage]=useState("")
   const [errorMessage,setErrorMessage]=useState("")
+  const navigate=useNavigate()
   const {signup}=useAuth()
   const handleSignUp=async(data)=>{
     try{
       setIsLoading(true)
       const response=await signup(data)
+      if(response){
+        navigate("/app")
+      }
       setSuccessMessage("Admin Registration is Sucessful!")
     }
     catch(error){
@@ -33,7 +38,7 @@ const SignUp = () => {
         <div className='flex  h-12   mt-[56px] justify-end mr-[240px]'>
           <div className='flex gap-6 items-center w-[394px]'>
             <p className='underline text-base leading-8 text-[20px] '>Already have an account?</p>
-          <Button className=" flex gap-2 bg-[#01589A] py-3 px-6 w-[125px] h-[48px]"> Login  <span><ChevronRight/></span></Button>
+          <Button className=" flex gap-2 bg-[#01589A] py-3 px-6 w-[125px] h-[48px]" onClick={()=>navigate("/")}> Login  <span><ChevronRight/></span></Button>
           </div>
           
         </div>
