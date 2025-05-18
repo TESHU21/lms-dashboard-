@@ -1,11 +1,31 @@
-import React from 'react'
+import React,{useState} from 'react'
 import FormComp from '@/components/FormComp'
 import {SignUpSchema,fields,initialValues} from "./components/data"
 import LeftHero from '@/components/LeftHero'
 import { Button } from '@/components/ui/button'
 import { ChevronRight } from 'lucide-react'
+import { useAuth } from '@/context/authContext'
 
 const SignUp = () => {
+   const [isLoading,setIsLoading]=useState(false)
+  const [successMessage,setSuccessMessage]=useState("")
+  const [errorMessage,setErrorMessage]=useState("")
+  const {signup}=useAuth()
+  const handleSignUp=async(data)=>{
+    try{
+      setIsLoading(true)
+      const response=await signup(data)
+      setSuccessMessage("Admin Registration is Sucessful!")
+    }
+    catch(error){
+      console.log(error)
+      setErrorMessage("Admin Registration Failed! Try again!")
+    }
+    finally{
+      setIsLoading(false)
+    }
+    
+  }
   return (
     <div className=' flex   w-full '>
      <LeftHero/>
@@ -19,7 +39,8 @@ const SignUp = () => {
         </div>
         <div className='mt-[78px] ml-[244px]  w-[595px]'>
           <p className='mb-[34px] font-lato text-[40px] leading-12 font-bold'>Register to get started</p>
-           <FormComp schema={SignUpSchema} fields={fields} initialValues={initialValues} submitBtnText={"Create accounts"}/>
+           <FormComp schema={SignUpSchema} fields={fields} initialValues={initialValues} submitBtnText={"Create accounts"}
+            onSubmit={handleSignUp} successMessage={successMessage} errorMessage={errorMessage} isLoading={isLoading}/>
            <p className='mt-[68px] text-center text-base leading-6 font-light'>By confirming your email, you agree to our <span className='underline'>Terms of Service</span>  <br/> and that you have read and understood our <span className='underline'>Privacy Policy</span> .</p>
         </div>
        

@@ -19,7 +19,7 @@ const Login = () => {
         <div className='flex  h-12   mt-[56px] justify-end mr-[240px]'>
           <div className='flex gap-6 items-center w-[435px]'>
             <p className='underline text-base leading-8 text-[20px] '>Need to create an account ?</p>
-          <Button className=" flex gap-2 bg-[#01589A] py-3 px-6 w-[125px] h-[48px]"> Sign up  <span><ChevronRight/></span></Button>
+          <Button className=" flex gap-2 bg-[#01589A] hover:bg-sidebar py-3 px-6 w-[125px] h-[48px] cursor-pointer" onClick={()=>navigate("/signup")}> Sign up  <span><ChevronRight/></span></Button>
           </div>
           
         </div>

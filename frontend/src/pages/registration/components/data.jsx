@@ -14,9 +14,14 @@ export const SignUpSchema = z
       .min(8, "Password must be at least 8 characters")
       .regex(passwordRegex, "Password must include uppercase, lowercase, number, and special character"),
     confirmPassword: z.string(),
-    contact: z.string().regex(/^(\+251|0)?9\d{8}$/, {
-      message: "Invalid Ethiopian phone number",
-    }),
+    // contact: z.string().regex(/^(\+251|0)?9\d{8}$/, {
+    //   message: "Invalid Ethiopian phone number",
+    // }),
+    contact:z.string().regex(
+  /^(\+233|0)?(2[0-9]|5[0-9])[0-9]{7}$/,
+  { message: "Invalid Ghanaian phone number" }
+),
+
   })
   .refine((data) => data.password === data.confirmPassword, {
     path: ["confirmPassword"],
