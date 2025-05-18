@@ -1,6 +1,6 @@
 import React from 'react'
-import {InvoiceFormSchema,invoiceFields,initialInvoiceValues} from "./data"
-import {LearnerSchema,initialValues,fields} from "../../learners/components/data"
+import {InvoiceSchema,fields,initialValues} from "./data"
+// import {LearnerSchema,initialValues,fields} from "../../learners/components/data"
 import FormComp from '@/components/FormComp'
 
 const CreateInvoices = () => {
@@ -14,7 +14,7 @@ const CreateInvoices = () => {
       <div className="border-l border-gray-300 h-5"></div>
       <span className="font-semibold">Create Learners</span>
     </div>
-        <FormComp  schema={LearnerSchema} initialValues={initialValues} fields={fields}/>
+        <FormComp  schema={InvoiceSchema} initialValues={initialValues} fields={fields}/>
     </div>
   )
 }
