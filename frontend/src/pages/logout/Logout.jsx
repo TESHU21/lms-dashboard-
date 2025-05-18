@@ -14,7 +14,7 @@ const Logout = () => {
   return (
     <div>
       <Button
-        className=" border-none bg-transparent text-black hover:bg-transparent ml-0 p-0 m-0 text-normal"
+        className=" border-none bg-transparent text-accent  hover:text-white hover:bg-transparent ml-0 p-0 m-0 text-normal cursor-pointer"
         onClick={handleLogOut}
       >
         <LogIn/> <span className="ml-[8px]"> Logout</span>      </Button>
