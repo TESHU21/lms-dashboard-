@@ -2,6 +2,7 @@ import React from 'react';
 import AzubiLogo2 from "../../../assets/Azubi-Logo2.svg";
 import { navLinks, bottomLinks } from "./component/data";
 import NavLinkItem from './component/NavLinkItem';
+import Logout from '@/pages/logout/Logout';
 
 const Sidebar = () => {
   return (
@@ -30,7 +31,8 @@ const Sidebar = () => {
         {/* Bottom nav links */}
         <div className="flex flex-col gap-4 mb-[69px]">
           {bottomLinks.map((link) => (
-            <NavLinkItem key={link.id} item={link} />
+            link.type==="logout"?(<Logout/>):( <NavLinkItem key={link.id} item={link} />
+)
           ))}
         </div>
       </div>

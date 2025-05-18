@@ -11,6 +11,7 @@ import Tracks from '@/pages/tracks/Tracks';
 import Courses from '@/pages/courses/Courses';
 import SignUp from '@/pages/registration/SignUp';
 import Login from "../pages/login/Login"; // Correct path if needed
+import Logout from '@/pages/logout/Logout';
 import ForgotPassword from '@/pages/login/forgotpassword/ForgotPassword';
 import OtpVerification from '@/pages/login/forgotpassword/OtpVerification';
 import PasswordRest from '@/pages/login/forgotpassword/PasswordRest';
@@ -19,6 +20,7 @@ import CreateInvoices from '@/pages/invoices/components/CreateInvoices';
 import CourseDetail from '@/pages/tracks/components/CourseDetail';
 import TrackUpdate from '@/pages/tracks/components/TrackUpdate';
 
+
 const AppRoutes = () => {
   return (
     <div>
@@ -26,7 +28,7 @@ const AppRoutes = () => {
     
         <Route path="/" element={<Login />} />
 
-       
+
         <Route path='signup' element={<SignUp />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path='otp' element={<OtpVerification />} />
@@ -45,6 +47,8 @@ const AppRoutes = () => {
           <Route path="create-invoice" element={<CreateInvoices />} />
           <Route path="course-detail" element={<CourseDetail />} />
           <Route path='track-update' element={<TrackUpdate />} />
+             <Route path='logout' element={<Logout/>}/>
+
         </Route>
 
       

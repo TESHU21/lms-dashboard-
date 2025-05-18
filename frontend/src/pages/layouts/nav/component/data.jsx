@@ -43,12 +43,14 @@ export const bottomLinks=[
     {
         id:"1",
         name:"Settings",
+        type:"setting",
         path:"settings",
         icon:Settings
     }
     ,
        {
         id:"2",
+        type:"logout",
         name:"Logout",
         path:"logout",
         icon:Power
