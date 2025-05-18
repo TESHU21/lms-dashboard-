@@ -12,7 +12,7 @@ const CreateInvoices = () => {
 
       {/* Vertical separator */}
       <div className="border-l border-gray-300 h-5"></div>
-      <span className="font-semibold">Create Learners</span>
+      <span className="font-semibold">Create Invoice</span>
     </div>
         <FormComp  schema={InvoiceSchema} initialValues={initialValues} fields={fields}/>
     </div>

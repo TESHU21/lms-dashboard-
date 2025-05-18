@@ -4,8 +4,14 @@ import {SignUpSchema,fields,initialValues} from "./component/data"
 import LeftHero from '@/components/LeftHero'
 import { Button } from '@/components/ui/button'
 import { ChevronRight } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
-const SignUp = () => {
+const Login = () => {
+  const navigate=useNavigate()
+  const handleLogin=()=>{
+    navigate("/app")
+
+  }
   return (
     <div className=' flex   w-full '>
      <LeftHero/>
@@ -19,7 +25,7 @@ const SignUp = () => {
         </div>
         <div className='mt-[216px] ml-[244px]  w-[556px]'>
           <h3 className='mb-[34px] font-lato text-[40px] leading-12 font-bold'>Login into your account</h3>
-           <FormComp schema={SignUpSchema} fields={fields} initialValues={initialValues} submitBtnText={"Create accounts"}   showForgotPassword={true} />
+           <FormComp schema={SignUpSchema} fields={fields} initialValues={initialValues} submitBtnText={"Create accounts"}   showForgotPassword={true} onSubmit={handleLogin}  />
         </div>
        
       </div>
@@ -28,4 +34,4 @@ const SignUp = () => {
   )
 }
 
-export default SignUp
+export default Login
