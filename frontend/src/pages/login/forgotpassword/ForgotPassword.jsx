@@ -6,9 +6,10 @@ import { ArrowLeft,Mail} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react'
 import { useAuth } from '@/context/authContext';
-
+import { useNavigate } from 'react-router-dom';
 
 const ForgotPassword = () => {
+  const navigate=useNavigate()
    const [isLoading,setIsLoading]=useState(false)
       const [successMessage,setSuccessMessage]=useState("")
       const [errorMessage,setErrorMessage]=useState("")
@@ -50,7 +51,7 @@ const handleForgotPassword=async(data)=>{
       <div className='w-full'>
         <div className='flex  h-12   mt-[56px]  ml-[85px]'>
           
-          <Button className=" flex gap-3 bg-white hover:bg-white border text-[#01589A] border-[#01589A] py-3 px-6 w-[125px] h-[48px]"> <span><ArrowLeft/></span> Back</Button>
+          <Button className=" flex gap-3 bg-white hover:bg-white border text-[#01589A] border-[#01589A] py-3 px-6 w-[125px] h-[48px] cursor-pointer" onClick={()=>navigate("/")}> <span><ArrowLeft/></span> Back</Button>
           
           
         </div>

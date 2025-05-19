@@ -38,7 +38,7 @@ const SignUp = () => {
         <div className='flex  h-12   mt-[56px] justify-end mr-[240px]'>
           <div className='flex gap-6 items-center w-[394px]'>
             <p className='underline text-base leading-8 text-[20px] '>Already have an account?</p>
-          <Button className=" flex gap-2 bg-[#01589A] py-3 px-6 w-[125px] h-[48px]" onClick={()=>navigate("/")}> Login  <span><ChevronRight/></span></Button>
+          <Button className=" flex gap-2 bg-[#01589A] py-3 px-6 w-[125px] h-[48px] cursor-pointer" onClick={()=>navigate("/")}> Login  <span><ChevronRight/></span></Button>
           </div>
           
         </div>

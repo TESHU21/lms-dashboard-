@@ -19,7 +19,7 @@ import CreateLearner from '@/pages/learners/components/CreateLearner';
 import CreateInvoices from '@/pages/invoices/components/CreateInvoices';
 import CourseDetail from '@/pages/tracks/components/CourseDetail';
 import TrackUpdate from '@/pages/tracks/components/TrackUpdate';
-
+import EmailVerification from '@/pages/login/forgotpassword/EmailVerification';
 
 const AppRoutes = () => {
   return (
@@ -31,12 +31,14 @@ const AppRoutes = () => {
 
         <Route path='signup' element={<SignUp />} />
         <Route path="forgotpassword" element={<ForgotPassword />} />
-        <Route path='otp' element={<OtpVerification />} />
+         <Route path="/reset-password/:token" element={<EmailVerification/>}/>
+
+        {/* <Route path='otp' element={<OtpVerification />} /> */}
         <Route path='password' element={<PasswordRest />} />
 
         <Route path="/app" element={<Layout />}>
        
-          <Route path='dashboard' element={<Dashboard />} />
+          <Route index element={<Dashboard />} />
        
           <Route path="invoices" element={<Invoices />} />
           <Route path="learners" element={<Learners />} />
