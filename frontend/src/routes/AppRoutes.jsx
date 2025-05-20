@@ -17,9 +17,10 @@ import OtpVerification from '@/pages/login/forgotpassword/OtpVerification';
 import PasswordRest from '@/pages/login/forgotpassword/PasswordRest';
 import CreateLearner from '@/pages/learners/components/CreateLearner';
 import CreateInvoices from '@/pages/invoices/components/CreateInvoices';
-import CourseDetail from '@/pages/tracks/components/CourseDetail';
+import CourseDetail from '@/pages/tracks/components/TrackDetail';
 import TrackUpdate from '@/pages/tracks/components/TrackUpdate';
 import EmailVerification from '@/pages/login/forgotpassword/EmailVerification';
+import TrackDetail from '@/pages/tracks/components/TrackDetail';
 
 const AppRoutes = () => {
   return (
@@ -44,10 +45,10 @@ const AppRoutes = () => {
           <Route path="learners" element={<Learners />} />
           <Route path="report" element={<Report />} />
           <Route path="tracks" element={<Tracks />} />
+          <Route path="tracks/:id" element={<TrackDetail/>}/>
           <Route path="courses" element={<Courses />} />
           <Route path="create-learner" element={<CreateLearner />} />
           <Route path="create-invoice" element={<CreateInvoices />} />
-          <Route path="course-detail" element={<CourseDetail />} />
           <Route path='track-update' element={<TrackUpdate />} />
              <Route path='logout' element={<Logout/>}/>
 

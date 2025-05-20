@@ -2,8 +2,9 @@ import React from 'react';
 import CourseCard from './CourseCard';
 import SoftwareImage from "../../../assets/Software Engineering Path.svg";
 import DescriptionStacksSection from './Description';
-
-const CourseDetail = () => {
+import { useNavigate } from 'react-router-dom';
+const TrackDetail = () => {
+  const navigate=useNavigate()
   const courses = [
     {
       id: 1,
@@ -54,4 +55,4 @@ const CourseDetail = () => {
   );
 }
 
-export default CourseDetail;
+export default TrackDetail;
