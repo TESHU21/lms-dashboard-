@@ -12,9 +12,10 @@ import { Separator } from "@/components/ui/separator"
 import { useNavigate } from 'react-router-dom';
 
 
-const CourseCard = ({ course }) => {
+const TrackDetailCard = ({ tracks }) => {
+  
   // Destructure course data from props
-  const { _id,name, image, price, duration, instructor, learners } = course;
+  const { _id,name, image, price, duration, instructor, learners } = tracks;
   const navigate=useNavigate()
   const id=_id;
   const handleViewMore=(id)=>{
@@ -35,10 +36,12 @@ const CourseCard = ({ course }) => {
         alt={name}
         
       />
+     <h3 className="text-lg font-semibold my-4 ">{name}</h3> 
+
         {/* Course Title */}
 
         <div className="flex flex-col text-sm  gap-2 space-y-2 flex-grow"> 
-        <h3 className="text-lg font-semibold my-4 ">{name}</h3> 
+        
 
           <div className="flex justify-between">
             <span>Price:</span>
@@ -59,19 +62,27 @@ const CourseCard = ({ course }) => {
             <span>Learners:</span>
             <span className="font-medium ">{learners}</span>
           </div>
+          <Separator/>
+          <div className="flex justify-between">
+            <span>Dates:</span>
+              {tracks.createdAt
+  ? new Date(tracks.createdAt).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',  // or 'long' for full month name
+      day: '2-digit'
+    }).replace(',', '') // remove the comma if needed
+  : 'N/A'}
+
+
+          </div>
         </div>
       </CardContent>
 
-      <CardFooter className="p-4 pt-0"> 
-        <Button className="w-full bg-sidebar-accent h-[48px]" onClick={()=>handleViewMore(_id)}>
-          View More
-          <ChevronRight className="ml-2 h-4 w-4" aria-hidden="true" />
-        </Button>
-      </CardFooter>
+     
     </Card>
   );
 };
 
 
 
-export default CourseCard; // Export the improved card component
+export default TrackDetailCard; // Export the improved card component

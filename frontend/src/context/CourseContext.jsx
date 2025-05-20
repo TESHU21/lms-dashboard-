@@ -9,6 +9,7 @@ export const useCourse=()=>{
 export const  CourseProvider=({children})=>{
     const [courses,setCourses]=useState([])
     const [tracks,setTracks]=useState([])
+    const [singleTrack,setSingleTrack]=useState([])
     const [selectedCourse,setSelectedCourse]=useState([])
     const [courseInvoices,setCourseInvoices]=useState(null)
 
@@ -144,7 +145,8 @@ export const  CourseProvider=({children})=>{
     const values={getCourses,getSingleCourses,getallTracks,getSingleTrack,getTrackRatings,
         rateTrack,getallInvoices,getsingleInvoices,enrollLearnersbyTrack,getEnrollements,
         enrollToCourse,getregistrationbyLearner,courses,setCourses,
-        selectedCourse,setSelectedCourse,courseInvoices,setCourseInvoices, tracks,setTracks
+        selectedCourse,setSelectedCourse,courseInvoices,setCourseInvoices, tracks,setTracks,singleTrack,
+        setSingleTrack
     }
 
 

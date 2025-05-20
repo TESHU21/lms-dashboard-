@@ -3,7 +3,9 @@ import React from 'react';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 
 // This component displays the Description, Stacks, and action buttons
-const DescriptionStacksSection = () => {
+const DescriptionStacksSection = ({track}) => {
+  // console.log("Tracks from description",track.courses.map((item)=>item.description))
+  console.log("Tracks from Description",track)
   // Dummy data for the stacks/technologies
   const stacks = [
     { id: 1, name: 'ReactJs', color: 'blue' },    // Example colors, map to Tailwind classes
@@ -37,9 +39,10 @@ const DescriptionStacksSection = () => {
       <div className="mb-6">
         <h2 className="text-lg font-semibold text-gray-800 mb-2">Description</h2>
         <p className="text-gray-600 text-sm">
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+          {/* Lorem Ipsum is simply dummy text of the printing and typesetting industry.
           Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-          when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+          when an unknown printer took a galley of type and scrambled it to make a type specimen book. */}
+          {track.description}
         </p>
       </div>
 
@@ -51,12 +54,20 @@ const DescriptionStacksSection = () => {
           {/* Map over the stacks data to render badges */}
           {stacks.map(stack => (
             <span
-              key={stack.id}
+              key={stack._id}
               className={`px-3 py-3 w-[111px] border rounded-md h-12 text-sm font-medium ${getColorClasses(stack.color)}`}
             >
               {stack.name}
             </span>
           ))}
+          {/* {track.courses.map(stack => (
+            <span
+              key={stack._id}
+              className={`px-3 py-3 w-auto border rounded-md h-12 text-sm font-medium ${getColorClasses(stack.color)}`}
+            >
+              {stack.title}
+            </span>
+          ))} */}
         </div>
       </div>
 
