@@ -1,12 +1,9 @@
-import React from 'react';
-// Assuming you have lucide-react installed for icons (for the ChevronRight/Left on buttons)
+import React,{useState} from 'react';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
-
+import { useNavigate } from 'react-router-dom';
 // This component displays the Description, Stacks, and action buttons
 const DescriptionStacksSection = ({track}) => {
-  // console.log("Tracks from description",track.courses.map((item)=>item.description))
-  console.log("Tracks from Description",track)
-  // Dummy data for the stacks/technologies
+ const navigate=useNavigate()
   const stacks = [
     { id: 1, name: 'ReactJs', color: 'blue' },    // Example colors, map to Tailwind classes
     { id: 2, name: 'NextJs', color: 'blue' },
@@ -37,8 +34,8 @@ const DescriptionStacksSection = ({track}) => {
     <div className="p-6 border w-full  h-full  rounded-md  ">
       {/* Description Section */}
       <div className="mb-6">
-        <h2 className="text-lg font-semibold text-gray-800 mb-2">Description</h2>
-        <p className="text-gray-600 text-sm">
+        <h2 className="text-lg font-semibold  mb-2">Description</h2>
+        <p className=" text-sm">
           {/* Lorem Ipsum is simply dummy text of the printing and typesetting industry.
           Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
           when an unknown printer took a galley of type and scrambled it to make a type specimen book. */}
@@ -48,7 +45,7 @@ const DescriptionStacksSection = ({track}) => {
 
       {/* Stacks Section */}
       <div className="mb-6">
-        <h2 className="text-lg font-semibold text-gray-800 mb-3">Stacks</h2>
+        <h2 className="text-lg font-semibold  mb-3">Stacks</h2>
         {/* Container for stack badges, using flex wrap for responsiveness */}
         <div className="flex flex-wrap gap-6">
           {/* Map over the stacks data to render badges */}
@@ -74,13 +71,14 @@ const DescriptionStacksSection = ({track}) => {
       {/* Action Buttons */}
       <div className="flex justify-start space-x-4 mt-6 ">
         {/* Back Button */}
-        <button className="inline-flex items-center px-4 py-2 border h-12 w-[139px] border-gray-300 rounded-md shadow-sm bg-accent-foreground  text-sm font-medium text-accent hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+        <button className="inline-flex items-center px-4 py-2 border h-12 w-[139px] border-gray-300 rounded-md shadow-sm bg-foreground  text-sm font-medium text-accent hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 cursor-pointer"
+        onClick={()=>navigate("/app/tracks")}>
            <ChevronLeft className="mr-2 h-4 w-4" aria-hidden="true" />
            Back
         </button>
 
         {/* Update Button */}
-        <button className="inline-flex items-center px-4 py-2 h-12 w-[139px] border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sidebar focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+        <button className="inline-flex items-center px-4 py-2 h-12 w-[139px] border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sidebar focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer">
           Update
           <ChevronRight className="ml-2 h-4 w-4" aria-hidden="true" />
         </button>

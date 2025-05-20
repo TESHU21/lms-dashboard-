@@ -2,7 +2,7 @@ import React from 'react'
 import { Search, Plus } from 'lucide-react';
 
 
-const TrackHeader = () => {
+const TrackHeader = ({searchValue, setSearchValue}) => {
   return (
     <div className="flex items-center  w-full py-4">
       {/* Search input container */}
@@ -15,6 +15,8 @@ const TrackHeader = () => {
         <input
           type="text"
           name="search"
+          value={searchValue??""}
+          onChange={(e)=>setSearchValue(e.target.value)}
           id="search-course"
           className="block w-full pl-10 pr-3 py-2 h-12 border border-sidebar-accent-foreground rounded-md leading-5 bg-input-primary placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           placeholder="Search Course"

@@ -23,7 +23,7 @@ const CourseCard = ({ course }) => {
   }
 
   return (
-    <Card className="w-full flex flex-col overflow-hidden">
+    <Card className="w-[328px] flex flex-col overflow-hidden">
       
     
 
