@@ -140,7 +140,7 @@ const FormComp = forwardRef(
                                    trigger(name); // Trigger validation on change
                                 }}
                               >
-                                <SelectTrigger className={`h-[48px] w-full bg-[#F5F5F5] ${hasSuccess ? 'bg-green-200 border-green-500' : ''} ${error ? 'bg-red-200 border-red-500' : ''}`}>
+                                <SelectTrigger className={`h-[48px] w-full bg-accent ${hasSuccess ? 'bg-green-200 border-green-500' : ''} ${error ? 'bg-red-200 border-red-500' : ''}`}>
                                   <SelectValue placeholder={placeholder || "Select"} />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -165,7 +165,7 @@ const FormComp = forwardRef(
                                     trigger(name); //
                                 }}
                                 onBlur={() => trigger(name)} //ur
-                                className={`bg-[#F5F5F5] border-b-[#999999] ${hasSuccess ? 'bg-[#EDF7E8] ' : ''} ${error ? 'bg-red-200 border-red-500' : ''}`}
+                                className={`bg-accent border-b-[#999999] ${hasSuccess ? 'bg-input-sucess' : ''} ${error ? 'bg-red-200 border-red-500' : ''}`}
                               />
                             ) : type === "file" ? (
                                 
@@ -177,7 +177,7 @@ const FormComp = forwardRef(
                                 }}
                                 placeholder={placeholder}
                                 type="file"
-                                className={`  ${hasSuccess ? "bg-[#EDF7E8] border-b-[#999999]" : "bg-[#E6E6E6]"} ${
+                                className={`  ${hasSuccess ? "bg-input-sucess border-b-[#999999]" : "bg-accent"} ${
                                   error ? "bg-red-200 border-red-500" : ""
                                 }`}
                               />
@@ -216,8 +216,8 @@ const FormComp = forwardRef(
                                         field.onChange(e);
                                         trigger(name); // Trigger validation on change
                                     }}
-                                  className={` px-10 py-2 h-[48px] w-full border rounded-t-sm focus:outline-none focus:ring-1 focus:ring-indigo-200 focus:border-indigo-500
-                                    ${ hasSuccess ? "bg-[#EDF7E8] border-b-[#999999]" : "border-[#E6E6E6]  bg-[#F5F5F5]" }
+                                  className={` px-10 py-2 h-[48px] w-full border rounded-t-sm text-input-text focus:outline-none focus:ring-1 focus:ring-indigo-200 focus:border-indigo-500
+                                    ${ hasSuccess ? " bg-input-sucess  border-b-[#999999]" : "border-[#E6E6E6]  bg-accent" }
                                     ${ error ? "bg-red-200 border-red-500" : "" }
                                   `}
                                 />
@@ -233,14 +233,12 @@ const FormComp = forwardRef(
                                     )}
                                   </span>
                                 )}
-                                {/* Add success and error icons inside the input container */}
-                                {/* Show success icon only when not loading, no error, and has value AFTER validation has run */}
+                                
                                 {!isLoading && !error && hasValue && (
                                     <span className="absolute right-10 top-1/2 transform -translate-y-1/2 text-green-500">
                                         <Check size={18} />
                                     </span>
                                 )}
-                                {/* Show error icon only when not loading and has error AFTER validation has run */}
                                 {!isLoading && error && (
                                      <span className="absolute right-10 top-1/2 transform -translate-y-1/2 text-red-500">
                                         <AlertCircle size={18} />
@@ -281,7 +279,7 @@ const FormComp = forwardRef(
                 <Button
                   disabled={isLoading}
                   type="submit"
-                  className={`w-full h-[48px] px-6 ${isValid?"bg-[#01589A]":"bg-[#E6E6E6]"} hover:bg-blue-primary text-white py-3 cursor-pointer flex items-center justify-center gap-2`}
+                  className={`w-full h-[48px] px-6 ${isValid?"bg-sidebar":"bg-muted-foreground"} hover:bg-sidebar text-white py-3 cursor-pointer flex items-center justify-center gap-2`}
                 >
                   {isLoading ? <Loader /> : <>
                     {submitBtnText}

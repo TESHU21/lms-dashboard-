@@ -2,20 +2,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lusitana:wght@400;700&display=swap');
 @import "tailwindcss";
 
-/* Custom styles for Chrome autofill background workaround */
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill,
-textarea:-webkit-autofill:hover,
-textarea:-webkit-autofill:focus,
-select:-webkit-autofill,
-select:-webkit-autofill:hover,
-select:-webkit-autofill:focus {
-  box-shadow: 0 0 0px 1000px #EDF7E8 inset !important;
-  -webkit-box-shadow: 0 0 0px 1000px #EDF7E8 inset !important;
-  -webkit-text-fill-color: #1F2937 !important;
-}
 
 /* Add any other global custom styles here */
 @import "tw-animate-css";
@@ -51,6 +37,7 @@ select:-webkit-autofill:focus {
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
   --color-sidebar: var(--sidebar);
+  --color-input-sucess:var(--input-sucess);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
@@ -61,6 +48,9 @@ select:-webkit-autofill:focus {
 }
 
 :root {
+  --input-sucess:#EDF7E8;
+  --input-text:#000000
+;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -100,6 +90,8 @@ select:-webkit-autofill:focus {
 }
 
 .dark {
+   --input-sucess:hwb(0 0% 100%);
+   --input-text:#ffff;
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -154,4 +146,18 @@ select:-webkit-autofill:focus {
 
 @theme {
   --color-blue-primary: #01589A;
+}
+/* Custom styles for Chrome autofill background workaround */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  box-shadow: 0 0 0px 1000px var(--input-sucess) inset !important;
+  -webkit-box-shadow: 0 0 0px 1000px var(--input-sucess) inset !important;
+  -webkit-text-fill-color: var(--foreground) !important;
 }
