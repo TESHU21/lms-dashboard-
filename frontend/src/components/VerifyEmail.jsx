@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import FormComp from '@/components/FormComp';
 import { z } from 'zod';
-import { useAuth } from '@/contexts/authContext';
+import { useAuth } from '@/context/authContext';
 import { useNavigate } from 'react-router-dom';
+import LeftHero from './LeftHero';
 
 const VerifyEmail = () => {
   const [timer, setTimer] = useState(0);
@@ -45,7 +46,7 @@ const VerifyEmail = () => {
       console.log('OTP verified:', response);
       setSuccessMessage('Email verified successfully!');
       setErrorMessage('');
-      navigate("/")
+      navigate("/app")
     } catch (error) {
       console.error(error);
       const msg = error.response?.data?.message || 'Verification failed';
@@ -77,13 +78,7 @@ const VerifyEmail = () => {
   return (
     <div className="flex justify-center md:gap-[49px]">
       {/* Left Image */}
-      <div className="hidden md:flex md:ml-[190px]">
-        <img
-          src={HeroImage}
-          alt="Work desk illustration"
-          className="w-[418px] h-[418px] object-cover"
-        />
-      </div>
+    <LeftHero/>
 
       {/* Form Section */}
       <div className="md:w-[431px] px-4 md:px-0 py-24">
@@ -107,7 +102,7 @@ const VerifyEmail = () => {
           schema={otpSchema}
           initialValues={initialValues}
           fields={fields}
-          submitBtnText="Reset password"
+          submitBtnText="Confirm OTP"
           onSubmit={handleVerifyEmail}
         
         />

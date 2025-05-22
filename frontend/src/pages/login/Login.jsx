@@ -31,7 +31,7 @@ const Login = () => {
         navigate("app")
       }
       else{
-        navigate("/verifyemail")
+        navigate("/verify-email")
       }
      
     }

@@ -18,7 +18,7 @@ const SignUp = () => {
       setIsLoading(true)
       const response=await signup(data)
       if(response){
-        navigate("/app")
+         navigate("/verify-email")
       }
       setSuccessMessage("Admin Registration is Sucessful!")
     }
