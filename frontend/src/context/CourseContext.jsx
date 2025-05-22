@@ -54,12 +54,10 @@ export const  CourseProvider=({children})=>{
         }
 
     }
-
-
-    // Rate Tracks
-    const rateTrack=async(trackId,data)=>{
+    // Create Track
+    const createTrack=async(data)=>{
         try{
-            const response = await axiosInstance.post(`/tracks/${trackId}/ratings`,data)
+            const response = await axiosInstance.post('/tracks',data)
             return response
         }
         catch(error){
@@ -67,86 +65,11 @@ export const  CourseProvider=({children})=>{
         }
 
     }
-    // Get  Tracks Rating
-    const getTrackRatings=async(trackId)=>{
-        try{
-            const response = await axiosInstance.get(`/tracks/${trackId}/ratings`)
-            return response
-        }
-        catch(error){
-            throw error
-        }
 
-    }
-    // Get  Tracks Rating
-    const getallInvoices=async()=>{
-        try{
-            const response = await axiosInstance.get('/invoices')
-            return response
-        }
-        catch(error){
-            throw error
-        }
-    }
-   
-  
-    // function to get singleInvoices
-    const getsingleInvoices=async(invoicesId)=>{
-        try{
-            const response = await axiosInstance.get(`/invoices/${invoicesId}`)
-            return response
-        }
-        catch(error){
-            throw error
-        }
 
-    }
-    // function to enroll learners by Track
-    const enrollLearnersbyTrack=async(data)=>{
-        try{
-            const response = await axiosInstance.post('/enrollments',data)
-            return response
-        }
-        catch(error){
-            throw error
-        }
-
-    }
-    // function to retrive  enrollments
-    const getEnrollements=async()=>{
-        try{
-            const response = await axiosInstance.get('/enrollments')
-            return response
-        }
-        catch(error){
-            throw error
-        }
-
-    }
-    // function to enroll learner to a course
-    const enrollToCourse=async(data)=>{
-        try{
-            const response=await axiosInstance.post('/registrations',data)
-            return response
-        }
-        catch(error){
-            throw error
-        }
-    }
-    const getregistrationbyLearner=async()=>{
-        try{
-            const response=await axiosInstance.get('/registrations')
-            return response
-        }
-        catch(error){
-            throw error
-        }
-    }
-    const values={getCourses,getSingleCourses,getallTracks,getSingleTrack,getTrackRatings,
-        rateTrack,getallInvoices,getsingleInvoices,enrollLearnersbyTrack,getEnrollements,
-        enrollToCourse,getregistrationbyLearner,courses,setCourses,
-        selectedCourse,setSelectedCourse,courseInvoices,setCourseInvoices, tracks,setTracks,singleTrack,
-        setSingleTrack
+ 
+    const values={getCourses,getSingleCourses,getallTracks,getSingleTrack, tracks,setTracks,singleTrack,
+        setSingleTrack,createTrack
     }
 
 

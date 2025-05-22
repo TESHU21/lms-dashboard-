@@ -56,13 +56,13 @@ const ACCEPTED_IMAGE_MIME_TYPES = [
 // Zod Schema for track update form
 // Zod Schema for track update form
 export const TrackUpdateSchema = z.object({
-  title: z.string().min(2, { message: "Title should be 2 or more characters long" }),
+  name: z.string().min(2, { message: "Name should be 2 or more characters long" }),
   price: z.preprocess(
     (val) => Number(val),
     z.number().positive("Amount must be greater than 0")
   ),
   instructor: z.string().min(2, { message: "Instructor name should be at least two characters" }),
-  duration: z.string().min(2, { message: "Duration is required" }),
+  duration: z.string().min(1, { message: "Duration is required" }),
  image: z.any().superRefine((file, ctx) => {
   if (!(file instanceof File)) {
     ctx.addIssue({
@@ -95,7 +95,7 @@ export const TrackUpdateSchema = z.object({
 
 // Initial values for the update form
 export const updateTrackinitialValues = {
-  title: "",
+  name: "",
   price: "",
   instructor: "",
   duration: "",
@@ -106,8 +106,8 @@ export const updateTrackinitialValues = {
 // Form fields definition for rendering dynamic form
 export const updateTrackfields = [
   {
-    name: "title",
-    placeholder: "Track Title",
+    name: "name",
+    placeholder: "Track Name",
     icon: GraduationCap,
     type: "text",
     className: "col-span-2",

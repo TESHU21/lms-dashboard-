@@ -21,7 +21,6 @@ import CourseDetail from '@/pages/tracks/components/TrackDetail';
 import TrackUpdate from '@/pages/tracks/components/TrackUpdate';
 import EmailVerification from '@/pages/login/forgotpassword/EmailVerification';
 import TrackDetail from '@/pages/tracks/components/TrackDetail';
-import Pages from '@/pages/pages';
 
 const AppRoutes = () => {
   return (
@@ -41,7 +40,6 @@ const AppRoutes = () => {
         <Route path="/app" element={<Layout />}>
        
           <Route index element={<Dashboard />} />
-          <Route path="pages" element={<Pages/>}/>
        
           <Route path="invoices" element={<Invoices />} />
           <Route path="learners" element={<Learners />} />
