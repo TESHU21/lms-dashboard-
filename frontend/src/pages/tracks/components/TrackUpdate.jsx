@@ -1,21 +1,47 @@
-import React from 'react'
-import FormComp from '@/components/FormComp'
-import {TrackUpdateSchema, updateTrackinitialValues,updateTrackfields} from "./data"
+// TrackUpdate.jsx
+import React from 'react';
+import FormComp from '@/components/FormComp';
+import { TrackUpdateSchema, updateTrackinitialValues, updateTrackfields } from "./data";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button"; 
+import { X } from 'lucide-react'; 
 
-const TrackUpdate = () => {
+const TrackUpdate = ({ open, setOpen }) => {
+  const handleUpdateTrack=(data)=>{
+console.log("Update Track data",data)
+  }
   return (
-      <div className='px-30'>
-        <div className="flex items-center space-x-2 mb-[57px]">
-     
-      <span className="text-gray-500">Track</span>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+       
+      </DialogTrigger>
+      <DialogContent className="bg-slate-50 p-3  shadow-md fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+       <DialogHeader>
+        <DialogTitle className="flex items-center text-black space-x-2 m-4">
+            <span className="text-gray-500">Track</span>
+            {/* Vertical separator */}
+            <div className="border-l border-gray-300 h-5"></div>
+            <span className="font-semibold">Update</span>
+        </DialogTitle>
+       </DialogHeader>
 
-      {/* Vertical separator */}
-      <div className="border-l border-gray-300 h-5"></div>
-      <span className="font-semibold">Update</span>
-    </div>
-        <FormComp  schema={TrackUpdateSchema} initialValues={updateTrackinitialValues} fields={updateTrackfields}/>
-    </div>
-  )
-}
+        <div className='px-6 py-6'> {/* Using standard Tailwind px/py units */}
+       
 
-export default TrackUpdate
+          <FormComp schema={TrackUpdateSchema} initialValues={updateTrackinitialValues} fields={updateTrackfields} onSubmit={handleUpdateTrack}/>
+        </div>
+
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default TrackUpdate;

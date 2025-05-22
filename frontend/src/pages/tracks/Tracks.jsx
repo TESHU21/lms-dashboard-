@@ -5,9 +5,11 @@ import TrackHeader from './components/TrackHeader';
 import DescriptionStacksSection from './components/Description'; // Not used in the provided snippet
 import CourseHeader from '../courses/components/CourseHeader'; // Not used in the provided snippet
 import { useCourse } from '../../context/CourseContext';
+import TrackUpdate from './components/TrackUpdate';
 
 const Tracks = () => {
   const [searchValue, setSearchValue] = useState("");
+  const [open,setOpen]=useState(false)
   const [filteredTracks, setFilteredTracks] = useState([]); // Initialize as an empty array
   const { getallTracks, tracks, setTracks } = useCourse();
 
@@ -23,7 +25,7 @@ const Tracks = () => {
       }
     };
     fetchTracks();
-  }, [getallTracks, setTracks]); 
+  }, [ setTracks]); 
 
   useEffect(() => {
     if (tracks) { // Ensure tracks is not null before filtering
@@ -40,7 +42,7 @@ const Tracks = () => {
   return (
     <div className="flex flex-col min-h-full items-center px-25">
       <h6 className='font-semibold text-[20px] leading-8 mb-[36px]'>Courses</h6>
-      <TrackHeader searchValue={searchValue} setSearchValue={setSearchValue} />
+      <TrackHeader searchValue={searchValue} setSearchValue={setSearchValue} setOpen={setOpen}/>
       <div className='flex gap-8 w-full'>
         {filteredTracks.length > 0 ? ( 
           filteredTracks.map(course => (
@@ -50,6 +52,7 @@ const Tracks = () => {
           <p>No courses found.</p> 
         )}
       </div>
+      <TrackUpdate open={open} setOpen={setOpen}/>
     </div>
   );
 };

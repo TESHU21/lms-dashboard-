@@ -38,6 +38,7 @@
   --color-chart-5: var(--chart-5);
   --color-sidebar: var(--sidebar);
   --color-input-sucess:var(--input-sucess);
+    --color-input-text:var(--input-text);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
@@ -90,8 +91,8 @@
 }
 
 .dark {
-   --input-sucess:hwb(0 0% 100%);
-   --input-text:#ffff;
+   --input-sucess:oklch(0.922 0 0);
+   --input-text:#000000;
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -159,5 +160,5 @@ select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
   box-shadow: 0 0 0px 1000px var(--input-sucess) inset !important;
   -webkit-box-shadow: 0 0 0px 1000px var(--input-sucess) inset !important;
-  -webkit-text-fill-color: var(--foreground) !important;
+  -webkit-text-fill-color: var(--input-text) !important;
 }

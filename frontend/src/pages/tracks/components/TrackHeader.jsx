@@ -2,7 +2,7 @@ import React from 'react'
 import { Search, Plus } from 'lucide-react';
 
 
-const TrackHeader = ({searchValue, setSearchValue}) => {
+const TrackHeader = ({searchValue, setSearchValue,setOpen}) => {
   return (
     <div className="flex items-center  w-full py-4">
       {/* Search input container */}
@@ -25,6 +25,7 @@ const TrackHeader = ({searchValue, setSearchValue}) => {
 
       <button
         type="button"
+        onClick={()=>setOpen(true)}
         className="inline-flex items-center px-4 py-2 h-12 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sidebar focus:outline-none focus:ring-2 focus:ring-offset-2"
       >
         Create Course
