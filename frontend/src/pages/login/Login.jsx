@@ -17,9 +17,24 @@ const Login = () => {
     try{
       setIsLoading(true)
       const response=await signin(data)
-      if(response){
+      
+      
+      if(response.status===200){
+      const token=sessionStorage.getItem("Token")
+      const user = sessionStorage.getItem("User");
+      const userParsed = JSON.parse(user);
+
+      
+      setSuccessMessage (response.data.message)
+      console.log(response.data)
+      if(userParsed?.isVerified){
         navigate("app")
       }
+      else{
+        navigate("/verifyemail")
+      }
+     
+    }
     }
     catch(error){
       setErrorMessage("Incorrect Credentials")
