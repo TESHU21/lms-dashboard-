@@ -76,6 +76,17 @@ export const  CourseProvider=({children})=>{
         }
 
     }
+    // Create Invoice
+     const createInvoice=async(data,id)=>{
+        try{
+            const response = await axiosInstance.put(`/tracks/${id}`,data)
+            return response
+        }
+        catch(error){
+            throw error
+        }
+
+    }
 
 
  

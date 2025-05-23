@@ -46,7 +46,7 @@ const Tracks = () => {
       <div className='grid grid-cols-1 md:grid-cols-3 gap-8 '>
         {filteredTracks.length > 0 ? ( 
           filteredTracks.map(course => (
-            <CourseCard key={course.id} course={course} />
+            <CourseCard key={course._id} course={course} />
           ))
         ) : (
           <p>No courses found.</p> 

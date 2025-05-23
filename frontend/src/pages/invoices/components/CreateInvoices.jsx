@@ -1,6 +1,5 @@
 import React from 'react'
 import {InvoiceSchema,fields,initialValues} from "./data"
-// import {LearnerSchema,initialValues,fields} from "../../learners/components/data"
 import FormComp from '@/components/FormComp'
 import {
   Dialog,
@@ -11,6 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useCourse } from '@/context/CourseContext';
 
 const CreateInvoices = ({open,setOpen}) => {
   return (

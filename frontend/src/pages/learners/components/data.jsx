@@ -84,12 +84,12 @@ export const fields = [
     placeholder: "Select program",
     icon: GraduationCap,
     type: "select",
-    options: [
-      "Computer Science",
-      "Business Administration",
-      "Engineering",
-      "Design"
-    ],
+     options: [{
+      name:"Addis Ababa" ,value:"Addis Ababa"
+    },{
+      name:"DireDawa" ,value:"DireDawa"
+    },
+      ],
     className: "col-span-2 md:col-span-1"
   },
   {
@@ -97,7 +97,11 @@ export const fields = [
     placeholder: "Gender",
     icon: CiUser,
     type: "select",
-    options: ["Male", "Female", "Other"],
+    options:[ 
+      { name: "Male", value: "male" },
+      { name: "Female", value: "female" },
+
+    ],
     className: "col-span-2 md:col-span-1"
   },
   {
@@ -105,7 +109,12 @@ export const fields = [
     placeholder: "Location",
     icon: MapPin,
     type: "select",
-    options: ["Addis Ababa", "Dire Dawa", "Hawassa", "Bahir Dar"],
+    options: [{
+      name:"Addis Ababa" ,value:"Addis Ababa"
+    },{
+      name:"DireDawa" ,value:"DireDawa"
+    },
+      ],
     className: "col-span-2 md:col-span-1"
   },
   {
@@ -121,31 +130,31 @@ export const fields = [
     icon: User,
     type: "select",
     options: [
-      { label: "True", value: true },
-      { label: "False", value: false }
+      { name: "True", value: true },
+      { name: "False", value: false }
     ],
-    className: "col-span-2 md:col-span-1"
+    className: "col-span-2 "
   },
   {
     name: "amount",
     placeholder: "$ Amount",
     icon: DollarSign,
     type: "text",
-    className: "col-span-2 md:col-span-1"
+    className: "col-span-2 "
   },
   {
     name: "image",
     placeholder: "Upload Image",
     icon: Image,
     type: "file",
-    className: "col-span-2 md:col-span-1"
+    className: "col-span-2 "
   },
   {
     name: "description",
     placeholder: "Description",
     icon: PenIcon,
     type: "textarea",
-    className: "col-span-2 md:col-span-1"
+    className: "col-span-2 "
   }
 ];
 

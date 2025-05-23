@@ -31,7 +31,7 @@ const Sidebar = () => {
         {/* Bottom nav links */}
         <div className="flex flex-col gap-4 mb-[69px]">
           {bottomLinks.map((link) => (
-            link.type==="logout"?(<Logout/>):( <NavLinkItem key={link.id} item={link} />
+            link.type==="logout"?(<Logout key={link.id}/>):( <NavLinkItem key={link.id} item={link} />
 )
           ))}
         </div>

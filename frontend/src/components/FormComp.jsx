@@ -181,7 +181,7 @@ const FormComp = forwardRef(
                                     trigger(name);
                                   }}
                                   onBlur={() => trigger(name)}
-                                  className={`h-auto resize-y bg-gray-200 text-black border-b-[#999999] ${
+                                  className={`h-auto  w-full  pr-8 break-all bg-gray-200 text-black border-b-[#999999] ${
                                     hasSuccess ? "bg-input-sucess" : ""
                                   } ${error ? "bg-red-200 border-red-500" : ""}`}
                                 />
