@@ -20,10 +20,22 @@ const TrackUpdate = ({ open, setOpen }) => {
       const [errorMessage,setErrorMessage]=useState("")
       const {createTrack}=useCourse()
   const handleUpdateTrack=async(data)=>{
+    console.log(data.image)
+    const formData=new FormData()
+    formData.append('name', data.name);
+  formData.append('price', data.price);
+  formData.append('instructor', data.instructor);
+  formData.append('duration', data.duration);
+  formData.append(
+    'description',data.description
+  );
+
+  // ✅ Append file (make sure data.image is a File object, not base64 or object)
+  formData.append('image', data.image); // where data.image is from a file input
     try{
       console.log("starting")
       setIsLoading(true)
-      const response=await createTrack(data)
+      const response=await createTrack(formData)
       console.log(response)
     }
     catch(error){

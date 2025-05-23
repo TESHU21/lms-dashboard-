@@ -58,7 +58,7 @@ const Login = () => {
         </div>
         <div className='mt-[216px] ml-[244px]  w-[556px]'>
           <h3 className='mb-[34px] font-lato text-[40px] leading-12 font-bold'>Login into your account</h3>
-           <FormComp schema={SignUpSchema} fields={fields} initialValues={initialValues} submitBtnText={"Create accounts"}
+           <FormComp schema={SignUpSchema} fields={fields} initialValues={initialValues} submitBtnText={"Login"}
               showForgotPassword={true} onSubmit={handleLogin} isLoading={isLoading}  errorMessage={errorMessage} />
         </div>
        
