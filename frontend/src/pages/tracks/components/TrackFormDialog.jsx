@@ -14,7 +14,7 @@ import {
 import { Button } from "@/components/ui/button"; 
 import { X } from 'lucide-react'; 
 import { useCourse } from '@/context/CourseContext';
-const TrackUpdate = ({ open, setOpen,mode = "create", initialData = {}, onSubmit  }) => {
+const TrackFormDialog = ({ open, setOpen,mode = "create", initialData , onSubmit  }) => {
    const [isLoading,setIsLoading]=useState(false)
       const [successMessage,setSuccessMessage]=useState("")
       const [errorMessage,setErrorMessage]=useState("")
@@ -70,7 +70,7 @@ const TrackUpdate = ({ open, setOpen,mode = "create", initialData = {}, onSubmit
         <div className='px-6 py-6'> {/* Using standard Tailwind px/py units */}
        
 
-          <FormComp schema={TrackUpdateSchema} initialValues={updateTrackinitialValues} fields={updateTrackfields} onSubmit={handleSubmit} errorMessage={errorMessage} isLoading={isLoading} successMessage={successMessage}/>
+          <FormComp schema={TrackUpdateSchema} initialValues={initialData || updateTrackinitialValues} fields={updateTrackfields} onSubmit={handleSubmit} errorMessage={errorMessage} isLoading={isLoading} successMessage={successMessage}/>
         </div>
 
       </DialogContent>
@@ -78,4 +78,4 @@ const TrackUpdate = ({ open, setOpen,mode = "create", initialData = {}, onSubmit
   );
 };
 
-export default TrackUpdate;
+export default TrackFormDialog ;

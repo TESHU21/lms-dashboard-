@@ -1,8 +1,10 @@
 import React,{useState} from 'react';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import TrackFormDialog from './TrackFormDialog';
 // This component displays the Description, Stacks, and action buttons
 const DescriptionStacksSection = ({track}) => {
+  const [open,setOpen]=useState(false)
  const navigate=useNavigate()
   const stacks = [
     { id: 1, name: 'ReactJs', color: 'blue' },    // Example colors, map to Tailwind classes
@@ -12,7 +14,16 @@ const DescriptionStacksSection = ({track}) => {
     { id: 5, name: 'MongoDB', color: 'yellow' },
     { id: 6, name: 'VueJs', color: 'blue' },
   ];
+  console.log("Single Track",track)
+const initialData={
+  name:track.name||"",
+  instructor:track.instructor||"",
+  price:track.price||"",
+  duration:track.duration||"",
+  image:track.image||"",
+  description:track.description||""
 
+}
   // Function to map colors to Tailwind classes (adjust as needed)
   const getColorClasses = (color) => {
     switch (color) {
@@ -28,7 +39,7 @@ const DescriptionStacksSection = ({track}) => {
         return 'border-gray-400 text-gray-700 ';
     }
   };
-
+console.log("Single Track",initialData)
   return (
     // Main container with padding and border (matches the blue outline in the image)
     <div className="p-6 border w-full  h-full  rounded-md  ">
@@ -36,9 +47,7 @@ const DescriptionStacksSection = ({track}) => {
       <div className="mb-6">
         <h2 className="text-lg font-semibold  mb-2">Description</h2>
         <p className=" text-sm">
-          {/* Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-          when an unknown printer took a galley of type and scrambled it to make a type specimen book. */}
+          
           {track.description}
         </p>
       </div>
@@ -78,11 +87,13 @@ const DescriptionStacksSection = ({track}) => {
         </button>
 
         {/* Update Button */}
-        <button className="inline-flex items-center px-4 py-2 h-12 w-[139px] border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sidebar focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer">
+        <button className="inline-flex items-center px-4 py-2 h-12 w-[139px] border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sidebar focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer"
+        onClick={()=>setOpen(true)}>
           Update
           <ChevronRight className="ml-2 h-4 w-4" aria-hidden="true" />
         </button>
       </div>
+      <TrackFormDialog open={open} setOpen={setOpen} mode='update' initialData={initialData}/>
     </div>
   );
 };
