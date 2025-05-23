@@ -3,7 +3,7 @@ import React from 'react';
 import { Search, Plus } from 'lucide-react';
 
 // This component creates the header with a search bar and a "Create Invoice" button
-const InvoiceHeader = () => {
+const InvoiceHeader = ({ columnFilters,setColumnFilters}) => {
   return (
     
     <div className="flex items-center w-full py-4">
@@ -16,6 +16,17 @@ const InvoiceHeader = () => {
         {/* Search input field */}
         <input
           type="text"
+             value={
+            columnFilters.find((f) => f.id === "name")?.value || ""
+          }
+            onChange={(e) => {
+            const filterValue = e.target.value;
+            setColumnFilters((prev) =>
+              prev
+                .filter((f) => f.id !== "name")
+                .concat({ id: "name", value: filterValue })
+            );
+          }}
           name="search"
           id="search"
           // Adjusted left padding back to pl-10 to accommodate the icon

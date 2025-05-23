@@ -5,6 +5,8 @@ import InvoiceHeader from "./components/InvoiceHeader";
 
 const Invoices = () => {
   // State to hold the invoice data
+      const [columnFilters, setColumnFilters] = useState([]);
+  
   const [data, setData] = useState([
     {
       id: "1",
@@ -79,7 +81,8 @@ const Invoices = () => {
    
       <div className="w-full px-30">
         <h6 className="leading-8 text-[20px] font-semibold mb-[36px]">Invoices</h6>
-        <InvoiceHeader/>
+        <InvoiceHeader  columnFilters={columnFilters}
+            setColumnFilters={setColumnFilters}/>
         
      
           {/* The DataTable component */}
@@ -90,6 +93,8 @@ const Invoices = () => {
               handleEdit,
               handleDelete,
             })}
+            columnFilters={columnFilters}
+            setColumnFilters={setColumnFilters}
           />
         </div>
       </div>
