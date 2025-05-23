@@ -8,7 +8,7 @@ import React, {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NavLink } from "react-router-dom";
-import { ChevronRight, AlertCircle, Check, Image as ImageIcon } from "lucide-react"; // Renamed Image to ImageIcon
+import { ChevronRight, AlertCircle, Check, Image as ImageIcon } from "lucide-react";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 
 import Loader from "./Loader";
@@ -24,14 +24,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "./ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import CustomSelect from "./CustomSelect";
+// Removed direct import of Shadcn Select components as CustomSelect now encapsulates them
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import CustomSelect from "./CustomSelect"; // Make sure this path is correct
 
 const FormComp = forwardRef(
   (
@@ -61,17 +56,15 @@ const FormComp = forwardRef(
     const [showPassword, setShowPassword] = useState(false);
     const [filePreviews, setFilePreviews] = useState({});
 
-    // Set initial file previews when component mounts or initialValues change
     useEffect(() => {
       const previews = {};
       fields.forEach(field => {
         if (field.type === "file" && initialValues[field.name]) {
-          // If there's an initial value (URL) for a file, set it as a preview
           previews[field.name] = initialValues[field.name];
         }
       });
       setFilePreviews(previews);
-      reset(initialValues); // Reset form with initial values
+      reset(initialValues);
     }, [initialValues, reset, fields]);
 
     useImperativeHandle(ref, () => ({
@@ -85,26 +78,53 @@ const FormComp = forwardRef(
 
     const handleFileChange = (e, field, name) => {
       const file = e.target.files?.[0] || null;
-      field.onChange(file); // Update react-hook-form value
-      trigger(name); // Manually trigger validation
+      field.onChange(file);
+      trigger(name);
 
       if (file) {
         const reader = new FileReader();
         reader.onload = () => {
           setFilePreviews((prev) => ({
             ...prev,
-            [name]: reader.result, // Store data URL for preview
+            [name]: reader.result,
           }));
         };
         reader.readAsDataURL(file);
       } else {
-        // If file is cleared, remove its preview
         setFilePreviews((prev) => {
           const updated = { ...prev };
           delete updated[name];
           return updated;
         });
       }
+    };
+
+    // Helper component for validation icons, now generalized
+    const ValidationIcons = ({ hasSuccess, error, isPassword = false, isFile = false }) => {
+      if (isLoading) return null; // Don't show icons if loading
+
+      let rightPositionClass = "right-3"; // Default for text inputs, textareas
+      if (isPassword) {
+        rightPositionClass = "right-10"; // Space for eye icon
+      } else if (isFile) {
+        rightPositionClass = "right-10"; // Space for close button on file preview
+      }
+
+      if (hasSuccess) {
+        return (
+          <span className={`absolute ${rightPositionClass} top-1/2 transform -translate-y-1/2 text-green-500`}>
+            <Check size={18} />
+          </span>
+        );
+      }
+      if (error) {
+        return (
+          <span className={`absolute ${rightPositionClass} top-1/2 transform -translate-y-1/2 text-red-500`}>
+            <AlertCircle size={18} />
+          </span>
+        );
+      }
+      return null;
     };
 
     return (
@@ -130,187 +150,154 @@ const FormComp = forwardRef(
                     name={name}
                     render={({ field, fieldState }) => {
                       const { error } = fieldState;
-                      const hasValue = field.value !== "" && field.value != null;
+                      // Determine hasValue based on field type for more accurate success
+                      const hasValue = type === "file"
+                        ? field.value !== null && field.value !== undefined && field.value !== ""
+                        : field.value !== "" && field.value != null;
                       const hasSuccess = !error && hasValue;
 
                       return (
                         <FormItem className={`${className || ""} w-full`}>
                           <FormLabel>{label}</FormLabel>
-                          <FormControl>
-                            {type === "select" ? (
-                              // <Select
-                              //   value={
-                              //     field.value === true
-                              //       ? "true"
-                              //       : field.value === false
-                              //       ? "false"
-                              //       : field.value || ""
-                              //   }
-                              //   onValueChange={(value) => {
-                              //     const parsedValue =
-                              //       value === "true"
-                              //         ? true
-                              //         : value === "false"
-                              //         ? false
-                              //         : value;
-                              //     field.onChange(parsedValue);
-                              //     trigger(name);
-                              //   }}
-                              // >
-                              //   <SelectTrigger
-                              //     className={`h-[48px] w-full bg-accent ${
-                              //       hasSuccess ? "bg-green-200 border-green-500" : ""
-                              //     } ${error ? "bg-red-200 border-red-500" : ""}`}
-                              //   >
-                              //     <SelectValue placeholder={placeholder || "Select"} />
-                              //   </SelectTrigger>
-                              //   <SelectContent>
-                              //     {options.map((option) => (
-                              //       <SelectItem key={option.value} value={option.value}>
-                              //         {option.name}
-                              //       </SelectItem>
-                              //     ))}
-                              //   </SelectContent>
-                              // </Select>
-                              <CustomSelect field={field} options={options} placeholder={placeholder} hasSuccess={hasSuccess} error={error}/>
-                            ) : type === "textarea" ? (
-                              <Textarea
-                                {...field}
-                                placeholder={placeholder}
-                                value={field.value || ""}
-                                rows={20}
-                                onChange={(e) => {
-                                  field.onChange(e);
-                                  trigger(name);
-                                }}
-                                onBlur={() => trigger(name)}
-                                className={`h-auto resize-y bg-gray-200 text-black border-b-[#999999] ${
-                                  hasSuccess ? "bg-input-sucess" : ""
-                                } ${error ? "bg-red-200 border-red-500" : ""}`}
-                              />
-                            ) : type === "file" ? (
-                              <div className="relative flex flex-col gap-2">
-                                <Input
-                                  id={name}
-                                  type="file"
-                                  accept="image/*"
-                                  onChange={(e) => handleFileChange(e, field, name)}
-                                  className="hidden" // Hide the actual file input
+                          {/* Centralized wrapper for most input types for relative positioning and validation icons */}
+                          <div className="relative w-full">
+                            <FormControl>
+                              {type === "select" ? (
+                                <CustomSelect
+                                  field={field}
+                                  options={options}
                                   placeholder={placeholder}
+                                  hasSuccess={hasSuccess} // Pass these props to CustomSelect
+                                  error={error} // CustomSelect will handle its own icon display
                                 />
-                                <Label
-                                  htmlFor={name} // Link label to hidden input
-                                  className={`bg-gray-200 px-y py-2 w-full border rounded-t-sm dark:bg-input/30 flex items-center px-6 cursor-pointer min-h-[48px] ${
-                                    hasSuccess ? "bg-input-sucess border-b-[#999999]" : "border-[#E6E6E6] bg-gray-200"
-                                  } ${error ? "bg-red-200 border-red-500" : ""}`}
-                                >
-                                  {filePreviews[name] ? (
-                                    <div className="relative w-fit">
-                                      <img
-                                        src={filePreviews[name]}
-                                        alt="Preview"
-                                        className="max-w-[60px] rounded shadow border object-cover"
-                                      />
-                                      <button
-                                        type="button"
-                                        onClick={(e) => {
-                                          e.stopPropagation(); // Prevent opening file dialog
-                                          setFilePreviews((prev) => {
-                                            const updated = { ...prev };
-                                            delete updated[name];
-                                            return updated;
-                                          });
-                                          field.onChange(null); // Clear react-hook-form's value
-                                          trigger(name); // Retrigger validation
-                                        }}
-                                        className="absolute -top-2 -right-2 text-2xl cursor-pointer w-4 h-4 rounded-full border-0 flex items-center justify-center shadow text-red-600 bg-inherit"
-                                        aria-label="Remove image"
-                                      >
-                                        &times;
-                                      </button>
-                                    </div>
-                                  ) : (
-                                    <div className="text-gray-600 flex items-center gap-2">
-                                      <ImageIcon size={24} /> Upload your image here!
-                                    </div>
-                                  )}
-                                </Label>
-                                {/* Validation Icons for file input */}
-                                {!isLoading && hasSuccess && (
-                                  <span className="absolute right-10 top-1/2 transform -translate-y-1/2 text-green-500">
-                                    <Check size={18} />
-                                  </span>
-                                )}
-                                {!isLoading && error && (
-                                  <span className="absolute right-10 top-1/2 transform -translate-y-1/2 text-red-500">
-                                    <AlertCircle size={18} />
-                                  </span>
-                                )}
-                              </div>
-                            ) : (
-                              <div className="relative">
-                                {Icon && (
-                                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                                    <Icon size={18} />
-                                  </span>
-                                )}
-                                <Input
+                              ) : type === "textarea" ? (
+                                <Textarea
                                   {...field}
-                                  type={
-                                    type === "password"
-                                      ? showPassword
-                                        ? "text"
-                                        : "password"
-                                      : type
-                                  }
-                                  id={name}
                                   placeholder={placeholder}
-                                  autoComplete={
-                                    name === "password"
-                                      ? "current-password"
-                                      : name === "email"
-                                      ? "email"
-                                      : "on"
-                                  }
-                                  onFocus={(e) => {
-                                    trigger(name);
-                                    field.onFocus?.(e);
-                                  }}
-                                  onBlur={(e) => {
-                                    trigger(name);
-                                    field.onBlur?.(e);
-                                  }}
+                                  value={field.value || ""}
+                                  rows={20}
                                   onChange={(e) => {
                                     field.onChange(e);
                                     trigger(name);
                                   }}
-                                  className={`px-10 py-2 h-[48px] w-full border rounded-t-sm text-input-text focus:outline-none focus:ring-1 focus:ring-indigo-200 focus:border-indigo-500 ${
-                                    hasSuccess
-                                      ? "bg-input-sucess border-b-[#999999]"
-                                      : "border-[#E6E6E6] bg-gray-200"
+                                  onBlur={() => trigger(name)}
+                                  className={`h-auto resize-y bg-gray-200 text-black border-b-[#999999] ${
+                                    hasSuccess ? "bg-input-sucess" : ""
                                   } ${error ? "bg-red-200 border-red-500" : ""}`}
                                 />
-                                {type === "password" && (
-                                  <span
-                                    onClick={handlePasswordVisibility}
-                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-400"
+                              ) : type === "file" ? (
+                                <> {/* Fragment because Label and Input are siblings */}
+                                  <Input
+                                    id={name}
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => handleFileChange(e, field, name)}
+                                    className="hidden" // Hide the actual file input
+                                    placeholder={placeholder}
+                                  />
+                                  <Label
+                                    htmlFor={name} // Link label to hidden input
+                                    className={`bg-gray-200 px-y py-2 w-full border rounded-t-sm dark:bg-input/30 flex items-center px-6 cursor-pointer min-h-[48px] ${
+                                      hasSuccess ? "bg-input-sucess border-b-[#999999]" : "border-[#E6E6E6] bg-gray-200"
+                                    } ${error ? "bg-red-200 border-red-500" : ""}`}
                                   >
-                                    {showPassword ? <BsEye size={18} /> : <BsEyeSlash size={18} />}
-                                  </span>
-                                )}
-                                {!isLoading && hasSuccess && (
-                                  <span className="absolute right-10 top-1/2 transform -translate-y-1/2 text-green-500">
-                                    <Check size={18} />
-                                  </span>
-                                )}
-                                {!isLoading && error && (
-                                  <span className="absolute right-10 top-1/2 transform -translate-y-1/2 text-red-500">
-                                    <AlertCircle size={18} />
-                                  </span>
-                                )}
-                              </div>
+                                    {filePreviews[name] ? (
+                                      <div className="relative w-fit">
+                                        <img
+                                          src={filePreviews[name]}
+                                          alt="Preview"
+                                          className="max-w-[60px] rounded shadow border object-cover"
+                                        />
+                                        <button
+                                          type="button"
+                                          onClick={(e) => {
+                                            e.stopPropagation(); // Prevent opening file dialog
+                                            setFilePreviews((prev) => {
+                                              const updated = { ...prev };
+                                              delete updated[name];
+                                              return updated;
+                                            });
+                                            field.onChange(null); // Clear react-hook-form's value
+                                            trigger(name); // Retrigger validation
+                                          }}
+                                          className="absolute -top-2 -right-2 text-2xl cursor-pointer w-4 h-4 rounded-full border-0 flex items-center justify-center shadow text-red-600 bg-inherit"
+                                          aria-label="Remove image"
+                                        >
+                                          &times;
+                                        </button>
+                                      </div>
+                                    ) : (
+                                      <div className="text-gray-600 flex items-center gap-2">
+                                        <ImageIcon size={24} /> Upload your image here!
+                                      </div>
+                                    )}
+                                  </Label>
+                                </>
+                              ) : ( // Default input type (text, email, number, password etc.)
+                                <> {/* Fragment for multiple siblings like icon and input */}
+                                  {Icon && ( // Optional leading icon
+                                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                      <Icon size={18} />
+                                    </span>
+                                  )}
+                                  <Input
+                                    {...field}
+                                    type={
+                                      type === "password"
+                                        ? showPassword
+                                          ? "text"
+                                          : "password"
+                                        : type
+                                    }
+                                    id={name}
+                                    placeholder={placeholder}
+                                    autoComplete={
+                                      name === "password"
+                                        ? "current-password"
+                                        : name === "email"
+                                          ? "email"
+                                          : "on"
+                                    }
+                                    onFocus={(e) => {
+                                      trigger(name);
+                                      field.onFocus?.(e);
+                                    }}
+                                    onBlur={(e) => {
+                                      trigger(name);
+                                      field.onBlur?.(e);
+                                    }}
+                                    onChange={(e) => {
+                                      field.onChange(e);
+                                      trigger(name);
+                                    }}
+                                    className={`px-10 py-2 h-[48px] w-full border rounded-t-sm text-input-text focus:outline-none focus:ring-1 focus:ring-indigo-200 focus:border-indigo-500 ${
+                                      hasSuccess
+                                        ? "bg-input-sucess border-b-[#999999]"
+                                        : "border-[#E6E6E6] bg-gray-200"
+                                    } ${error ? "bg-red-200 border-red-500" : ""}`}
+                                  />
+                                  {type === "password" && ( // Password visibility toggle
+                                    <span
+                                      onClick={handlePasswordVisibility}
+                                      className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-400"
+                                    >
+                                      {showPassword ? <BsEye size={18} /> : <BsEyeSlash size={18} />}
+                                    </span>
+                                  )}
+                                </>
+                              )}
+                            </FormControl>
+                            {/* Render ValidationIcons ONLY for Input, Textarea, and File (NOT Select) */}
+                            {type !== "select" && (
+                              <ValidationIcons
+                                hasSuccess={hasSuccess}
+                                error={error}
+                                isPassword={type === "password"}
+                                isFile={type === "file"}
+                              />
                             )}
-                          </FormControl>
+                          </div> {/* End of relative wrapper */}
+
                           <div className="py-0 h-[10px] text-sm">
                             {error && (
                               <FormMessage className="text-xs text-red-600">
