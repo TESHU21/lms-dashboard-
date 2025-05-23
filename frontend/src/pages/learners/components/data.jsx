@@ -20,7 +20,7 @@ export const LearnerSchema = z.object({
   location: z.enum(['Addis Ababa', 'Dire Dawa']),
 
   disabled: z.preprocess(
-    val => val === 'true' || val === true,
+    val => val === 'True' || val === true,
     z.boolean()
   ),
 
