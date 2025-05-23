@@ -77,9 +77,9 @@ export const  CourseProvider=({children})=>{
 
     }
     // Create Invoice
-     const createInvoice=async(data,id)=>{
+     const createInvoice=async()=>{
         try{
-            const response = await axiosInstance.put(`/tracks/${id}`,data)
+            const response = await axiosInstance.post('/invoice',data)
             return response
         }
         catch(error){
@@ -91,7 +91,7 @@ export const  CourseProvider=({children})=>{
 
  
     const values={getCourses,getSingleCourses,getallTracks,getSingleTrack, tracks,setTracks,singleTrack,
-        setSingleTrack,createTrack,updateTrack
+        setSingleTrack,createTrack,updateTrack,createInvoice
     }
 
 

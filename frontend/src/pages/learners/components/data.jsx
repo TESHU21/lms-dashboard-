@@ -9,15 +9,15 @@ export const LearnerSchema = z.object({
   lastName: z.string().min(2, { message: "Name should be 2 or more characters long" }),
   email: z.string().email({ message: "Invalid email address" }),
 
-  program: z.enum(['Computer Science', 'Business Administration', 'Engineering', 'Design']),
-  gender: z.enum(['Male', 'Female', 'Other']),
+  program: z.enum(['Addis Ababa', 'Dire Dawa']),
+  gender: z.enum(['male', 'female']),
   
   phone: z.string().regex(
     /^\+?[1-9]\d{7,14}$/,
     "Enter a valid international phone number (e.g., +251912345678)"
   ),
 
-  location: z.enum(['Addis Ababa', 'Dire Dawa', 'Hawassa', 'Bahir Dar']),
+  location: z.enum(['Addis Ababa', 'Dire Dawa']),
 
   disabled: z.preprocess(
     val => val === 'true' || val === true,

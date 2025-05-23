@@ -186,7 +186,7 @@ const FormComp = forwardRef(
                                   } ${error ? "bg-red-200 border-red-500" : ""}`}
                                 />
                               ) : type === "file" ? (
-                                <> {/* Fragment because Label and Input are siblings */}
+                                <div> {/* Fragment because Label and Input are siblings */}
                                   <Input
                                     id={name}
                                     type="file"
@@ -232,9 +232,9 @@ const FormComp = forwardRef(
                                       </div>
                                     )}
                                   </Label>
-                                </>
+                                </div>
                               ) : ( // Default input type (text, email, number, password etc.)
-                                <> {/* Fragment for multiple siblings like icon and input */}
+                                <div> {/* Fragment for multiple siblings like icon and input */}
                                   {Icon && ( // Optional leading icon
                                     <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                                       <Icon size={18} />
@@ -284,7 +284,7 @@ const FormComp = forwardRef(
                                       {showPassword ? <BsEye size={18} /> : <BsEyeSlash size={18} />}
                                     </span>
                                   )}
-                                </>
+                                </div>
                               )}
                             </FormControl>
                             {/* Render ValidationIcons ONLY for Input, Textarea, and File (NOT Select) */}

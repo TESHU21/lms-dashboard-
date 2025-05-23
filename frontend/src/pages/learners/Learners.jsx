@@ -93,7 +93,7 @@ const Learners = () => {
     }
   return (
     <div className='px-30'>
-     <h6 className="leading-8 text-[20px] font-semibold mb-[30px]">Learners</h6>
+     <h6 className="leading-8 text-[20px] min-h-full font-semibold mb-[30px]">Learners</h6>
 
       <LearnerHeader columnFilters={columnFilters} setColumnFilters={setColumnFilters}/>
       <DataTable data={data}  columns={columns({

@@ -77,8 +77,8 @@ const Invoices = () => {
 
   return (
     // Main container for centering content
-    <div className="flex flex-col justify-center items-center">
-   
+    <div className="flex flex-col justify-center h-auto items-center">
+    
       <div className="w-full px-30">
         <h6 className="leading-8 text-[20px] font-semibold mb-[36px]">Invoices</h6>
         <InvoiceHeader  columnFilters={columnFilters}
