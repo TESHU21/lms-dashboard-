@@ -1,12 +1,14 @@
-import React from 'react';
+import React ,{useState}from 'react';
 // Assuming you have lucide-react installed for icons
 import { Search, Plus } from 'lucide-react';
+import CreateInvoices from './CreateInvoices';
 
 // This component creates the header with a search bar and a "Create Invoice" button
 const InvoiceHeader = ({ columnFilters,setColumnFilters}) => {
+  const [open,setOpen]=useState(false)
   return (
-    
-    <div className="flex items-center w-full py-4">
+    <div>
+        <div className="flex items-center w-full py-4">
       {/* Search input container */}
       <div className="relative flex items-center w-full rounded-md shadow-sm">
         {/* Search icon */}
@@ -38,6 +40,7 @@ const InvoiceHeader = ({ columnFilters,setColumnFilters}) => {
       {/* Create Invoice button */}
       <button
         type="button"
+        onClick={()=>setOpen(true)}
         className="inline-flex items-center px-4 py-3 border border-transparent w-[240px] text-sm font-medium rounded-md shadow-sm text-white bg-sidebar hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ml-4"
       >
         Create invoice
@@ -45,6 +48,10 @@ const InvoiceHeader = ({ columnFilters,setColumnFilters}) => {
         <Plus className="ml-2 -mr-1 h-5 w-5" aria-hidden="true" />
       </button>
     </div>
+    <CreateInvoices open={open} setOpen={setOpen}/>
+    </div>
+    
+  
   );
 };
 
