@@ -1,59 +1,54 @@
-import React from 'react';
+// CustomSelect.jsx
+import * as React from "react";
+import { CheckIcon, AlertCircle, ChevronDownIcon } from "lucide-react"; 
 import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectGroup,
+  Select as ShadcnSelect, // Renamed to avoid conflict with local Select component
   SelectContent,
   SelectItem,
-} from './ui/select'; // Update path based on your project structure
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"; 
+import { cn } from "@/lib/utils";
 
 const CustomSelect = ({ field, options, placeholder, hasSuccess, error }) => {
   return (
-    <Select
-    className=""
-      // Ensures the Select component receives a string value,
-      // converting booleans or other types as needed.
-      value={
-        field.value === true
-          ? 'true'
-          : field.value === false
-          ? 'false'
-          : field.value?.toString() || ''
-      }
+    <ShadcnSelect
+      value={field.value || ""} // Ensure value is controlled by react-hook-form
       onValueChange={(value) => {
-        let parsedValue;
-        // Converts the string value from the Select back to its original type (boolean or string).
-        if (value === 'true') {
-          parsedValue = true;
-        } else if (value === 'false') {
-          parsedValue = false;
-        } else {
-          parsedValue = value; // Keep as string for non-boolean values.
+        field.onChange(value);
+        
+      }}
+      onOpenChange={(open) => {
+        if (!open) {
         }
-        field.onChange(parsedValue); // Updates react-hook-form's field value.
-        field.onBlur(); // Manually triggers validation to update form state.
       }}
     >
       <SelectTrigger
-        className={`!h-[48px] px-3 py-4 w-full  ${
-          hasSuccess ? "bg-input-sucess border-input-sucess" : "bg-gray-200"
-        } ${error ? "bg-red-200 border-red-500" : ""}`}
+        className={cn(
+          "!h-[48px] px-3 py-4 w-full bg-gray-200", // Your primary height and base styles
+          hasSuccess && "bg-input-sucess border-input-sucess", // Success styling
+          error && "bg-red-200 border-red-500", // Error styling
+          (hasSuccess || error) && "!pr-10" // This adds space for the validation icon
+        )}
       >
-        <SelectValue placeholder={placeholder || 'Select'} />
+        <SelectValue placeholder={placeholder || "Select"} />
+        {(hasSuccess || error) && ( // Only show if there's success or error
+            <span className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                {hasSuccess && <CheckIcon className=" size-4 text-green-500" />}
+                {error && <AlertCircle className="size-4 text-red-500" />}
+            </span>
+        )}
       </SelectTrigger>
       <SelectContent>
-        <SelectGroup className=" flex flex-col gap-1 bg-white">
-             {options.map((option) => (
-          // Ensures the key and value for SelectItem are strings, as required by React and the component.
-          <SelectItem key={option.value?.toString()} value={option?.value?.toString()} className=" hover:bg-gray-300 ">
+        {options.map((option) => (
+          <SelectItem key={option.value} value={option.value}
+          className="hover:bg-gray-200"
+          >
             {option.name}
           </SelectItem>
         ))}
-        </SelectGroup>
-     
       </SelectContent>
-    </Select>
+    </ShadcnSelect>
   );
 };
 
