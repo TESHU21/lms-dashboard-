@@ -29,9 +29,12 @@ const TrackUpdate = ({ open, setOpen }) => {
   formData.append(
     'description',data.description
   );
+  console.log(data.image instanceof File); // Should be true
 
   // ✅ Append file (make sure data.image is a File object, not base64 or object)
   formData.append('image', data.image); // where data.image is from a file input
+  console.log("is File?", data.image instanceof File);
+
     try{
       console.log("starting")
       setIsLoading(true)

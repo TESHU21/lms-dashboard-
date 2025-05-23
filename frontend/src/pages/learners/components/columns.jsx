@@ -20,14 +20,14 @@ export const columns = ({ handleViewDetails, handleEdit, handleDelete }) => [
       );
     },
   },
-  {
-    accessorKey: "courses",
-    header: () => <div className="text-left">Courses</div>,
-    cell: ({ row }) => (
-      <div className="mx-auto text-left">{row.original.email}</div>
-    ),
-    size: 200,
-  },
+  // {
+  //   accessorKey: "courses",
+  //   header: () => <div className="text-left">Courses</div>,
+  //   cell: ({ row }) => (
+  //     <div className="mx-auto text-left">{row.original.courses}</div>
+  //   ),
+  //   size: 200,
+  // },
   {
     accessorKey: "amount",
     header: ({ column }) => (

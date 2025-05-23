@@ -43,7 +43,7 @@ const Tracks = () => {
     <div className="flex flex-col min-h-full items-center px-25">
       <h6 className='font-semibold text-[20px] leading-8 mb-[36px]'>Courses</h6>
       <TrackHeader searchValue={searchValue} setSearchValue={setSearchValue} setOpen={setOpen}/>
-      <div className='flex gap-8 w-full'>
+      <div className='grid grid-cols-1 md:grid-cols-3 gap-8 '>
         {filteredTracks.length > 0 ? ( 
           filteredTracks.map(course => (
             <CourseCard key={course.id} course={course} />

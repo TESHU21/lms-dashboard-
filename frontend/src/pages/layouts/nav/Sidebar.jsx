@@ -6,7 +6,7 @@ import Logout from '@/pages/logout/Logout';
 
 const Sidebar = () => {
   return (
-    <div className="w-[280px] h-screen bg-sidebar text-sidebar-foreground dark:bg-sidebar flex flex-col">
+    <div className="w-[280px] h-auto bg-sidebar text-sidebar-foreground dark:bg-sidebar flex flex-col">
 
       {/* Logo section */}
       <div className='flex justify-center gap-1 items-center w-[264px] h-[93px] bg-accent mt-[14px] ml-2 rounded-sm'>

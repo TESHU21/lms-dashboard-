@@ -4,7 +4,7 @@ import CreateLearner from './components/CreateLearner';
 
 // Destructure only the props that are actually used
 const LearnerHeader = ({ columnFilters, setColumnFilters }) => {
-      const [open,setOpen]=useState([])
+      const [open,setOpen]=useState(false)
 
   return (
     <div>
