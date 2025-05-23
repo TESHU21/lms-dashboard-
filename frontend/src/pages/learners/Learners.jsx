@@ -4,6 +4,8 @@ import {columns} from "./components/columns"
 import LearnerHeader from './LearnersHeader'
 
 const Learners = () => {
+    const [columnFilters, setColumnFilters] = useState([]);
+
    const data = [
   {
     id: "1",
@@ -92,13 +94,19 @@ const Learners = () => {
     <div className='px-30'>
      <h6 className="leading-8 text-[20px] font-semibold mb-[30px]">Learners</h6>
 
-      <LearnerHeader/>
+      <LearnerHeader columnFilters={columnFilters} setColumnFilters={setColumnFilters}/>
       <DataTable data={data}  columns={columns({
                     handleConfirm,
                     handleEdit,
                     handleDelete,
-                  })} />
+                  })} 
+                  
+                  columnFilters={columnFilters}
+                  setColumnFilters={setColumnFilters}
 
+                  
+                  />
+                  
     </div>
   )
 }

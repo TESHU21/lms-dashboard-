@@ -1,7 +1,8 @@
 import React from 'react';
 import { Search, Plus, ChevronDown } from 'lucide-react';
 
-const LearnerHeader = () => {
+// Destructure only the props that are actually used
+const LearnerHeader = ({ columnFilters, setColumnFilters }) => {
   return (
     // Flex container to hold the search bar, sort by, and button, centered vertically and spanning full width
     <div className="flex items-center justify-between w-full py-4">
@@ -14,14 +15,24 @@ const LearnerHeader = () => {
         {/* Search input field */}
         <input
           type="text"
+          placeholder="Filter By Name of Learner"
+          value={
+            columnFilters.find((f) => f.id === "name")?.value || ""
+          }
+          onChange={(e) => {
+            const filterValue = e.target.value;
+            setColumnFilters((prev) =>
+              prev
+                .filter((f) => f.id !== "name")
+                .concat({ id: "name", value: filterValue })
+            );
+          }}
           name="search"
           id="search-learners"
           className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md leading-5 bg-accent placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-          placeholder="Search learners"
         />
       </div>
 
-      
       <button
         type="button"
         className="inline-flex items-center px-4 py-3 border border-gray-300 rounded-md shadow-sm bg-accent text-sm font-medium text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mr-4"

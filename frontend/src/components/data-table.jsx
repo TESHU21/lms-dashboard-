@@ -1,6 +1,7 @@
 "use client";
 import * as React from "react";
 import Pagination from "./Pagination";
+import TrackHeader from "@/pages/tracks/components/TrackHeader";
 import {
   flexRender,
   getCoreRowModel,
@@ -20,9 +21,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export function DataTable({ columns, data, showFiltering }) {
+export function DataTable({ columns, data, columnFilters,setColumnFilters }) {
   const [sorting, setSorting] = React.useState([]);
-  const [columnFilters, setColumnFilters] = React.useState([]);
+  // const [columnFilters, setColumnFilters] = React.useState([]);
   const table = useReactTable({
     data,
     columns,
@@ -47,18 +48,7 @@ export function DataTable({ columns, data, showFiltering }) {
 
   return (
     <div>
-      {showFiltering && (
-        <div className="flex flex-col   pt-4 lg:pt-0 pb-2">
-          <Input
-            placeholder="Filter By customerId..."
-            value={table.getColumn("customerId")?.getFilterValue() ?? ""}
-            onChange={(event) =>
-              table.getColumn("customerId")?.setFilterValue(event.target.value)
-            }
-            className=" max-w-[16rem] lg:max-w-[24rem]"
-          />
-        </div>
-      )}
+  
       <div className=" rounded-md border">
         <Table className=" w-full table-auto ">
           <TableHeader>
