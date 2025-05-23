@@ -18,7 +18,7 @@ import PasswordRest from '@/pages/login/forgotpassword/PasswordRest';
 import CreateLearner from '@/pages/learners/components/CreateLearner';
 import CreateInvoices from '@/pages/invoices/components/CreateInvoices';
 import CourseDetail from '@/pages/tracks/components/TrackDetail';
-import TrackUpdate from '@/pages/tracks/components/TrackUpdate';
+import TrackUpdate from '@/pages/tracks/components/TrackFormDialog';
 import EmailVerification from '@/pages/login/forgotpassword/EmailVerification';
 import TrackDetail from '@/pages/tracks/components/TrackDetail';
 import VerifyEmail from '@/components/VerifyEmail';

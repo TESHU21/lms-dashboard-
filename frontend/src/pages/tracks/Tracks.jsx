@@ -5,7 +5,7 @@ import TrackHeader from './components/TrackHeader';
 import DescriptionStacksSection from './components/Description'; // Not used in the provided snippet
 import CourseHeader from '../courses/components/CourseHeader'; // Not used in the provided snippet
 import { useCourse } from '../../context/CourseContext';
-import TrackUpdate from './components/TrackUpdate';
+import TrackUpdate from './components/TrackFormDialog';
 
 const Tracks = () => {
   const [searchValue, setSearchValue] = useState("");

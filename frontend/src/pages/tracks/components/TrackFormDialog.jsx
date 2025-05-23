@@ -14,12 +14,12 @@ import {
 import { Button } from "@/components/ui/button"; 
 import { X } from 'lucide-react'; 
 import { useCourse } from '@/context/CourseContext';
-const TrackUpdate = ({ open, setOpen }) => {
+const TrackUpdate = ({ open, setOpen,mode = "create", initialData = {}, onSubmit  }) => {
    const [isLoading,setIsLoading]=useState(false)
       const [successMessage,setSuccessMessage]=useState("")
       const [errorMessage,setErrorMessage]=useState("")
       const {createTrack}=useCourse()
-  const handleUpdateTrack=async(data)=>{
+  const handleSubmit=async(data)=>{
     console.log(data.image)
     const formData=new FormData()
     formData.append('name', data.name);
@@ -38,7 +38,9 @@ const TrackUpdate = ({ open, setOpen }) => {
     try{
       console.log("starting")
       setIsLoading(true)
-      const response=await createTrack(formData)
+      const response=await onSubmit(formData)
+        setSuccessMessage(`${mode === "create" ? "Created" : "Updated"} successfully`);
+
       console.log(response)
     }
     catch(error){
@@ -60,14 +62,15 @@ const TrackUpdate = ({ open, setOpen }) => {
             <span className="text-gray-500">Track</span>
             {/* Vertical separator */}
             <div className="border-l border-gray-300 h-5"></div>
-            <span className="font-semibold">Update</span>
+              <span className="font-semibold">{mode === "create" ? "Create Track" : "Update Track"}</span>
+
         </DialogTitle>
        </DialogHeader>
 
         <div className='px-6 py-6'> {/* Using standard Tailwind px/py units */}
        
 
-          <FormComp schema={TrackUpdateSchema} initialValues={updateTrackinitialValues} fields={updateTrackfields} onSubmit={handleUpdateTrack} errorMessage={errorMessage} isLoading={isLoading} successMessage={successMessage}/>
+          <FormComp schema={TrackUpdateSchema} initialValues={updateTrackinitialValues} fields={updateTrackfields} onSubmit={handleSubmit} errorMessage={errorMessage} isLoading={isLoading} successMessage={successMessage}/>
         </div>
 
       </DialogContent>
