@@ -2,9 +2,11 @@ import React,{useState} from 'react';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import TrackFormDialog from './TrackFormDialog';
+import { useCourse } from '@/context/CourseContext';
 // This component displays the Description, Stacks, and action buttons
 const DescriptionStacksSection = ({track}) => {
   const [open,setOpen]=useState(false)
+  const {updateTrack}=useCourse()
  const navigate=useNavigate()
   const stacks = [
     { id: 1, name: 'ReactJs', color: 'blue' },    // Example colors, map to Tailwind classes
@@ -23,6 +25,14 @@ const initialData={
   image:track.image||"",
   description:track.description||""
 
+}
+const handleUpdate=async(data)=>{
+  try{
+    const response=await updateTrack(data,track._id)
+  }
+  catch(error){
+    console.log(error)
+  }
 }
   // Function to map colors to Tailwind classes (adjust as needed)
   const getColorClasses = (color) => {
@@ -93,7 +103,7 @@ console.log("Single Track",initialData)
           <ChevronRight className="ml-2 h-4 w-4" aria-hidden="true" />
         </button>
       </div>
-      <TrackFormDialog open={open} setOpen={setOpen} mode='update' initialData={initialData}/>
+      <TrackFormDialog open={open} setOpen={setOpen} mode='update' initialData={initialData} onSubmit={handleUpdate}/>
     </div>
   );
 };

@@ -8,9 +8,8 @@ import React, {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NavLink } from "react-router-dom";
-import { ChevronRight, AlertCircle, Check } from "lucide-react";
-import { BsEye, BsEyeSlash, BsPaperclip } from "react-icons/bs";
-import { Image } from "lucide-react";
+import { ChevronRight, AlertCircle, Check, Image as ImageIcon } from "lucide-react"; // Renamed Image to ImageIcon
+import { BsEye, BsEyeSlash } from "react-icons/bs";
 
 import Loader from "./Loader";
 import {
@@ -40,7 +39,6 @@ const FormComp = forwardRef(
       initialValues = {},
       fields,
       onSubmit,
-      handleInputChange,
       submitBtnText = "Submit",
       isLoading,
       errorMessage,
@@ -62,9 +60,18 @@ const FormComp = forwardRef(
     const [showPassword, setShowPassword] = useState(false);
     const [filePreviews, setFilePreviews] = useState({});
 
+    // Set initial file previews when component mounts or initialValues change
     useEffect(() => {
-      reset(initialValues);
-    }, [initialValues, reset]);
+      const previews = {};
+      fields.forEach(field => {
+        if (field.type === "file" && initialValues[field.name]) {
+          // If there's an initial value (URL) for a file, set it as a preview
+          previews[field.name] = initialValues[field.name];
+        }
+      });
+      setFilePreviews(previews);
+      reset(initialValues); // Reset form with initial values
+    }, [initialValues, reset, fields]);
 
     useImperativeHandle(ref, () => ({
       submit: () => form.handleSubmit(onSubmit)(),
@@ -77,17 +84,25 @@ const FormComp = forwardRef(
 
     const handleFileChange = (e, field, name) => {
       const file = e.target.files?.[0] || null;
-      field.onChange(file);
-      trigger(name);
+      field.onChange(file); // Update react-hook-form value
+      trigger(name); // Manually trigger validation
+
       if (file) {
         const reader = new FileReader();
         reader.onload = () => {
           setFilePreviews((prev) => ({
             ...prev,
-            [name]: reader.result,
+            [name]: reader.result, // Store data URL for preview
           }));
         };
         reader.readAsDataURL(file);
+      } else {
+        // If file is cleared, remove its preview
+        setFilePreviews((prev) => {
+          const updated = { ...prev };
+          delete updated[name];
+          return updated;
+        });
       }
     };
 
@@ -159,7 +174,6 @@ const FormComp = forwardRef(
                             ) : type === "textarea" ? (
                               <Textarea
                                 {...field}
-                                
                                 placeholder={placeholder}
                                 value={field.value || ""}
                                 rows={20}
@@ -168,60 +182,59 @@ const FormComp = forwardRef(
                                   trigger(name);
                                 }}
                                 onBlur={() => trigger(name)}
-                                className={` h-auto resize-y bg-gray-200 text-black border-b-[#999999] ${
+                                className={`h-auto resize-y bg-gray-200 text-black border-b-[#999999] ${
                                   hasSuccess ? "bg-input-sucess" : ""
                                 } ${error ? "bg-red-200 border-red-500" : ""}`}
                               />
                             ) : type === "file" ? (
-                              <div className=" relative flex flex-col gap-2">
+                              <div className="relative flex flex-col gap-2">
                                 <Input
                                   id={name}
                                   type="file"
                                   accept="image/*"
                                   onChange={(e) => handleFileChange(e, field, name)}
-                                  className="hidden"
+                                  className="hidden" // Hide the actual file input
                                   placeholder={placeholder}
                                 />
                                 <Label
-                                  htmlFor={name}
-                                  className={`bg-gray-200 px-y py-2  w-full border  rounded-t-sm dark:bg-input/30 ${hasSuccess?"bg-input-sucess border-b-[#999999]"
-                                      : "border-[#E6E6E6] bg-gray-200"} ${error? "bg-red-200 border-red-500" : ""}`}
-                                >{!hasSuccess?(
-                                  <div className="text-gray-600 flex items-center pl-5 gap-6">  <Image size={30} />   Upload your image here! </div>
-                                  
-                                ):(
-                                  <div>
-                                     {filePreviews[name] && (
-       <div className="relative w-fit">
-        <img
-          src={filePreviews[name]}
-          alt="Preview"
-          className="max-w-[60px] rounded shadow border"
-        />
-        <button
-          type="button"
-          onClick={() => {
-            setFilePreviews((prev) => {
-              const updated = { ...prev };
-              delete updated[name];
-              return updated;
-            });
-            field.onChange(null); // Clear form field
-            trigger(name); // Trigger validation
-          }}
-          className="absolute -top-2 -right-2 text-2xl  cursor-pointer w-6 h-6 rounded-full border-0 flex items-center justify-center shadow text-red-600"
-          aria-label="Remove image"
-        >
-          ×
-        </button>
-      </div>
-    )}
-    
-
-    {/* Validation Messages */}
-
-
-       {!isLoading && hasSuccess && (
+                                  htmlFor={name} // Link label to hidden input
+                                  className={`bg-gray-200 px-y py-2 w-full border rounded-t-sm dark:bg-input/30 flex items-center px-6 cursor-pointer min-h-[48px] ${
+                                    hasSuccess ? "bg-input-sucess border-b-[#999999]" : "border-[#E6E6E6] bg-gray-200"
+                                  } ${error ? "bg-red-200 border-red-500" : ""}`}
+                                >
+                                  {filePreviews[name] ? (
+                                    <div className="relative w-fit">
+                                      <img
+                                        src={filePreviews[name]}
+                                        alt="Preview"
+                                        className="max-w-[60px] rounded shadow border object-cover"
+                                      />
+                                      <button
+                                        type="button"
+                                        onClick={(e) => {
+                                          e.stopPropagation(); // Prevent opening file dialog
+                                          setFilePreviews((prev) => {
+                                            const updated = { ...prev };
+                                            delete updated[name];
+                                            return updated;
+                                          });
+                                          field.onChange(null); // Clear react-hook-form's value
+                                          trigger(name); // Retrigger validation
+                                        }}
+                                        className="absolute -top-2 -right-2 text-2xl cursor-pointer w-4 h-4 rounded-full border-0 flex items-center justify-center shadow text-red-600 bg-inherit"
+                                        aria-label="Remove image"
+                                      >
+                                        &times;
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <div className="text-gray-600 flex items-center gap-2">
+                                      <ImageIcon size={24} /> Upload your image here!
+                                    </div>
+                                  )}
+                                </Label>
+                                {/* Validation Icons for file input */}
+                                {!isLoading && hasSuccess && (
                                   <span className="absolute right-10 top-1/2 transform -translate-y-1/2 text-green-500">
                                     <Check size={18} />
                                   </span>
@@ -231,13 +244,6 @@ const FormComp = forwardRef(
                                     <AlertCircle size={18} />
                                   </span>
                                 )}
-                                  </div>
-                                )}
-                                
-                                
-                                </Label>
-                                 
-                              
                               </div>
                             ) : (
                               <div className="relative">
@@ -282,7 +288,6 @@ const FormComp = forwardRef(
                                       : "border-[#E6E6E6] bg-gray-200"
                                   } ${error ? "bg-red-200 border-red-500" : ""}`}
                                 />
-                                
                                 {type === "password" && (
                                   <span
                                     onClick={handlePasswordVisibility}

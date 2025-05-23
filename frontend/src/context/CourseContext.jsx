@@ -65,11 +65,22 @@ export const  CourseProvider=({children})=>{
         }
 
     }
+    // Update Track
+    const updateTrack=async(data,id)=>{
+        try{
+            const response = await axiosInstance.put(`/tracks/${id}`,data)
+            return response
+        }
+        catch(error){
+            throw error
+        }
+
+    }
 
 
  
     const values={getCourses,getSingleCourses,getallTracks,getSingleTrack, tracks,setTracks,singleTrack,
-        setSingleTrack,createTrack
+        setSingleTrack,createTrack,updateTrack
     }
 
 

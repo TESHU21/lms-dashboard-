@@ -64,31 +64,39 @@ export const TrackUpdateSchema = z.object({
   instructor: z.string().min(2, { message: "Instructor name should be at least two characters" }),
   duration: z.string().min(1, { message: "Duration is required" }),
 image: z
-  .any()
-  .optional()
-  .superRefine((file, ctx) => {
-    if (file && !(file instanceof File)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "File is required",
-      });
-      return;
-    }
+    .union([
+      z.string().url().optional(),
+      z.instanceof(File).optional(),
+      z.null(),
+    ])
+    .optional()
+    .superRefine((file, ctx) => {
+      if (!file) {
+        return;
+      }
 
-    if (file && file.size > MAX_FILE_SIZE) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "File must be less than 5MB",
-      });
-    }
+      if (typeof file === 'string') {
+        return;
+      }
 
-    if (file && !ACCEPTED_IMAGE_MIME_TYPES.includes(file.type)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Only JPEG, JPG, PNG, or WEBP files are allowed",
-      });
-    }
-  }),
+      if (file.size > MAX_FILE_SIZE) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "File must be less than 5MB",
+          fatal: true,
+        });
+        return;
+      }
+
+      if (!ACCEPTED_IMAGE_MIME_TYPES.includes(file.type)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Only JPEG, JPG, PNG, or WEBP files are allowed",
+          fatal: true,
+        });
+        return;
+      }
+    }),
 
   description: z
     .string()
