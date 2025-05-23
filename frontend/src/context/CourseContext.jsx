@@ -87,11 +87,22 @@ export const  CourseProvider=({children})=>{
         }
 
     }
+    // Get Learners
+     const getLearner=async()=>{
+        try{
+            const response = await axiosInstance.get('/learners')
+            return response
+        }
+        catch(error){
+            throw error
+        }
+
+    }
 
 
  
     const values={getCourses,getSingleCourses,getallTracks,getSingleTrack, tracks,setTracks,singleTrack,
-        setSingleTrack,createTrack,updateTrack,createInvoice
+        setSingleTrack,createTrack,updateTrack,createInvoice,getLearner
     }
 
 

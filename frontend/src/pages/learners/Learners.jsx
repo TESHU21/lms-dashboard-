@@ -1,115 +1,84 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { DataTable } from '@/components/data-table'
 import {columns} from "./components/columns"
 import LearnerHeader from './LearnersHeader'
 import CreateLearner from './components/CreateLearner'
+import { useCourse } from '@/context/CourseContext'
 
 const Learners = () => {
-    const [columnFilters, setColumnFilters] = useState([]);
+  const [data,setData]=useState([])
+  const {getLearner}=useCourse()
+  const [columnFilters, setColumnFilters] = useState([]);
 
-   const data = [
-  {
-    id: "1",
-    name: "Alice Johnson",
-    image: "https://randomuser.me/api/portraits/women/1.jpg",
-    email: "alice.johnson@example.com",
-    amount: 120.5,
-    date: "2025-05-10",
-    gender: "Female",
-  },
-  {
-    id: "2",
-    name: "Michael Smith",
-    image: "https://randomuser.me/api/portraits/men/2.jpg",
-    email: "michael.smith@example.com",
-    amount: 95.0,
-    date: "2025-04-22",
-    gender: "Male",
-  },
-  {
-    id: "3",
-    name: "Sofia Martinez",
-    image: "https://randomuser.me/api/portraits/women/3.jpg",
-    email: "sofia.martinez@example.com",
-    amount: 145.75,
-    date: "2025-03-30",
-    gender: "Female",
-  },
-  {
-    id: "4",
-    name: "David Kim",
-    image: "https://randomuser.me/api/portraits/men/4.jpg",
-    email: "david.kim@example.com",
-    amount: 110.0,
-    date: "2025-02-18",
-    gender: "Male",
-  },
-  {
-    id: "5",
-    name: "Emma Brown",
-    image: "https://randomuser.me/api/portraits/women/5.jpg",
-    email: "emma.brown@example.com",
-    amount: 132.25,
-    date: "2025-01-05",
-    gender: "Female",
-  },
-  {
-    id: "6",
-    name: "Sofia Martinez",
-    image: "https://randomuser.me/api/portraits/women/3.jpg",
-    email: "sofia.martinez@example.com",
-    amount: 145.75,
-    date: "2025-03-30",
-    gender: "Female",
-  },
-  {
-    id: "7",
-    name: "David Kim",
-    image: "https://randomuser.me/api/portraits/men/4.jpg",
-    email: "david.kim@example.com",
-    amount: 110.0,
-    date: "2025-02-18",
-    gender: "Male",
-  },
-  {
-    id: "8",
-    name: "Emma Brown",
-    image: "https://randomuser.me/api/portraits/women/5.jpg",
-    email: "emma.brown@example.com",
-    amount: 132.25,
-    date: "2025-01-05",
-    gender: "Female",
-  },
-];
+  useEffect(()=>{
+    const fetchLearners=async()=>{
+      try{
+        const response=await getLearner()
+        const learnersData=response.data.learners;
+        console.log(learnersData)
+        const formattedLearners=learnersData.map((learner)=>{
+          return{
+            id: learner._id,
+            firstName: learner.firstName,
+            lastName: learner.lastName,
+            name: `${learner.firstName || ''} ${learner.lastName || ''}`,
+            email: learner.email,
+            role: learner.role,
+            contact: learner.contact,
+            date: learner.createdAt, // Matches accessorKey 'date'
+            description: learner.description,
+            disabled: learner.disabled,
+            isVerified: learner.isVerified,
+            lastLogin: learner.lastLogin,
+            location: learner.location,
+            image: learner.profileImage,
+            updatedAt: learner.updatedAt,
+            
+           
+             amount: learner.amount || 0, // Default to 0 if not present
+             gender: learner.gender || 'N/A', // Default to 'N/A' if not present
+          }
+        })
+        setData(formattedLearners)
+      }
+      catch(error){
+        console.log(error)
+        // Optionally show an error message to the user
+      }
+    }
+    fetchLearners()
+  },[]) // Empty dependency array means this runs once on mount
 
-    const handleConfirm=()=>{
-      console.log("Confirm")
-    }
-    const handleEdit=()=>{
-      console.log("Edit")
-    }
-    const handleDelete=()=>{
-      console.log("Delete")
-    }
+  const handleViewDetails=(learnerData)=>{
+    console.log("View Details for:", learnerData)
+    // Implement navigation or open a dialog to show details
+  }
+  const handleEdit=(learnerData)=>{
+    console.log("Edit Learner:", learnerData)
+    // Implement edit logic
+  }
+  const handleDelete=(learnerId)=>{
+    console.log("Delete Learner with ID:", learnerId)
+    // Implement delete logic
+  }
+
   return (
-    <div className='px-30'>
-     <h6 className="leading-8 text-[20px] min-h-full font-semibold mb-[30px]">Learners</h6>
+    <div className='px-[30px] mx-30'> {/* Adjusted to px-[30px] for explicit 30px */}
+      <h6 className="leading-8 text-[20px] min-h-full font-semibold mb-[30px]">Learners</h6>
 
       <LearnerHeader columnFilters={columnFilters} setColumnFilters={setColumnFilters}/>
-      <DataTable data={data}  columns={columns({
-                    handleConfirm,
-                    handleEdit,
-                    handleDelete,
-                  })} 
-                  
-                  columnFilters={columnFilters}
-                  setColumnFilters={setColumnFilters}
-
-                  
-                  />
-                  
+      <DataTable
+        data={data}
+        columns={columns({
+          handleViewDetails, // Pass the new handler
+          handleEdit,
+          handleDelete,
+        })}
+        columnFilters={columnFilters}
+        setColumnFilters={setColumnFilters}
+      />
     </div>
   )
 }
 
-export default Learners
+export default Learners;

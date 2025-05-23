@@ -1,69 +1,88 @@
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, Pencil, Trash2, Eye } from "lucide-react"; // Replaced Check with Eye
-import { Badge } from "@/components/ui/badge";
+import { ArrowUpDown, Pencil, Trash2, Eye } from "lucide-react";
+import { Badge } from "@/components/ui/badge"; // Not used in current cols, but keep if used elsewhere
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const columns = ({ handleViewDetails, handleEdit, handleDelete }) => [
   {
-    accessorKey: "name",
+    
+    id: "learnerInfo", // Give it a unique ID if no direct accessorKey
     header: () => <div className="text-left">Learners</div>,
     cell: ({ row }) => {
-      const { name, image } = row.original;
+      // Destructure firstName, lastName, and profileImage directly from row.original
+      const { firstName, lastName, profileImage } = row.original;
+      const fullName = `${firstName || ''} ${lastName || ''}`.trim(); // Combine names, handle potential undefined
+
       return (
         <div className="flex items-center gap-3 min-w-[150px]">
           <Avatar>
-            <AvatarImage src={image} />
-            <AvatarFallback>{name?.charAt(0)}</AvatarFallback>
+            {/* Use profileImage for src */}
+            <AvatarImage src={profileImage} alt={fullName} />
+            {/* Fallback to first initial of combined name, or '?' */}
+            <AvatarFallback>{fullName.charAt(0) || '?'}</AvatarFallback>
           </Avatar>
-          <span>{name}</span>
+          <span>{fullName}</span>
         </div>
       );
     },
   },
-  // {
-  //   accessorKey: "courses",
-  //   header: () => <div className="text-left">Courses</div>,
-  //   cell: ({ row }) => (
-  //     <div className="mx-auto text-left">{row.original.courses}</div>
-  //   ),
-  //   size: 200,
-  // },
   {
-    accessorKey: "amount",
+    accessorKey: "email", // Add email column, as it's in your data
     header: ({ column }) => (
-      <div className="text-center">
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="mx-auto flex items-center"
+          className=" flex items-center"
         >
-          Amount
+          Email
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      </div>
     ),
+    cell: ({ row }) => (
+      <div className="text-left min-w-[80px]">{row.getValue("email")}</div>
+    ),
+  },
+  {
+    accessorKey: "contact", // Add contact column
+    header: () => <div className="text-center">Contact</div>,
+    cell: ({ row }) => (
+      <div className="text-center min-w-[100px]">{row.getValue("contact")|| "N/A"}</div>
+    ),
+  },
+  
+
+  {
+    accessorKey: "date", // This accessorKey already matched
+    header: () => <div className="text-center">Joined Date</div>, // More descriptive header
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-      return <div className="text-center min-w-[100px]">{formatted}</div>;
+        // Optional: Format the date for better display
+        const dateValue = row.getValue("date");
+        if (!dateValue) return <div className="text-center min-w-[100px]">N/A</div>;
+        try {
+            const date = new Date(dateValue);
+            return (
+                <div className="text-center min-w-[100px]">
+                    {date.toLocaleDateString()} {/* Formats to local date string */}
+                </div>
+            );
+        } catch (e) {
+            return <div className="text-center min-w-[100px]">{dateValue}</div>; // Fallback
+        }
     },
   },
   {
-    accessorKey: "date",
-    header: () => <div className="text-center">Date</div>,
-    cell: ({ row }) => (
-      <div className="text-center min-w-[100px]">{row.getValue("date")}</div>
-    ),
-  },
-  {
-    accessorKey: "gender",
-    header: () => <div className="text-center">Gender</div>,
-    cell: ({ row }) => (
-      <div className="text-center min-w-[100px]">{row.getValue("gender")}</div>
-    ),
+    accessorKey: "isVerified", // Add isVerified column for true/false
+    header: () => <div className="text-center">Verified</div>,
+    cell: ({ row }) => {
+      const isVerified = row.getValue("isVerified");
+      return (
+        <div className={`text-center min-w-[80px] ${isVerified?"text-green-600":"text-red-500"}`}>
+         
+            {isVerified ? "Yes" : "No"}
+         
+        </div>
+      );
+    },
   },
   {
     id: "actions",

@@ -19,10 +19,7 @@ export const LearnerSchema = z.object({
 
   location: z.enum(['Addis Ababa', 'Dire Dawa']),
 
-  disabled: z.preprocess(
-    val => val === 'True' || val === true,
-    z.boolean()
-  ),
+  disabled: z.enum(['true','false']),
 
   amount: z.preprocess(
     val => Number(val),
@@ -130,8 +127,8 @@ export const fields = [
     icon: User,
     type: "select",
     options: [
-      { name: "True", value: true },
-      { name: "False", value: false }
+      { name: "True", value: "true" },
+      { name: "False", value: "false" }
     ],
     className: "col-span-2 "
   },

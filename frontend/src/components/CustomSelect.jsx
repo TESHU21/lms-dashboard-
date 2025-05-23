@@ -13,16 +13,11 @@ import { cn } from "@/lib/utils";
 const CustomSelect = ({ field, options, placeholder, hasSuccess, error }) => {
   return (
     <ShadcnSelect
-      value={ String(field.value )|| ""} // Ensure value is controlled by react-hook-form
-      onValueChange={(stringValue) => {
-                let parsedValue = stringValue;
-                if (stringValue === "true") {
-          parsedValue = true;
-        } else if (stringValue === "false") {
-          parsedValue = false;
-        }
+      value={ (field.value )|| ""} // Ensure value is controlled by react-hook-form
+      onValueChange={(value) => {
+                
 
-        field.onChange(parsedValue);
+        field.onChange(value);
         
       }}
       onOpenChange={(open) => {
@@ -48,7 +43,7 @@ const CustomSelect = ({ field, options, placeholder, hasSuccess, error }) => {
       </SelectTrigger>
       <SelectContent>
         {options.map((option) => (
-          <SelectItem key={String(option.value)} value={String(option.value)}
+          <SelectItem key={option.value} value={option.value}
           className="hover:bg-gray-200"
           >
             {option.name}
