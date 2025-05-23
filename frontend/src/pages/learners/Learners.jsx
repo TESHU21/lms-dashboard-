@@ -2,6 +2,7 @@ import React,{useState} from 'react'
 import { DataTable } from '@/components/data-table'
 import {columns} from "./components/columns"
 import LearnerHeader from './LearnersHeader'
+import CreateLearner from './components/CreateLearner'
 
 const Learners = () => {
     const [columnFilters, setColumnFilters] = useState([]);

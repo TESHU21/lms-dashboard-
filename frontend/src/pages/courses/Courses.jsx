@@ -86,6 +86,8 @@ const Courses = () => {
     track: "Cloud Computing",
   },
 ])
+    const [columnFilters, setColumnFilters] = useState([]);
+
   // Handler function to mark an invoice as Paid
   const handleConfirm = (row) => {
     setData((prev) =>
@@ -111,7 +113,7 @@ const Courses = () => {
    
       <div className="w-full px-30">
         <h6 className="leading-8 text-[20px] font-semibold mb-[36px]">Courses</h6>
-        <CourseHeader/>
+        <CourseHeader columnFilters={columnFilters} setColumnFilters={setColumnFilters}/>
         
      
           {/* The DataTable component */}
@@ -122,6 +124,7 @@ const Courses = () => {
               handleEdit,
               handleDelete,
             })}
+            columnFilters={columnFilters} setColumnFilters={setColumnFilters}
           />
         </div>
       </div>

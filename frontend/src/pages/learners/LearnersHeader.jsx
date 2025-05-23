@@ -1,11 +1,14 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { Search, Plus, ChevronDown } from 'lucide-react';
+import CreateLearner from './components/CreateLearner';
 
 // Destructure only the props that are actually used
 const LearnerHeader = ({ columnFilters, setColumnFilters }) => {
+      const [open,setOpen]=useState([])
+
   return (
-    // Flex container to hold the search bar, sort by, and button, centered vertically and spanning full width
-    <div className="flex items-center justify-between w-full py-4">
+    <div>
+       <div className="flex items-center justify-between w-full py-4">
       {/* Left section: Search input */}
       <div className="relative flex items-center flex-grow mr-4 rounded-md shadow-sm">
         {/* Search icon */}
@@ -44,6 +47,7 @@ const LearnerHeader = ({ columnFilters, setColumnFilters }) => {
       {/* Right section: Create learner button */}
       <button
         type="button"
+        onClick={()=>setOpen(true)}
         className="inline-flex items-center px-4 py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sidebar hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
       >
         Create learner
@@ -51,6 +55,10 @@ const LearnerHeader = ({ columnFilters, setColumnFilters }) => {
         <Plus className="ml-2 -mr-1 h-5 w-5" aria-hidden="true" />
       </button>
     </div>
+    <CreateLearner open={open} setOpen={setOpen}/>
+
+    </div>
+   
   );
 };
 
