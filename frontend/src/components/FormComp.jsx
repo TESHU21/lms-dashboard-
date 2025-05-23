@@ -31,6 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import CustomSelect from "./CustomSelect";
 
 const FormComp = forwardRef(
   (
@@ -137,40 +138,41 @@ const FormComp = forwardRef(
                           <FormLabel>{label}</FormLabel>
                           <FormControl>
                             {type === "select" ? (
-                              <Select
-                                value={
-                                  field.value === true
-                                    ? "true"
-                                    : field.value === false
-                                    ? "false"
-                                    : field.value || ""
-                                }
-                                onValueChange={(value) => {
-                                  const parsedValue =
-                                    value === "true"
-                                      ? true
-                                      : value === "false"
-                                      ? false
-                                      : value;
-                                  field.onChange(parsedValue);
-                                  trigger(name);
-                                }}
-                              >
-                                <SelectTrigger
-                                  className={`h-[48px] w-full bg-accent ${
-                                    hasSuccess ? "bg-green-200 border-green-500" : ""
-                                  } ${error ? "bg-red-200 border-red-500" : ""}`}
-                                >
-                                  <SelectValue placeholder={placeholder || "Select"} />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {options.map((option) => (
-                                    <SelectItem key={option.value} value={option.value}>
-                                      {option.name}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
+                              // <Select
+                              //   value={
+                              //     field.value === true
+                              //       ? "true"
+                              //       : field.value === false
+                              //       ? "false"
+                              //       : field.value || ""
+                              //   }
+                              //   onValueChange={(value) => {
+                              //     const parsedValue =
+                              //       value === "true"
+                              //         ? true
+                              //         : value === "false"
+                              //         ? false
+                              //         : value;
+                              //     field.onChange(parsedValue);
+                              //     trigger(name);
+                              //   }}
+                              // >
+                              //   <SelectTrigger
+                              //     className={`h-[48px] w-full bg-accent ${
+                              //       hasSuccess ? "bg-green-200 border-green-500" : ""
+                              //     } ${error ? "bg-red-200 border-red-500" : ""}`}
+                              //   >
+                              //     <SelectValue placeholder={placeholder || "Select"} />
+                              //   </SelectTrigger>
+                              //   <SelectContent>
+                              //     {options.map((option) => (
+                              //       <SelectItem key={option.value} value={option.value}>
+                              //         {option.name}
+                              //       </SelectItem>
+                              //     ))}
+                              //   </SelectContent>
+                              // </Select>
+                              <CustomSelect field={field} options={options} placeholder={placeholder} hasSuccess={hasSuccess} error={error}/>
                             ) : type === "textarea" ? (
                               <Textarea
                                 {...field}

@@ -52,8 +52,8 @@ export const InvoiceSchema=z.object({
       icon: Calendar,
       type: "select",
       options: [
-      "Paid",
-      "Pending",
+        { name: "Paid", value: "Paid" },
+      { name: "Pending", value: "Pending" },
      
     ],
       className: "col-span-2 "
@@ -62,7 +62,7 @@ export const InvoiceSchema=z.object({
       name: "paymentDetail",
       placeholder: "Payment Detail",
       icon: PenIcon,
-      type: "text",
+      type: "textarea",
       className: "col-span-2 "
     },
  ]
