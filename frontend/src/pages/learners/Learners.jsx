@@ -9,7 +9,7 @@ import DeleteLearnerDialog from './components/DeleteLearnerDialog'
 
 const Learners = () => {
   const [data,setData]=useState([])
-  const {getLearner}=useCourse()
+  const {getLearner,deleteLearner}=useCourse()
   const [columnFilters, setColumnFilters] = useState([]);
   const [sorting, setSorting] = useState([]); // New state for sorting
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false); 
@@ -19,7 +19,7 @@ const [learnerToDelete, setLearnerToDelete] = useState(null);
 
 
 
-  useEffect(()=>{
+ 
     const fetchLearners=async()=>{
       try{
         const response=await getLearner()
@@ -55,8 +55,9 @@ const [learnerToDelete, setLearnerToDelete] = useState(null);
         // Optionally show an error message to the user
       }
     }
+  useEffect(()=>{
     fetchLearners()
-  },[]) // Empty dependency array means this runs once on mount
+  },[getLearner]) // Empty dependency array means this runs once on mount
 
   const handleViewDetails=(learner)=>{
         setSelectedLearner(learner);
@@ -70,7 +71,21 @@ const [learnerToDelete, setLearnerToDelete] = useState(null);
     console.log("Edit Learner:", learnerData)
     // Implement edit logic
   }
-  const handleDelete=(learner)=>{
+  const handleDelete=async(learner)=>{
+
+      try{
+        const response=await deleteLearner(learner.id)
+        console.log(response)
+        fetchLearners()
+    }
+    catch(error){
+        console.log(error)
+    }
+    finally {
+      // 3. Clear the state and close the dialog
+      setLearnerToDelete(null);
+      setIsDeleteDialogOpen(false);
+    }
     setLearnerToDelete(learner)
     setIsDeleteDialogOpen(true)
  

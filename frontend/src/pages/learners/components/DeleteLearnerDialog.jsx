@@ -9,16 +9,18 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from '@/components/ui/button';
+import { useCourse } from '@/context/CourseContext';
 
 const DeleteLearnerDialog = ({ open, onOpenChange, learner, onConfirm }) => {
-  // It's good practice to provide a default empty object or null check
-  // if `learner` might not always be present when the dialog is conceptually open
+  
   const learnerName = learner ? `${learner.firstName || ''} ${learner.lastName || ''}`.trim() : 'this learner';
+  const {deleteLearner}=useCourse()
 console.log(learner)
-  const handleDeleteConfirm = () => {
-    if (onConfirm) {
-      onConfirm(learner.id); // Assuming onConfirm expects the learner's ID
+  const handleDeleteConfirm = async() => {
+   if (onConfirm && learner) { // Ensure learner exists before passing its ID
+      await onConfirm(learner.id); // Call the parent's onConfirm function
     }
+  
     onOpenChange(false); // Close the dialog after confirmation
   };
 

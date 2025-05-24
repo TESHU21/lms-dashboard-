@@ -101,7 +101,7 @@ export const  CourseProvider=({children})=>{
     // delete Learners
       const deleteLearner=async(learnerId)=>{
         try{
-            const response = await axiosInstance.get(`/learners/${learnerId}`)
+            const response = await axiosInstance.delete(`/learners/${learnerId}`)
             return response
         }
         catch(error){
@@ -113,7 +113,7 @@ export const  CourseProvider=({children})=>{
 
  
     const values={getCourses,getSingleCourses,getallTracks,getSingleTrack, tracks,setTracks,singleTrack,
-        setSingleTrack,createTrack,updateTrack,createInvoice,getLearner
+        setSingleTrack,createTrack,updateTrack,createInvoice,getLearner,deleteLearner
     }
 
 
