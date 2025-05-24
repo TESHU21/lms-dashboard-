@@ -16,7 +16,9 @@ const Learners = () => {
   const [selectedLearner, setSelectedLearner] = useState(null);
   const [isDeleteDialogOpen,setIsDeleteDialogOpen]=useState(false)
 const [learnerToDelete, setLearnerToDelete] = useState(null);
-  const [isLernerFormOpen,setIsLearnerFormOpen]=useState(false)
+ const [isCreateLearnerFormOpen, setIsCreateLearnerFormOpen] = useState(false); // For "Create Learner" dialog
+const [isEditLearnerFormOpen, setIsEditLearnerFormOpen] = useState(false);   // For "Edit Learner" dialog
+
 
 
 
@@ -72,7 +74,7 @@ const [learnerToDelete, setLearnerToDelete] = useState(null);
   const handleEdit=(learnerData)=>{
     console.log("Edit Learner:", learnerData)
     // Implement edit logic
-    setIsLearnerFormOpen(true)
+    setIsEditLearnerFormOpen(true)
   }
   const handleDelete=async(learner)=>{
 
@@ -106,8 +108,8 @@ const [learnerToDelete, setLearnerToDelete] = useState(null);
        setColumnFilters={setColumnFilters}
        sorting={sorting}
        setSorting={setSorting}
-       open={isLernerFormOpen}
-       onOpenChange={setIsLearnerFormOpen}
+       open={isCreateLearnerFormOpen}
+       onOpenChange={setIsCreateLearnerFormOpen}
        onSubmit={handleCreateLearner}
        />
       <DataTable
@@ -128,7 +130,7 @@ const [learnerToDelete, setLearnerToDelete] = useState(null);
         onOpenChange={setIsDetailDialogOpen}
       />
       <DeleteLearnerDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen} learner={learnerToDelete} />
-      <LearnerFormDialog open={isLernerFormOpen} setOpen={setIsLearnerFormOpen} mode="update" onSubmit={handleEdit}/>
+      <LearnerFormDialog open={isEditLearnerFormOpen} setOpen={setIsEditLearnerFormOpen} mode="update" onSubmit={handleEdit}/>
     </div>
   )
 }

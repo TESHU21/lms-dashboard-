@@ -103,7 +103,7 @@ const LearnerHeader = ({ columnFilters, setColumnFilters, sorting,setSorting,ope
           <Plus className="ml-2 -mr-1 h-5 w-5" aria-hidden="true" />
         </button>
       </div>
-      <LearnerFormDialog open={open} setOpen={onOpenChange} mode={"create"} onSubmit={onSubmit}/>
+      <LearnerFormDialog open={open} setOpen={onOpenChange} mode="create" onSubmit={onSubmit}/>
     </div>
   );
 };
