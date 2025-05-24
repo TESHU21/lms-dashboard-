@@ -98,6 +98,17 @@ export const  CourseProvider=({children})=>{
         }
 
     }
+    // delete Learners
+      const deleteLearner=async(learnerId)=>{
+        try{
+            const response = await axiosInstance.get(`/learners/${learnerId}`)
+            return response
+        }
+        catch(error){
+            throw error
+        }
+
+    }
 
 
  

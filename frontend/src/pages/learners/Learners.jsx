@@ -5,6 +5,7 @@ import LearnerHeader from './LearnersHeader'
 import CreateLearner from './components/CreateLearner'
 import { useCourse } from '@/context/CourseContext'
 import LearnerDetailDialog from './components/LearnerDetailDialog'
+import DeleteLearnerDialog from './components/DeleteLearnerDialog'
 
 const Learners = () => {
   const [data,setData]=useState([])
@@ -12,7 +13,10 @@ const Learners = () => {
   const [columnFilters, setColumnFilters] = useState([]);
   const [sorting, setSorting] = useState([]); // New state for sorting
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false); 
-    const [selectedLearner, setSelectedLearner] = useState(null); // State to hold selected learner
+  const [selectedLearner, setSelectedLearner] = useState(null);
+  const [isDeleteDialogOpenc,setIsDeleteDialogOpen]=useState(false)
+const [learnerToDelete, setLearnerToDelete] = useState(null);
+
 
 
   useEffect(()=>{
@@ -66,9 +70,10 @@ const Learners = () => {
     console.log("Edit Learner:", learnerData)
     // Implement edit logic
   }
-  const handleDelete=(learnerId)=>{
-    console.log("Delete Learner with ID:", learnerId)
-    // Implement delete logic
+  const handleDelete=(learner)=>{
+    setLearnerToDelete(learner)
+    setIsDeleteDialogOpen(true)
+ 
   }
 
   return (
@@ -93,10 +98,11 @@ const Learners = () => {
         setSorting={setSorting}
       />
        <LearnerDetailDialog
-        learner={selectedLearner}
+        learner={learnerToDelete}
         open={isDetailDialogOpen}
         onOpenChange={setIsDetailDialogOpen}
       />
+      <DeleteLearnerDialog open={isDeleteDialogOpenc} onOpenChange={setIsDeleteDialogOpen} learner={learnerToDelete} />
     </div>
   )
 }

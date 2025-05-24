@@ -139,7 +139,7 @@ export const columns = ({ handleViewDetails, handleEdit, handleDelete }) => [
         <Button
           size="icon"
           variant="ghost"
-          onClick={() => handleDelete(row.original.id)}
+          onClick={() => handleDelete(row.original)}
         >
           <Trash2 className="h-4 w-4 text-red-600" />
         </Button>
