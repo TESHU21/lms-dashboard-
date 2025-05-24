@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import { Search, Plus } from 'lucide-react'; // ChevronDown and CustomSelect are no longer needed
-import CreateLearner from './components/LearnerFormDialog';
+import LearnerFormDialog from './components/LearnerFormDialog';
 import {
   Select,
   SelectContent,
@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/select";
 // import CustomSelect from '@/components/CustomSelect'; // NO LONGER NEEDED
 
-const LearnerHeader = ({ columnFilters, setColumnFilters, sorting,setSorting,open,onOpenChange }) => {
+const LearnerHeader = ({ columnFilters, setColumnFilters, sorting,setSorting,open,onOpenChange,onSubmit }) => {
 
   // Handler for sorting selection (only for isVerified)
   const handleSortChange = (value) => {
@@ -103,7 +103,7 @@ const LearnerHeader = ({ columnFilters, setColumnFilters, sorting,setSorting,ope
           <Plus className="ml-2 -mr-1 h-5 w-5" aria-hidden="true" />
         </button>
       </div>
-      <CreateLearner open={open} setOpen={onOpenChange}/>
+      <LearnerFormDialog open={open} setOpen={onOpenChange} mode={"create"} onSubmit={onSubmit}/>
     </div>
   );
 };

@@ -15,7 +15,7 @@ const LearnerFormDialog = ({open,setOpen,mode="create",initialData,onSubmit}) =>
   const [successMessage,setSuccessMessage]=useState("")
   const [errorMessage,setErrorMessage]=useState("")
  const handleSubmit=async(data)=>{
-    console.log(data.image)
+    console.log("nmf al",data)
     const formData=new FormData()
     formData.append('firstName', data.firstName);
   formData.append('lastName', data.lastName);
