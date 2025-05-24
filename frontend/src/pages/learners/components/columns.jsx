@@ -4,28 +4,52 @@ import { Badge } from "@/components/ui/badge"; // Not used in current cols, but 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const columns = ({ handleViewDetails, handleEdit, handleDelete }) => [
-  {
-    
-    id: "learnerInfo", // Give it a unique ID if no direct accessorKey
-    header: () => <div className="text-left">Learners</div>,
+    {
+    id: "fullName", // Keep this ID for display purposes and unique identification
+    accessorKey: "firstName", // <--- ADD THIS! This makes the column filterable by firstName
+    header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="text-left"
+        >
+          Learners
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+    ),
     cell: ({ row }) => {
-      // Destructure firstName, lastName, and profileImage directly from row.original
       const { firstName, lastName, profileImage } = row.original;
-      const fullName = `${firstName || ''} ${lastName || ''}`.trim(); // Combine names, handle potential undefined
+      const fullName = `${firstName || ''} ${lastName || ''}`.trim();
 
       return (
         <div className="flex items-center gap-3 min-w-[150px]">
           <Avatar>
-            {/* Use profileImage for src */}
             <AvatarImage src={profileImage} alt={fullName} />
-            {/* Fallback to first initial of combined name, or '?' */}
             <AvatarFallback>{fullName.charAt(0) || '?'}</AvatarFallback>
           </Avatar>
           <span>{fullName}</span>
         </div>
       );
     },
+    // Keep the custom sortingFn for combined full name sorting
+    sortingFn: (rowA, rowB, columnId) => {
+        const firstNameA = (rowA.original.firstName || '').toLowerCase();
+        const firstNameB = (rowB.original.firstName || '').toLowerCase();
+        const lastNameA = (rowA.original.lastName || '').toLowerCase();
+        const lastNameB = (rowB.original.lastName || '').toLowerCase();
+
+        if (firstNameA > firstNameB) return 1;
+        if (firstNameA < firstNameB) return -1;
+
+        if (lastNameA > lastNameB) return 1;
+        if (lastNameA < lastNameB) return -1;
+
+        return 0;
+    },
   },
+
+
+  
   {
     accessorKey: "email", // Add email column, as it's in your data
     header: ({ column }) => (
@@ -53,7 +77,16 @@ export const columns = ({ handleViewDetails, handleEdit, handleDelete }) => [
 
   {
     accessorKey: "date", // This accessorKey already matched
-    header: () => <div className="text-center">Joined Date</div>, // More descriptive header
+    header: ({ column }) => ( // Pass column prop
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className=" flex items-center" // Adjust alignment if needed
+        >
+          Joined Date
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+    ),
     cell: ({ row }) => {
         // Optional: Format the date for better display
         const dateValue = row.getValue("date");

@@ -21,8 +21,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export function DataTable({ columns, data, columnFilters,setColumnFilters }) {
-  const [sorting, setSorting] = React.useState([]);
+export function DataTable({ columns, data, columnFilters,setColumnFilters,sorting,setSorting }) {
+  // const [sorting, setSorting] = React.useState([]);
   // const [columnFilters, setColumnFilters] = React.useState([]);
   const table = useReactTable({
     data,
@@ -44,6 +44,7 @@ export function DataTable({ columns, data, columnFilters,setColumnFilters }) {
         pageSize: 4, //custom default page size
       },
     },
+  
   });
 
   return (

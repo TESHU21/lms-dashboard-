@@ -9,6 +9,8 @@ const Learners = () => {
   const [data,setData]=useState([])
   const {getLearner}=useCourse()
   const [columnFilters, setColumnFilters] = useState([]);
+  const [sorting, setSorting] = useState([]); // New state for sorting
+
 
   useEffect(()=>{
     const fetchLearners=async()=>{
@@ -66,7 +68,11 @@ const Learners = () => {
     <div className='px-[30px] mx-30'> {/* Adjusted to px-[30px] for explicit 30px */}
       <h6 className="leading-8 text-[20px] min-h-full font-semibold mb-[30px]">Learners</h6>
 
-      <LearnerHeader columnFilters={columnFilters} setColumnFilters={setColumnFilters}/>
+      <LearnerHeader columnFilters={columnFilters}
+       setColumnFilters={setColumnFilters}
+       sorting={sorting}
+       setSorting={setSorting}
+       />
       <DataTable
         data={data}
         columns={columns({
@@ -76,6 +82,8 @@ const Learners = () => {
         })}
         columnFilters={columnFilters}
         setColumnFilters={setColumnFilters}
+        sorting={sorting}
+        setSorting={setSorting}
       />
     </div>
   )
