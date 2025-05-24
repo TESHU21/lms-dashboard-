@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import { Search, Plus, ChevronDown } from 'lucide-react';
+import { Search, Plus } from 'lucide-react'; // ChevronDown and CustomSelect are no longer needed
 import CreateLearner from './components/CreateLearner';
 import {
   Select,
@@ -8,93 +8,104 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+// import CustomSelect from '@/components/CustomSelect'; // NO LONGER NEEDED
 
-// Destructure only the props that are actually used
 const LearnerHeader = ({ columnFilters, setColumnFilters, sorting,setSorting }) => {
-      const [open,setOpen]=useState(false)
-      // Handler for sorting selection
+  const [open,setOpen]=useState(false)
+
+  // Handler for sorting selection (only for isVerified)
   const handleSortChange = (value) => {
-    // 'value' will be something like 'firstName_asc', 'lastName_desc', 'reset'
     if (value === 'reset') {
       setSorting([]); // Clear all sorting
       return;
     }
-
-    const [id, order] = value.split('_'); // e.g., ['firstName', 'asc']
-    setSorting([{ id, desc: order === 'desc' }]);
+    // The value will be 'isVerified_asc' or 'isVerified_desc'
+    const [id, order] = value.split('_');
+    setSorting([{ id: 'isVerified', desc: order === 'desc' }]);
   };
+
+  // Handler for search filter (for learner name, assumed to be 'firstName' accessorKey for filtering)
+  const handleSearchFilterChange = (event) => {
+    const filterValue = event.target.value;
+    setColumnFilters((prev) => {
+      // Targeting 'firstName' accessorKey for filtering for the name search input
+      const targetColumnId = "firstName";
+      const existingFilterIndex = prev.findIndex((f) => f.id === targetColumnId);
+
+      if (filterValue) {
+        if (existingFilterIndex !== -1) {
+          const updatedFilters = [...prev];
+          updatedFilters[existingFilterIndex] = { id: targetColumnId, value: filterValue };
+          return updatedFilters;
+        } else {
+          return [...prev, { id: targetColumnId, value: filterValue }];
+        }
+      } else {
+        return prev.filter((f) => f.id !== targetColumnId);
+      }
+    });
+  };
+
+  // The handleVerifiedFilterChange function is no longer needed as the filter dropdown is removed.
 
   return (
     <div>
-       <div className="flex items-center justify-between w-full py-4">
-      {/* Left section: Search input */}
-      <div className="relative flex items-center flex-grow mr-4 rounded-md shadow-sm">
-        {/* Search icon */}
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <Search className="h-5 w-5 text-gray-400" aria-hidden="true" />
+      <div className="flex items-center gap-3 justify-between w-full py-4">
+        {/* Left section: Search input - KEPT */}
+        <div className="relative flex items-center flex-grow mr-4 rounded-md shadow-sm">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Search className="h-5 w-5 text-gray-400" aria-hidden="true" />
+          </div>
+          <input
+            type="text"
+            placeholder="Filter By First Name"
+            value={
+              columnFilters.find((f) => f.id === "firstName")?.value || ""
+            }
+            onChange={handleSearchFilterChange}
+            name="search"
+            id="search-learners"
+            className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md leading-5 bg-accent placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          />
         </div>
-        {/* Search input field */}
-        <input
-          type="text"
-          placeholder="Filter By Name of Learner"
-          value={
-            columnFilters.find((f) => f.id === "name")?.value || ""
-          }
-          onChange={(e) => {
-            const filterValue = e.target.value;
-            setColumnFilters((prev) =>
-              prev
-                .filter((f) => f.id !== "name")
-                .concat({ id: "name", value: filterValue })
-            );
-          }}
-          name="search"
-          id="search-learners"
-          className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md leading-5 bg-accent placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-        />
+
+        {/* Sort by Select - ONLY FOR IS VERIFIED */}
+        <div className='flex items-center space-x-2'> {/* Removed mr-4 as it's the element before the button */}
+          {/* <label className='text-sm font-medium whitespace-nowrap'>Sort By:</label> */}
+          <Select
+            onValueChange={handleSortChange}
+            value={
+              sorting.length > 0 && sorting[0].id === 'isVerified'
+                ? `${sorting[0].id}_${sorting[0].desc ? 'desc' : 'asc'}`
+                : 'reset'
+            }
+          >
+            <SelectTrigger className="w-[180px] !h-[48px] bg-stone-100">
+              <SelectValue placeholder="Sort by Verification Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="reset">None</SelectItem>
+              {/* Only 'isVerified' sorting options */}
+              <SelectItem value="isVerified_asc">Verification (No to Yes)</SelectItem>
+              <SelectItem value="isVerified_desc">Verified (Yes to No)</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* The "Verified Status Filter" dropdown is REMOVED from here */}
+
+        {/* Right section: Create learner button */}
+        <button
+          type="button"
+          onClick={()=>setOpen(true)}
+          className="inline-flex items-center px-4 py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sidebar hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ml-auto"
+        >
+          Create learner
+          <Plus className="ml-2 -mr-1 h-5 w-5" aria-hidden="true" />
+        </button>
       </div>
-
-      {/* <button
-        type="button"
-        className="inline-flex items-center px-4 py-3 border border-gray-300 rounded-md shadow-sm bg-accent text-sm font-medium text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mr-4"
-      >
-        Sort by
-        <ChevronDown className="ml-2 -mr-1 h-5 w-5 text-gray-500" aria-hidden="true" />
-      </button> */}
-     {/*  Sort by Select*/}
-     <div className=' flex items-center spaxe-x-2'>
-      <label  className='text-sm font-medium'>Sort By:</label>
-      <Select onValueChange={handleSortChange} value={sorting.length > 0 ? `${sorting[0].id}_${sorting[0].desc ? 'desc' : 'asc'}` : 'reset'}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Sort by..." />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="reset">None</SelectItem>
-            <SelectItem value="firstName_asc">First Name (A-Z)</SelectItem>
-            <SelectItem value="firstName_desc">First Name (Z-A)</SelectItem>
-            <SelectItem value="lastName_asc">Last Name (A-Z)</SelectItem>
-            <SelectItem value="lastName_desc">Last Name (Z-A)</SelectItem>
-            {/* Add more sorting options if needed */}
-          </SelectContent>
-        </Select>
-
-     </div>
-
-      {/* Right section: Create learner button */}
-      <button
-        type="button"
-        onClick={()=>setOpen(true)}
-        className="inline-flex items-center px-4 py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sidebar hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-      >
-        Create learner
-        {/* Plus icon */}
-        <Plus className="ml-2 -mr-1 h-5 w-5" aria-hidden="true" />
-      </button>
+      <CreateLearner open={open} setOpen={setOpen}/>
     </div>
-    <CreateLearner open={open} setOpen={setOpen}/>
-
-    </div>
-   
   );
 };
 
