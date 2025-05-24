@@ -4,12 +4,15 @@ import {columns} from "./components/columns"
 import LearnerHeader from './LearnersHeader'
 import CreateLearner from './components/CreateLearner'
 import { useCourse } from '@/context/CourseContext'
+import LearnerDetailDialog from './components/LearnerDetailDialog'
 
 const Learners = () => {
   const [data,setData]=useState([])
   const {getLearner}=useCourse()
   const [columnFilters, setColumnFilters] = useState([]);
   const [sorting, setSorting] = useState([]); // New state for sorting
+  const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false); 
+    const [selectedLearner, setSelectedLearner] = useState(null); // State to hold selected learner
 
 
   useEffect(()=>{
@@ -51,7 +54,11 @@ const Learners = () => {
     fetchLearners()
   },[]) // Empty dependency array means this runs once on mount
 
-  const handleViewDetails=(learnerData)=>{
+  const handleViewDetails=(learner)=>{
+        setSelectedLearner(learner);
+            setIsDetailDialogOpen(true);
+
+
     console.log("View Details for:", learnerData)
     // Implement navigation or open a dialog to show details
   }
@@ -84,6 +91,11 @@ const Learners = () => {
         setColumnFilters={setColumnFilters}
         sorting={sorting}
         setSorting={setSorting}
+      />
+       <LearnerDetailDialog
+        learner={selectedLearner}
+        open={isDetailDialogOpen}
+        onOpenChange={setIsDetailDialogOpen}
       />
     </div>
   )
