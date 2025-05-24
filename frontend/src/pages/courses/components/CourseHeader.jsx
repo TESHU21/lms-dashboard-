@@ -16,14 +16,14 @@ const CourseHeader = ({columnFilters, setColumnFilters}) => {
           type="text"
           name="search"
            value={
-            columnFilters.find((f) => f.id === "name")?.value || ""
+            columnFilters.find((f) => f.id === "title")?.value || ""
           }
           onChange={(e) => {
             const filterValue = e.target.value;
             setColumnFilters((prev) =>
               prev
-                .filter((f) => f.id !== "name")
-                .concat({ id: "name", value: filterValue })
+                .filter((f) => f.id !== "title")
+                .concat({ id: "title", value: filterValue })
             );
           }}
           id="search-learners"
