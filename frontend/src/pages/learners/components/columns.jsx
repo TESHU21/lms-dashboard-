@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const columns = ({ handleViewDetails, handleEdit, handleDelete }) => [
     {
-    id: "fullName", // Keep this ID for display purposes and unique identification
+    id: "firstName", // Keep this ID for display purposes and unique identification
     accessorKey: "firstName", // <--- ADD THIS! This makes the column filterable by firstName
     header: ({ column }) => (
         <Button
