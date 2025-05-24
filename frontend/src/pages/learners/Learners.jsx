@@ -14,8 +14,10 @@ const Learners = () => {
   const [sorting, setSorting] = useState([]); // New state for sorting
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false); 
   const [selectedLearner, setSelectedLearner] = useState(null);
-  const [isDeleteDialogOpenc,setIsDeleteDialogOpen]=useState(false)
+  const [isDeleteDialogOpen,setIsDeleteDialogOpen]=useState(false)
 const [learnerToDelete, setLearnerToDelete] = useState(null);
+  const [isLernerFormOpen,setIsLearnerFormOpen]=useState(false)
+
 
 
 
@@ -99,6 +101,8 @@ const [learnerToDelete, setLearnerToDelete] = useState(null);
        setColumnFilters={setColumnFilters}
        sorting={sorting}
        setSorting={setSorting}
+       open={isLernerFormOpen}
+       onOpenChange={setIsLearnerFormOpen}
        />
       <DataTable
         data={data}
@@ -117,7 +121,7 @@ const [learnerToDelete, setLearnerToDelete] = useState(null);
         open={isDetailDialogOpen}
         onOpenChange={setIsDetailDialogOpen}
       />
-      <DeleteLearnerDialog open={isDeleteDialogOpenc} onOpenChange={setIsDeleteDialogOpen} learner={learnerToDelete} />
+      <DeleteLearnerDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen} learner={learnerToDelete} />
     </div>
   )
 }

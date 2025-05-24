@@ -10,8 +10,7 @@ import {
 } from "@/components/ui/select";
 // import CustomSelect from '@/components/CustomSelect'; // NO LONGER NEEDED
 
-const LearnerHeader = ({ columnFilters, setColumnFilters, sorting,setSorting }) => {
-  const [open,setOpen]=useState(false)
+const LearnerHeader = ({ columnFilters, setColumnFilters, sorting,setSorting,open,onOpenChange }) => {
 
   // Handler for sorting selection (only for isVerified)
   const handleSortChange = (value) => {
@@ -97,14 +96,14 @@ const LearnerHeader = ({ columnFilters, setColumnFilters, sorting,setSorting }) 
         {/* Right section: Create learner button */}
         <button
           type="button"
-          onClick={()=>setOpen(true)}
+          onClick={()=>onOpenChange(true)}
           className="inline-flex items-center px-4 py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sidebar hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ml-auto"
         >
           Create learner
           <Plus className="ml-2 -mr-1 h-5 w-5" aria-hidden="true" />
         </button>
       </div>
-      <CreateLearner open={open} setOpen={setOpen}/>
+      <CreateLearner open={open} setOpen={onOpenChange}/>
     </div>
   );
 };
