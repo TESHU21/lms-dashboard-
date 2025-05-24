@@ -6,34 +6,32 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 export const columns = ({ handleViewDetails, handleEdit, handleDelete }) => [
   {
     accessorKey: "name",
-    header: () => <div className="text-left">Learners</div>,
+    header: () => <div className="text-left">Image</div>,
     cell: ({ row }) => {
       const { name, image } = row.original;
       return (
         <div className="flex items-center gap-3 min-w-[150px]">
-          <Avatar>
-            <AvatarImage src={image} />
-            <AvatarFallback>{name?.charAt(0)}</AvatarFallback>
-          </Avatar>
-          <span>{name}</span>
+          <img src={image} alt="Course Image" className=" object-cover w-15 h-15" />
         </div>
       );
     },
   },
-  {
-    accessorKey: "courses",
-    header: () => <div className="text-left">Courses</div>,
-    cell: ({ row }) => (
-      <div className="mx-auto text-left">{row.original.courses}</div>
-    ),
-    size: 200,
-  },
+ {
+  accessorKey: "title",
+  header: () => <div className="text-left">Courses</div>,
+  cell: ({ row }) => (
+    <div className="text-start break-words max-w-[200px] whitespace-normal">
+      {row.original.title}
+    </div>
+  ),
+},
+
 
   {
-    accessorKey: "track",
+    accessorKey: "trackName",
     header: () => <div className="text-center">Track</div>,
     cell: ({ row }) => (
-      <div className="text-center min-w-[100px]">{row.getValue("track")}</div>
+      <div className="text-center min-w-[100px]">{row.original.trackName}</div>
     ),
   },
  
