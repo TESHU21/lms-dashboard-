@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import { Search, Plus } from 'lucide-react'; // ChevronDown and CustomSelect are no longer needed
-import CreateLearner from './components/CreateLearner';
+import CreateLearner from './components/LearnerFormDialog';
 import {
   Select,
   SelectContent,

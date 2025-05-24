@@ -15,7 +15,7 @@ import Logout from '@/pages/logout/Logout';
 import ForgotPassword from '@/pages/login/forgotpassword/ForgotPassword';
 import OtpVerification from '@/pages/login/forgotpassword/OtpVerification';
 import PasswordRest from '@/pages/login/forgotpassword/PasswordRest';
-import CreateLearner from '@/pages/learners/components/CreateLearner';
+import CreateLearner from '@/pages/learners/components/LearnerFormDialog';
 import CreateInvoices from '@/pages/invoices/components/CreateInvoices';
 import CourseDetail from '@/pages/tracks/components/TrackDetail';
 import TrackUpdate from '@/pages/tracks/components/TrackFormDialog';

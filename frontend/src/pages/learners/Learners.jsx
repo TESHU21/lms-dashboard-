@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react'
 import { DataTable } from '@/components/data-table'
 import {columns} from "./components/columns"
 import LearnerHeader from './LearnersHeader'
-import CreateLearner from './components/CreateLearner'
+import CreateLearner from './components/LearnerFormDialog'
 import { useCourse } from '@/context/CourseContext'
 import LearnerDetailDialog from './components/LearnerDetailDialog'
 import DeleteLearnerDialog from './components/DeleteLearnerDialog'
