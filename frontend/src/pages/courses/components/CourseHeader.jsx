@@ -33,13 +33,13 @@ const CourseHeader = ({columnFilters, setColumnFilters}) => {
       </div>
 
       
-      <button
+      {/* <button
         type="button"
         className="inline-flex items-center px-4 py-3 border border-gray-300 rounded-md shadow-sm bg-accent text-sm font-medium text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mr-4"
       >
         Sort by
         <ChevronDown className="ml-2 -mr-1 h-5 w-5 text-gray-500" aria-hidden="true" />
-      </button>
+      </button> */}
 
       {/* Right section: Create learner button */}
       <button
