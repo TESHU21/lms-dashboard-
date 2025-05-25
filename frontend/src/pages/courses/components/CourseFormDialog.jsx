@@ -58,7 +58,7 @@ const CourseFormDialog = ({open,setOpen,mode="create",initialData,onSubmit}) => 
        </DialogHeader>
 
         <div className='px-6 py-6 overflow-y-auto max-h-[calc(100vh-200px)]'> {/* Using standard Tailwind px/py units */}
-              <FormComp  schema={LearnerSchema} initialValues={initialData||initialValues} fields={fields} onSubmit={handleSubmit} isLoading={isLoading} errorMessage={errorMessage} successMessage={successMessage}/>
+              <FormComp  schema={courseSchema} initialValues={initialData||initialValues} fields={fields} onSubmit={handleSubmit} isLoading={isLoading} errorMessage={errorMessage} successMessage={successMessage}/>
 
 
         </div>

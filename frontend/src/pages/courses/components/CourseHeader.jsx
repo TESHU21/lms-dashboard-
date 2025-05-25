@@ -1,7 +1,8 @@
 import React from 'react';
 import { Search, Plus, ChevronDown } from 'lucide-react';
+import CourseFormDialog from './CourseFormDialog';
 
-const CourseHeader = ({columnFilters, setColumnFilters}) => {
+const CourseHeader = ({columnFilters, setColumnFilters,open,onOpenChange,onSubmit}) => {
   return (
     // Flex container to hold the search bar, sort by, and button, centered vertically and spanning full width
     <div className="flex items-center justify-between w-full py-4">
@@ -44,12 +45,14 @@ const CourseHeader = ({columnFilters, setColumnFilters}) => {
       {/* Right section: Create learner button */}
       <button
         type="button"
+        onClick={()=>onOpenChange(true)}
         className="inline-flex items-center px-4 py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sidebar hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
       >
         Create Courses
         {/* Plus icon */}
         <Plus className="ml-2 -mr-1 h-5 w-5" aria-hidden="true" />
       </button>
+      <CourseFormDialog open={open} setOpen={onOpenChange} mode="create" onSubmit={onSubmit}/>
     </div>
   );
 };
