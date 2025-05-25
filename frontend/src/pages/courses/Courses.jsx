@@ -4,6 +4,7 @@ import { DataTable } from '@/components/data-table'
 import {columns} from "./components/columns"
 import { useCourse } from '@/context/CourseContext'
 import CourseFormDialog from './components/CourseFormDialog'
+import CourseDetailDialog from './components/CourseDetailDialog'
 
 const Courses = () => {
 
@@ -12,6 +13,9 @@ const [sorting, setSorting] = useState([]); // New state for sorting
   const [columnFilters, setColumnFilters] = useState([]);
    const [isCreateCourseFormOpen, setIsCreateCourseFormOpen] = useState(false); // For "Create Learner" dialog
   const [isEditCourseFormOpen, setIsEditCourseFormOpen] = useState(false);   // For "Edit Learner" dialog
+  const [isViewCourseDetail, setIsViewCourseDetail] = useState(false);   // For "Edit Learner" dialog
+    const [selectedCourse, setSelectedCourse] = useState(null);
+  
 
 const {getCourses}=useCourse()
     useEffect(()=>{
@@ -25,6 +29,7 @@ const {getCourses}=useCourse()
     id: course._id,
     title: course.title,
     image: course.image,
+    createdAt:course.createdAt,
     description: course.description,
     trackName: course.track?.name || '', // optional chaining in case track is missing
     trackDescription: course.track?.description || '',
@@ -32,6 +37,7 @@ const {getCourses}=useCourse()
     trackPrice: course.track?.price || '',
     trackInstructor: course.track?.instructor || '',
     trackImage: course.track?.image || ''
+
   };
       
 
@@ -54,7 +60,15 @@ const {getCourses}=useCourse()
       )
     );
   };
+ const handleViewDetails=(learner)=>{
+  console.log(learner)
+        setSelectedCourse(learner)
+            setIsViewCourseDetail(true);
 
+
+    // console.log("View Details for:", learnerData)
+    // Implement navigation or open a dialog to show details
+  }
   // Placeholder handler for editing an invoice
   const handleEdit = (row) => {
     console.log("Edit:", row);
@@ -83,7 +97,7 @@ const {getCourses}=useCourse()
           <DataTable
             data={data} 
             columns={columns({
-              handleConfirm,
+              handleViewDetails,
               handleEdit,
               handleDelete,
             })}
@@ -92,6 +106,7 @@ const {getCourses}=useCourse()
             columnFilters={columnFilters} setColumnFilters={setColumnFilters}
           />
           <CourseFormDialog open={isEditCourseFormOpen} setOpen={setIsEditCourseFormOpen} mode="update" onSubmit={handleEdit}/>
+          <CourseDetailDialog course={selectedCourse}  open={isViewCourseDetail} onOpenChange={setIsViewCourseDetail}/>
         </div>
       </div>
   )
