@@ -1,6 +1,6 @@
 import {z} from "zod"
 import { GraduationCap, MonitorCheck,Image,PenIcon } from "lucide-react";
-export const learnerSchema=z.object({
+export const courseSchema=z.object({
       title: z.string().min(3, { message: "Title should be at least three characters" }),
       track: z.string().min(3, { message: "Track should be at least three characters" }),
       
