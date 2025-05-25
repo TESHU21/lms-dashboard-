@@ -7,8 +7,10 @@ import { useCourse } from '@/context/CourseContext'
 const Courses = () => {
 
 const [data,setData]=useState([])
+const [sorting, setSorting] = useState([]); // New state for sorting
+  const [columnFilters, setColumnFilters] = useState([]);
+
 const {getCourses}=useCourse()
-    const [columnFilters, setColumnFilters] = useState([]);
     useEffect(()=>{
       const fetchCourse=async()=>{
         try{
@@ -77,6 +79,8 @@ const {getCourses}=useCourse()
               handleEdit,
               handleDelete,
             })}
+            sorting={sorting} 
+            setSorting={setSorting}
             columnFilters={columnFilters} setColumnFilters={setColumnFilters}
           />
         </div>

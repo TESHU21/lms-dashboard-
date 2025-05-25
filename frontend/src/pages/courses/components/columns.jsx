@@ -18,7 +18,16 @@ export const columns = ({ handleViewDetails, handleEdit, handleDelete }) => [
   },
  {
   accessorKey: "title",
-  header: () => <div className="text-left">Courses</div>,
+   header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="text-left"
+        >
+          Courses
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+    ),
   cell: ({ row }) => (
     <div className="text-start break-words max-w-[200px] whitespace-normal">
       {row.original.title}
@@ -29,7 +38,16 @@ export const columns = ({ handleViewDetails, handleEdit, handleDelete }) => [
 
   {
     accessorKey: "trackName",
-    header: () => <div className="text-center">Track</div>,
+     header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className=" flex items-center"
+        >
+          Track
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+    ),
     cell: ({ row }) => (
       <div className="text-center min-w-[100px]">{row.original.trackName}</div>
     ),
