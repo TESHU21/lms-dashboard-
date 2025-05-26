@@ -17,7 +17,6 @@ const TrackFormDialog = ({ open, setOpen,mode = "create", initialData , onSubmit
    const [isLoading,setIsLoading]=useState(false)
       const [successMessage,setSuccessMessage]=useState("")
       const [errorMessage,setErrorMessage]=useState("")
-      const {createTrack}=useCourse()
   const handleSubmit=async(data)=>{
     console.log(data.image)
     const formData=new FormData()
@@ -43,6 +42,7 @@ const TrackFormDialog = ({ open, setOpen,mode = "create", initialData , onSubmit
     }
     catch(error){
       console.log(error)
+      setErrorMessage(error.response.data.errors[0])
     }
     finally{
       setIsLoading(false)

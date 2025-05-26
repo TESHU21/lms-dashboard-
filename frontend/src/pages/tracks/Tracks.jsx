@@ -37,8 +37,14 @@ const Tracks = () => {
     }
   }, [tracks, searchValue]); 
 
-const handleCreateTrack=(data)=>{
-console.log("Create Track",data)
+const handleCreateTrack=async(data)=>{
+try{
+  const response=await createTrack(data)
+  return response
+}
+catch(error){
+  throw error
+}
 }
 
   return (
