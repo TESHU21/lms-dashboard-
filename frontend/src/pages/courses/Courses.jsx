@@ -18,9 +18,10 @@ const [sorting, setSorting] = useState([]); // New state for sorting
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [loadingTracks, setLoadingTracks] = useState(true);
   const [errorTracks, setErrorTracks] = useState(null);
+  const [initialData,setInitialData]=useState(null)
   
 
-const {getCourses,createCourse,tracks,setTracks,getallTracks}=useCourse()
+const {getCourses,createCourse,tracks,setTracks,getallTracks,updateCourse}=useCourse()
     useEffect(()=>{
       const fetchCourse=async()=>{
         try{
@@ -88,11 +89,51 @@ const {getCourses,createCourse,tracks,setTracks,getallTracks}=useCourse()
     // console.log("View Details for:", learnerData)
     // Implement navigation or open a dialog to show details
   }
-  // Placeholder handler for editing an invoice
-  const handleEdit = (row) => {
-    console.log("Edit:", row);
+  // open Edit Dialog Form
+  const handleEdit = async(data) => {
+    console.log("data...",data)
+
+    setInitialData(data)
+    setSelectedCourse(data)
    setIsEditCourseFormOpen(true)
+   
+   
   }
+  // handle updaate form
+  const updateFormData=async(formData)=>{
+    const courseId=selectedCourse.id;
+    
+     try{
+      const response=await updateCourse(formData,courseId)
+   
+
+
+            const courseData = response.data.courses;
+        const formattedCourses = courseData.map((course) => {
+            return {
+                id: course._id,
+                title: course.title,
+                image: course.image,
+                createdAt: course.createdAt,
+                description: course.description,
+                trackName: course.track?.name || '',
+                trackDescription: course.track?.description || '',
+                trackDuration: course.track?.duration || '',
+                trackPrice: course.track?.price || '',
+                trackInstructor: course.track?.instructor || '',
+                trackImage: course.track?.image || ''
+            };
+        });
+        setData(formattedCourses); 
+
+      return response
+    }
+    catch(error){
+      throw error
+    }
+    
+  }
+
   // Handler function to delete an invoice by id
   const handleDelete = (id) => {
     setData((prev) => prev.filter((item) => item.id !== id));
@@ -156,7 +197,7 @@ const {getCourses,createCourse,tracks,setTracks,getallTracks}=useCourse()
             setSorting={setSorting}
             columnFilters={columnFilters} setColumnFilters={setColumnFilters}
           />
-          <CourseFormDialog initialData={data} formFieldsWithDynamicOptions={formFieldsWithDynamicOptions} open={isEditCourseFormOpen} setOpen={setIsEditCourseFormOpen} mode="update" onSubmit={handleEdit}/>
+          <CourseFormDialog initialData={initialData} formFieldsWithDynamicOptions={formFieldsWithDynamicOptions} open={isEditCourseFormOpen} setOpen={setIsEditCourseFormOpen} mode="update" onSubmit={updateFormData}/>
           <CourseDetailDialog course={selectedCourse}  open={isViewCourseDetail} onOpenChange={setIsViewCourseDetail}/>
         </div>
       </div>

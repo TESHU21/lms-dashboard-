@@ -36,7 +36,18 @@ export const  CourseProvider=({children})=>{
     // create course
     const createCourse=async(data)=>{
         try{
-            const response =await axiosInstance.post('/courses',data)
+            const response =await axiosInstance.post(`/courses `,data)
+            return response
+        }
+        catch(error){
+            throw error
+        }
+
+    }
+    // update course
+    const updateCourse=async(data,id)=>{
+        try{
+            const response =await axiosInstance.put(`/courses/${id}`,data)
             return response
         }
         catch(error){
@@ -124,7 +135,7 @@ export const  CourseProvider=({children})=>{
 
 
  
-    const values={getCourses,getSingleCourses,createCourse,getallTracks,getSingleTrack, tracks,setTracks,singleTrack,
+    const values={getCourses,getSingleCourses,createCourse,updateCourse,getallTracks,getSingleTrack, tracks,setTracks,singleTrack,
         setSingleTrack,createTrack,updateTrack,createInvoice,getLearner,deleteLearner
     }
 

@@ -73,6 +73,7 @@ const [isEditLearnerFormOpen, setIsEditLearnerFormOpen] = useState(false);   // 
   }
   const handleEdit=(learnerData)=>{
     console.log("Edit Learner:", learnerData)
+    setSelectedLearner(learnerData)
     // Implement edit logic
     setIsEditLearnerFormOpen(true)
   }
@@ -130,7 +131,7 @@ const [isEditLearnerFormOpen, setIsEditLearnerFormOpen] = useState(false);   // 
         onOpenChange={setIsDetailDialogOpen}
       />
       <DeleteLearnerDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen} learner={learnerToDelete} />
-      <LearnerFormDialog open={isEditLearnerFormOpen} setOpen={setIsEditLearnerFormOpen} mode="update" onSubmit={handleEdit}/>
+      <LearnerFormDialog initialData={selectedLearner} open={isEditLearnerFormOpen} setOpen={setIsEditLearnerFormOpen} mode="update" onSubmit={handleEdit}/>
     </div>
   )
 }
