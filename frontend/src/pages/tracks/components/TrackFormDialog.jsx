@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button"; 
 import { X } from 'lucide-react'; 
-import { useCourse } from '@/context/CourseContext';
 const TrackFormDialog = ({ open, setOpen,mode = "create", initialData , onSubmit  }) => {
    const [isLoading,setIsLoading]=useState(false)
       const [successMessage,setSuccessMessage]=useState("")
@@ -41,7 +40,6 @@ const TrackFormDialog = ({ open, setOpen,mode = "create", initialData , onSubmit
       const response=await onSubmit(formData)
         setSuccessMessage(`${mode === "create" ? "Created" : "Updated"} successfully`);
 
-      console.log(response)
     }
     catch(error){
       console.log(error)

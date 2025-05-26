@@ -7,11 +7,12 @@ import CourseHeader from '../courses/components/CourseHeader'; // Not used in th
 import { useCourse } from '../../context/CourseContext';
 import TrackFormDialog from './components/TrackFormDialog';
 
+
 const Tracks = () => {
   const [searchValue, setSearchValue] = useState("");
   const [open,setOpen]=useState(false)
   const [filteredTracks, setFilteredTracks] = useState([]); // Initialize as an empty array
-  const { getallTracks, tracks, setTracks } = useCourse();
+  const { getallTracks, tracks, setTracks,createTrack } = useCourse();
 
   // Effect to fetch tracks when the component mounts
   useEffect(() => {
@@ -36,8 +37,9 @@ const Tracks = () => {
     }
   }, [tracks, searchValue]); 
 
-  console.log("All Tracks (from context):", tracks); // This log will show the raw tracks
-  console.log("Filtered Tracks (state):", filteredTracks); // This log will show the currently filtered tracks
+const handleCreateTrack=(data)=>{
+console.log("Create Track",data)
+}
 
   return (
     <div className="flex flex-col  items-center px-25">
@@ -52,7 +54,7 @@ const Tracks = () => {
           <p>No courses found.</p> 
         )}
       </div>
-      <TrackFormDialog open={open} setOpen={setOpen}/>
+      <TrackFormDialog open={open} setOpen={setOpen} onSubmit={handleCreateTrack}/>
     </div>
   );
 };

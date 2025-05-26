@@ -52,7 +52,7 @@ const CourseFormDialog = ({open,setOpen,mode="create",initialData,onSubmit}) => 
                    <span className="text-gray-500">Learner</span>
                    {/* Vertical separator */}
                    <div className="border-l border-gray-300 h-5"></div>
-                     <span className="font-semibold">{mode === "create" ? "Create Learner" : "Update Learner"}</span>
+                     <span className="font-semibold">{mode === "create" ? "Create Course" : "Update Course"}</span>
        
          </DialogTitle>
        </DialogHeader>

@@ -39,33 +39,33 @@ const CourseDetailDialog = ({ course, open, onOpenChange }) => {
             </div>
              <div className='w-2/5 flex flex-col gap-3'>
                    <div className="flex flex-col">
-            <span className="font-semibold text-gray-700">Course Name:</span>
-            <span className="text-gray-900">{course.title}
+            <span className="font-semibold ">Course Name:</span>
+            <span className="">{course.title}
            </span>
           </div>
           <div className="flex flex-col">
-            <span className="font-semibold text-gray-700">createdAt:</span>
-            <span className="text-gray-900">{new Date(course.createdAt).toLocaleString()}
+            <span className="font-semibold ">createdAt:</span>
+            <span className="">{new Date(course.createdAt).toLocaleString()}
            </span>
           </div>
           <Separator/>
-          <p className='text-gray-950 font-lato font-semibold'>Available Tracks</p>
+          <p className=' font-lato font-semibold'>Available Tracks</p>
           
            <div className="flex flex-col">
-            <span className="font-semibold text-gray-700">Track Name:</span>
-            <span className="text-gray-900">{course?.trackName}</span>
+            <span className="font-semibold ">Track Name:</span>
+            <span className="">{course?.trackName}</span>
           </div>
           <div className="flex flex-col">
-            <span className="font-semibold text-gray-700">Duiration:</span>
-            <span className="text-gray-900">{course?.trackDuration || 'N/A'}</span>
+            <span className="font-semibold ">Duiration:</span>
+            <span className="">{course?.trackDuration || 'N/A'}</span>
           </div>
           <div className="flex flex-col">
-            <span className="font-semibold text-gray-700">Price:</span>
-            <span className="text-gray-900">{course?.trackPrice|| 'N/A'}</span>
+            <span className="font-semibold ">Price:</span>
+            <span className="">{course?.trackPrice|| 'N/A'}</span>
           </div>
           <div className="flex flex-col">
-            <span className="font-semibold text-gray-700">Instractor:</span>
-            <span className="text-gray-900">{course.trackInstructor|| 'N/A'}</span>
+            <span className="font-semibold ">Instractor:</span>
+            <span className="">{course.trackInstructor|| 'N/A'}</span>
           </div>
 
              </div>
@@ -78,8 +78,8 @@ const CourseDetailDialog = ({ course, open, onOpenChange }) => {
 
         {course.description && (
           <div className="mt-4 border-t pt-4">
-            <span className="font-semibold text-gray-700">Description:</span>
-            <p className="text-gray-900 mt-1">{course.description}</p>
+            <span className="font-semibold ">Description:</span>
+            <p className="mt-1">{course.description}</p>
           </div>
         )}
       </DialogContent>

@@ -30,27 +30,27 @@ export const fields=[
         placeholder: "Course Title",
         icon: GraduationCap,
         type: "text",
-        className: "col-span-2 md:col-span-1"
+        className: "col-span-2 "
       },
     {
         name: "track",
         placeholder: "Track Title",
         icon: MonitorCheck,
         type: "text",
-        className: "col-span-2 md:col-span-1"
+        className: "col-span-2 "
       },
     {
         name: "image",
         placeholder: "Select Image",
         icon:Image,
         type: "file",
-        className: "col-span-2 md:col-span-1"
+        className: "col-span-2 "
       },
     {
         name: "description",
         placeholder: "Enter Description",
         icon:PenIcon,
         type: "textarea",
-        className: "col-span-2 md:col-span-1"
+        className: "col-span-2 "
       },
 ]
