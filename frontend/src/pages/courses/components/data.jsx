@@ -36,7 +36,7 @@ export const fields=[
         name: "track",
         placeholder: "Track Title",
         icon: MonitorCheck,
-        type: "text",
+        type: "select",
         className: "col-span-2 "
       },
     {

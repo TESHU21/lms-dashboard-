@@ -33,6 +33,18 @@ export const  CourseProvider=({children})=>{
             throw error
         }
     }
+    // create course
+    const createCourse=async(data)=>{
+        try{
+            const response =await axiosInstance.post('/courses',data)
+            return response
+        }
+        catch(error){
+            throw error
+        }
+
+    }
+
     // Get all Tracks
     const getallTracks=async()=>{
         try{
@@ -112,7 +124,7 @@ export const  CourseProvider=({children})=>{
 
 
  
-    const values={getCourses,getSingleCourses,getallTracks,getSingleTrack, tracks,setTracks,singleTrack,
+    const values={getCourses,getSingleCourses,createCourse,getallTracks,getSingleTrack, tracks,setTracks,singleTrack,
         setSingleTrack,createTrack,updateTrack,createInvoice,getLearner,deleteLearner
     }
 

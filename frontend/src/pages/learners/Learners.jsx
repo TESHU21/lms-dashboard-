@@ -64,11 +64,11 @@ const [isEditLearnerFormOpen, setIsEditLearnerFormOpen] = useState(false);   // 
   },[getLearner]) // Empty dependency array means this runs once on mount
 
   const handleViewDetails=(learner)=>{
-        setSelectedLearner(learner);
             setIsDetailDialogOpen(true);
+            setLearnerToDelete(learner)
 
 
-    console.log("View Details for:", learnerData)
+    
     // Implement navigation or open a dialog to show details
   }
   const handleEdit=(learnerData)=>{
