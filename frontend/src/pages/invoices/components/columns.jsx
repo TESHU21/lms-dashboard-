@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const columns = ({ handleConfirm, handleEdit, handleDelete }) => [
   {
-    accessorKey: "name",
+    accessorKey: "firstName",
     header: () => <div className="text-left">Learners</div>,
     cell: ({ row }) => {
       const { firstName,lastName, image } = row.original;

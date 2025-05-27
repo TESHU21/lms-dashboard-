@@ -19,14 +19,14 @@ const InvoiceHeader = ({ columnFilters,setColumnFilters}) => {
         <input
           type="text"
              value={
-            columnFilters.find((f) => f.id === "name")?.value || ""
+            columnFilters.find((f) => f.id === "firstName")?.value || ""
           }
             onChange={(e) => {
             const filterValue = e.target.value;
             setColumnFilters((prev) =>
               prev
-                .filter((f) => f.id !== "name")
-                .concat({ id: "name", value: filterValue })
+                .filter((f) => f.id !== "firstName")
+                .concat({ id: "firstName", value: filterValue })
             );
           }}
           name="search"
