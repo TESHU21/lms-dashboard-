@@ -22,6 +22,7 @@ import TrackUpdate from '@/pages/tracks/components/TrackFormDialog';
 import EmailVerification from '@/pages/login/forgotpassword/EmailVerification';
 import TrackDetail from '@/pages/tracks/components/TrackDetail';
 import VerifyEmail from '@/components/VerifyEmail';
+import Settings from '@/pages/settings/Settings';
 
 const AppRoutes = () => {
   return (
@@ -52,7 +53,8 @@ const AppRoutes = () => {
           <Route path="create-learner" element={<CreateLearner />} />
           <Route path="create-invoice" element={<CreateInvoices />} />
           <Route path='track-update' element={<TrackUpdate />} />
-             <Route path='logout' element={<Logout/>}/>
+          <Route path="settings" element={<Settings/>}/>
+           <Route path='logout' element={<Logout/>}/>
 
         </Route>
 

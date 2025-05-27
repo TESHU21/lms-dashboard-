@@ -110,6 +110,16 @@ export const  CourseProvider=({children})=>{
         }
 
     }
+    // get Invoices
+    const getInvoices=async()=>{
+        try{
+            const response=await axiosInstance.get('/invoices')
+            return response
+        }
+        catch(error){
+            throw error
+        }
+    }
     // Get Learners
      const getLearner=async()=>{
         try{
@@ -136,7 +146,7 @@ export const  CourseProvider=({children})=>{
 
  
     const values={getCourses,getSingleCourses,createCourse,updateCourse,getallTracks,getSingleTrack, tracks,setTracks,singleTrack,
-        setSingleTrack,createTrack,updateTrack,createInvoice,getLearner,deleteLearner
+        setSingleTrack,createTrack,updateTrack,createInvoice,getLearner,deleteLearner,getInvoices
     }
 
 
