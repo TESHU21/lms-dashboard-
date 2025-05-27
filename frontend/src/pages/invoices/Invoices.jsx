@@ -1,59 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DataTable } from "@/components/data-table";
 import { columns } from "./components/columns";
 import InvoiceHeader from "./components/InvoiceHeader";
+import { useCourse } from "@/context/CourseContext";
+import { late } from "zod";
 
 const Invoices = () => {
+  const {getInvoices}=useCourse()
   // State to hold the invoice data
       const [columnFilters, setColumnFilters] = useState([]);
   
-  const [data, setData] = useState([
-    {
-      id: "1",
-      name: "John Doe",
-      email: "JohnDoe10@gmail.com",
-      image: "/avatars/avatar1.png",
-      amount: 400,
-      date: "2024-04-09",
-      status: "Pending",
-    },
-    {
-      id: "2",
-      name: "Jane Smith",
-      email: "JaneSmith10@gmail.com",
-      image: "/avatars/avatar2.png",
-      amount: 300,
-      date: "2026-04-09",
-      status: "Pending",
-    },
-    {
-      id: "3",
-      name: "Alice Doe",
-      email: "alice@example.com",
-      image: "/avatars/avatar3.png",
-      amount: 300,
-      date: "2026-04-09",
-      status: "Paid",
-    },
-    {
-      id: "4",
-      name: "Bob Mark",
-      email: "bob@example.com",
-      image: "/avatars/avatar4.png",
-      amount: 300,
-      date: "2026-04-09",
-      status: "Pending",
-    },
-    {
-      id: "5",
-      name: "Sarah Lee",
-      email: "sarah@example.com",
-      image: "/avatars/avatar5.png",
-      amount: 200,
-      date: "2023-08-05",
-      status: "Paid",
-    },
-  ]);
+  const [data, setData] = useState([]);
+  useEffect(()=>{
+    const fetchInvoice=async()=>{
+      try{
+        const response =await getInvoices()
+        console.log(response)
+        const invoices=response.data.invoices;
+        console.log("Invoicces",invoices)
+        const formattedData=invoices.map((invoice=>({
+          id:invoice._id,
+          firstName:invoice.learner.firstName,
+          lastName:invoice.learner.lastName,
+          email:invoice.learner.email,
+          amount:invoice.amount,
+          image:invoice.learner.profileImage,
+          date:invoice.createdAt,
+          status:invoice.status,
+
+
+
+          
+
+        })))
+        setData(formattedData)
+      }
+      
+      catch(error){
+        console.log(error)
+      }
+
+    }
+    fetchInvoice();
+  },[])
 
   // Handler function to mark an invoice as Paid
   const handleConfirm = (row) => {

@@ -8,14 +8,16 @@ export const columns = ({ handleConfirm, handleEdit, handleDelete }) => [
     accessorKey: "name",
     header: () => <div className="text-left">Learners</div>,
     cell: ({ row }) => {
-      const { name, image } = row.original;
+      const { firstName,lastName, image } = row.original;
       return (
         <div className="flex items-center gap-3 min-w-[150px]">
           <Avatar>
             <AvatarImage src={image} />
-            <AvatarFallback>{name?.charAt(0)}</AvatarFallback>
+            <AvatarFallback>{firstName?.charAt(0)}
+              {lastName?.charAt(0)}
+            </AvatarFallback>
           </Avatar>
-          <span>{name}</span>
+          <span>{firstName} {lastName}</span>
         </div>
       );
     },
