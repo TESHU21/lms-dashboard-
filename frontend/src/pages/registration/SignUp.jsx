@@ -33,17 +33,19 @@ const SignUp = () => {
   }
   return (
     <div className=' flex   w-full '>
+      <div className='hidden md:flex'>
      <LeftHero/>
+     </div>
       <div className='w-full'>
-        <div className='flex  h-12   mt-[56px] justify-end mr-[240px]'>
-          <div className='flex gap-6 items-center w-[394px]'>
-            <p className='underline text-base leading-8 text-[20px] '>Already have an account?</p>
-          <Button className=" flex gap-2 bg-[#01589A] py-3 px-6 w-[125px] h-[48px] cursor-pointer" onClick={()=>navigate("/")}> Login  <span><ChevronRight/></span></Button>
+        <div className='flex  mt-6  md:mt-[56px] md:justify-end md:mr-[240px]'>
+          <div className='flex flex-col md:flex-row justify-center gap-6 items-center w-full   md:w-[394px]'>
+            <p className='underline text-base leading-8 text-center md:text-[20px] '>Already have an account?</p>
+          <Button className=" flex gap-2 bg-[#01589A] md:py-3 md:px-6 w-[125px] md:h-[48px] cursor-pointer text-center" onClick={()=>navigate("/")}> Login  <span><ChevronRight/></span></Button>
           </div>
           
         </div>
-        <div className='mt-[78px] ml-[244px]  w-[595px]'>
-          <p className='mb-[34px] font-lato text-[40px] leading-12 font-bold'>Register to get started</p>
+        <div className='md:mt-[78px] md:ml-[244px] px-4 md:px-0 py-3  md:w-[595px]'>
+          <p className='mb-[34px] font-lato text-[25px] md:text-[40px] leading-8 text-center md:text-start md:leading-12 font-bold'>Register to get started</p>
            <FormComp schema={SignUpSchema} fields={fields} initialValues={initialValues} submitBtnText={"Create accounts"}
             onSubmit={handleSignUp} successMessage={successMessage} errorMessage={errorMessage} isLoading={isLoading}/>
            <p className='mt-[68px] text-center text-base leading-6 font-light'>By confirming your email, you agree to our <span className='underline'>Terms of Service</span>  <br/> and that you have read and understood our <span className='underline'>Privacy Policy</span> .</p>

@@ -69,11 +69,14 @@ export default function Dashboard() {
     role: inv.learner?.role,
     image: inv.learner?.profileImage,
   }));
+  // fetching user from session storage
+  const user=sessionStorage.getItem("User")
+  const parsedUser=JSON.parse(user)
 
   return (
     <div className="space-y-6 px-4">
       <h2 className="text-2xl font-bold">Dashboard</h2>
-      <p className="text-muted-foreground">Welcome back, John</p>
+      <p className="text-muted-foreground">Welcome back, {parsedUser.firstName}</p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
