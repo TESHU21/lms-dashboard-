@@ -326,7 +326,7 @@ const FormComp = forwardRef(
                 <Button
                   disabled={isLoading}
                   type="submit"
-                  className={`w-full h-[48px] px-6 ${
+                  className={`w-full h-[48px] cursor-pointer px-6 ${
                     isValid ? "bg-sidebar" : "bg-muted-foreground"
                   } hover:bg-sidebar text-white py-3 flex items-center justify-center gap-2`}
                 >

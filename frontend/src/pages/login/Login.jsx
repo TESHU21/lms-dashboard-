@@ -47,17 +47,19 @@ const Login = () => {
   }
   return (
     <div className=' flex   w-full '>
+      <div className='hidden md:flex'>
      <LeftHero/>
+     </div>
       <div className='w-full'>
-        <div className='flex  h-12   mt-[56px] justify-end mr-[240px]'>
-          <div className='flex gap-6 items-center w-[435px]'>
-            <p className='underline text-base leading-8 text-[20px] '>Need to create an account ?</p>
-          <Button className=" flex gap-2 bg-sidebar text-foreground hover:bg-sidebar py-3 px-6 w-[125px] h-[48px] cursor-pointer" onClick={()=>navigate("/signup")}> Sign up  <span><ChevronRight/></span></Button>
+        <div className='flex  h-12   mt-[56px] md:justify-end md:mr-[240px]'>
+          <div className='flex p-6 gap-6 items-center md:w-[435px]'>
+            <p className='underline text-base leading-8 md:text-[20px] '>Need to create an account ?</p>
+          <Button className=" flex gap-2 bg-sidebar  hover:bg-sidebar py-3 px-6 w-[125px] h-[48px] cursor-pointer text-white" onClick={()=>navigate("/signup")}> Sign up  <span><ChevronRight/></span></Button>
           </div>
           
         </div>
-        <div className='mt-[216px] ml-[244px]  w-[556px]'>
-          <h3 className='mb-[34px] font-lato text-[40px] leading-12 font-bold'>Login into your account</h3>
+        <div className='md:mt-[216px] mt-12 px-8 md:px-0 md:ml-[244px]  md:w-[556px]'>
+          <h3 className='mb-[34px] font-lato  text-[20px] md:text-[40px] leading-8 text-center md:text-start md:leading-12 font-bold'>Login into your account</h3>
            <FormComp schema={SignUpSchema} fields={fields} initialValues={initialValues} submitBtnText={"Login"}
               showForgotPassword={true} onSubmit={handleLogin} isLoading={isLoading}  errorMessage={errorMessage} />
         </div>
