@@ -142,11 +142,21 @@ export const  CourseProvider=({children})=>{
         }
 
     }
+    // get profile information
+    const getProfile=async()=>{
+        try{
+            const response=await axiosInstance.get("auth/check-auth")
+            return response
+        }
+        catch(error){
+            throw error
+        }
+    }
 
 
  
     const values={getCourses,getSingleCourses,createCourse,updateCourse,getallTracks,getSingleTrack, tracks,setTracks,singleTrack,
-        setSingleTrack,createTrack,updateTrack,createInvoice,getLearner,deleteLearner,getInvoices
+        setSingleTrack,createTrack,updateTrack,createInvoice,getLearner,deleteLearner,getInvoices,getProfile
     }
 
 

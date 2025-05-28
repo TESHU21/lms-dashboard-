@@ -1,10 +1,11 @@
-import React,{useContext,createContext} from "react";
+import React,{useContext,createContext,useState} from "react";
 import axiosInstance from "@/lib/axiosInstance";
 const AuthContext=createContext();
 export const useAuth=()=>{
     return useContext(AuthContext)
 }
 export const AuthProvider=({children})=>{
+  // const [profile,setProfile]=useState()
     const storeToken=(token)=>{
   sessionStorage.setItem("Token",JSON.stringify(token))
 
