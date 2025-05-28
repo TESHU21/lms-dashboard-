@@ -79,7 +79,7 @@ const LearnerHeader = ({ columnFilters, setColumnFilters, sorting,setSorting,ope
                 : 'reset'
             }
           >
-            <SelectTrigger className="w-[180px] !h-[48px] bg-stone-100">
+            <SelectTrigger className="w-[180px] !h-[48px] bg-accent">
               <SelectValue placeholder="Sort by Verification Status" />
             </SelectTrigger>
             <SelectContent>
