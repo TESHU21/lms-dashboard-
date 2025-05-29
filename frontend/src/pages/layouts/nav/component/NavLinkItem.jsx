@@ -12,7 +12,7 @@ const NavLinkItem = ({ item }) => {
       to={`/app${item.path ? `/${item.path}` : ''}`}
       className={({ isActive: linkIsActive }) =>
         cn(
-          "flex items-center gap-2 w-[264px] h-[40px] mx-2 text-white rounded-sm px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
+          "flex items-center gap-2  md:w-[264px] h-[40px] mx-2 text-white rounded-sm px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
           isActive && "bg-background text-sidebar-accent",
           item.icon && "pl-2"
         )

@@ -1,14 +1,18 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Sidebar from './nav/Sidebar';
 import TopBar from './nav/TopBar';
+import Sidebar from './nav/Sidebar';
 // import { ThemeProvider } from './theme-context'; // Uncomment if using theme context
 
 const Layout = () => {
   return (
     <div className="flex min-h-screen">
+    
+      
       {/* Sidebar on the left */}
+      <div className='hidden lg:flex'>
       <Sidebar />
+      </div>
 
       {/* Main content area */}
       <div className="flex flex-col flex-grow">
