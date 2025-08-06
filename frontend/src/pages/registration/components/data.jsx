@@ -17,10 +17,11 @@ export const SignUpSchema = z
     // contact: z.string().regex(/^(\+251|0)?9\d{8}$/, {
     //   message: "Invalid Ethiopian phone number",
     // }),
-    contact:z.string().regex(
-  /^(\+233|0)?(2[0-9]|5[0-9])[0-9]{7}$/,
-  { message: "Invalid Ghanaian phone number" }
+contact: z.string().regex(
+  /^(\+251|0)?9\d{8}$/,
+  { message: "Invalid Ethiopian phone number" }
 ),
+
 
   })
   .refine((data) => data.password === data.confirmPassword, {
