@@ -40,11 +40,15 @@ const Tracks = () => {
 const handleCreateTrack=async(data)=>{
 try{
   const response=await createTrack(data)
+  setTracks(response?.data.tracks )
+  setOpen(false)
+
   return response
 }
 catch(error){
   throw error
 }
+
 }
 
   return (

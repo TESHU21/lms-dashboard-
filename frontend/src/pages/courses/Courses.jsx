@@ -125,6 +125,7 @@ const {getCourses,createCourse,tracks,setTracks,getallTracks,updateCourse}=useCo
             };
         });
         setData(formattedCourses); 
+        setIsCreateCourseFormOpen(false)
 
       return response
     }
@@ -141,6 +142,25 @@ const {getCourses,createCourse,tracks,setTracks,getallTracks,updateCourse}=useCo
     const handleCreateCourse=async(data)=>{
       try{
         const response=await createCourse(data)
+        const newCourse = {
+      id: response.data.course._id,
+      title: response.data.course.title,
+       image: response?.data.course.image,
+                createdAt:response?.data. course.createdAt,
+                description: response?.data.course.description,
+                trackName: response.data.course.track?.name || '',
+                trackDescription: response.data.course.track?.description || '',
+                trackDuration: response.data.course.track?.duration || '',
+                trackPrice: response.data.course.track?.price || '',
+                trackInstructor: response.data.course.track?.instructor || '',
+                trackImage: response.data.course.track?.image || ''
+      // map all other fields like track info
+         
+
+    };
+     setData(prev => [...prev, newCourse]);
+      setIsCreateCourseFormOpen(false)
+
         return response
       }
       catch(error){
