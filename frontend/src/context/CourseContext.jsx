@@ -16,134 +16,66 @@ export const CourseProvider = ({ children }) => {
 
   // function to fetch all courses
   const getCourses = useCallback(async () => {
-    try {
-      const response = await axiosInstance.get("/courses");
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    return axiosInstance.get("/courses");
   }, []);
   // get single courses
   const getSingleCourses = useCallback(async (courseId) => {
-    try {
-      const response = await axiosInstance.get(`/courses/${courseId}`);
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    return axiosInstance.get(`/courses/${courseId}`);
   }, []);
   // create course
   const createCourse = useCallback(async (data) => {
-    try {
-      const response = await axiosInstance.post(`/courses `, data);
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    return axiosInstance.post(`/courses `, data);
   }, []);
   // update course
   const updateCourse = useCallback(async (data, id) => {
-    try {
-      const response = await axiosInstance.put(`/courses/${id}`, data);
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    return axiosInstance.put(`/courses/${id}`, data);
   }, []);
 
   // Get all Tracks
   const getallTracks = useCallback(async () => {
-    try {
-      const response = await axiosInstance.get("/tracks");
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    return axiosInstance.get("/tracks");
   }, []);
   // Get Single Tracks
   const getSingleTrack = useCallback(async (trackId) => {
-    try {
-      const response = await axiosInstance.get(`/tracks/${trackId}`);
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    return axiosInstance.get(`/tracks/${trackId}`);
   }, []);
   // Create Track
   const createTrack = useCallback(async (data) => {
-    try {
-      const response = await axiosInstance.post("/tracks", data);
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    return axiosInstance.post("/tracks", data);
   }, []);
   // Update Track
   const updateTrack = useCallback(async (data, id) => {
-    try {
-      const response = await axiosInstance.put(`/tracks/${id}`, data);
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    return axiosInstance.put(`/tracks/${id}`, data);
   }, []);
   // Create Invoice
-  const createInvoice = useCallback(async () => {
-    try {
-      const response = await axiosInstance.post("/invoice", data);
-      return response;
-    } catch (error) {
-      throw error;
-    }
+  const createInvoice = useCallback(async (data) => {
+    return axiosInstance.post("/invoice", data);
   }, []);
   // get Invoices
   const getInvoices = useCallback(async () => {
-    try {
-      const response = await axiosInstance.get("/invoices");
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    return axiosInstance.get("/invoices");
   }, []);
   // Get Learners
   const getLearner = useCallback(async () => {
-    try {
-      const response = await axiosInstance.get("/learners");
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    return axiosInstance.get("/learners");
   }, []);
   // Create Learners
   const createLearner = useCallback(async (data) => {
-    try {
-      const response = await axiosInstance.post("/learners", data);
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    return axiosInstance.post("/learners", data);
   }, []);
   // delete Learners
   const deleteLearner = useCallback(async (learnerId) => {
-    try {
-      const response = await axiosInstance.delete(`/learners/${learnerId}`);
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    return axiosInstance.delete(`/learners/${learnerId}`);
   }, []);
   // get profile information
   const getProfile = useCallback(async () => {
-    try {
-      const response = await axiosInstance.get("auth/check-auth");
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    return axiosInstance.get("auth/check-auth");
   }, []);
 
   const values = useMemo(
     () => ({
+      courses,
+      setCourses,
       getCourses,
       getSingleCourses,
       createCourse,
@@ -154,6 +86,10 @@ export const CourseProvider = ({ children }) => {
       setTracks,
       singleTrack,
       setSingleTrack,
+      selectedCourse,
+      setSelectedCourse,
+      courseInvoices,
+      setCourseInvoices,
       createTrack,
       updateTrack,
       createInvoice,
@@ -166,6 +102,8 @@ export const CourseProvider = ({ children }) => {
       setLearners,
     }),
     [
+      courseInvoices,
+      courses,
       createCourse,
       createInvoice,
       createLearner,
@@ -180,8 +118,12 @@ export const CourseProvider = ({ children }) => {
       getallTracks,
       learners,
       setLearners,
+      setCourseInvoices,
+      setCourses,
+      setSelectedCourse,
       setSingleTrack,
       setTracks,
+      selectedCourse,
       singleTrack,
       tracks,
       updateCourse,

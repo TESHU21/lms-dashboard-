@@ -56,14 +56,18 @@ const ACCEPTED_IMAGE_MIME_TYPES = [
 // Zod Schema for track update form
 // Zod Schema for track update form
 export const TrackUpdateSchema = z.object({
-  name: z.string().min(2, { message: "Name should be 2 or more characters long" }),
+  name: z
+    .string()
+    .min(2, { message: "Name should be 2 or more characters long" }),
   price: z.preprocess(
     (val) => Number(val),
-    z.number().positive("Amount must be greater than 0")
+    z.number().positive("Amount must be greater than 0"),
   ),
-  instructor: z.string().min(2, { message: "Instructor name should be at least two characters" }),
+  instructor: z
+    .string()
+    .min(2, { message: "Instructor name should be at least two characters" }),
   duration: z.string().min(1, { message: "Duration is required" }),
-image: z
+  image: z
     .union([
       z.string().url().optional(),
       z.instanceof(File).optional(),
@@ -75,7 +79,7 @@ image: z
         return;
       }
 
-      if (typeof file === 'string') {
+      if (typeof file === "string") {
         return;
       }
 
@@ -141,7 +145,7 @@ export const updateTrackfields = [
     name: "duration",
     placeholder: "Duration (e.g., 12 weeks)",
     icon: Clock,
-   
+
     type: "text",
     className: "col-span-2",
   },
@@ -149,7 +153,6 @@ export const updateTrackfields = [
     name: "image",
     placeholder: "Upload Image",
     icon: Image,
-     placeholder:"Upload Image",
     type: "file",
     className: "col-span-2",
   },

@@ -9,16 +9,10 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { useNavigate } from "react-router-dom";
 
 const TrackDetailCard = ({ tracks }) => {
   // Destructure course data from props
   const { _id, name, image, price, duration, instructor, learners } = tracks;
-  const navigate = useNavigate();
-  const id = _id;
-  const handleViewMore = (id) => {
-    navigate(`/app/tracks/${id}`);
-  };
 
   const formattedCreatedAt = useMemo(() => {
     return tracks.createdAt

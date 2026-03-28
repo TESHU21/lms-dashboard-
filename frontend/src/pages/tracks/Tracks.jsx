@@ -41,14 +41,10 @@ const Tracks = () => {
 
   const handleCreateTrack = useCallback(
     async (data) => {
-      try {
-        const response = await createTrack(data);
-        setTracks(response?.data.tracks);
-        setOpen(false);
-        return response;
-      } catch (error) {
-        throw error;
-      }
+      const response = await createTrack(data);
+      setTracks(response?.data.tracks);
+      setOpen(false);
+      return response;
     },
     [createTrack, setTracks],
   );
