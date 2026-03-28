@@ -99,15 +99,16 @@ export default function Dashboard() {
                   <Icon size={24} /> {title}
                 </CardTitle>
               </CardHeader>
-            <CardContent className="bg-card px-3 py-6 h-[96px] rounded-md">
-              <p className="text-sm text-center font-semibold">
-                {title === "Collected" || title === "Pending"
-                  ? `$${value}`
-                  : value}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
+              <CardContent className="bg-card px-3 py-6 h-[96px] rounded-md">
+                <p className="text-sm text-center font-semibold">
+                  {title === "Collected" || title === "Pending"
+                    ? `$${value}`
+                    : value}
+                </p>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-full">
