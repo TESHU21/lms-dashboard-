@@ -13,6 +13,7 @@ export const CourseProvider = ({ children }) => {
   const [singleTrack, setSingleTrack] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState([]);
   const [courseInvoices, setCourseInvoices] = useState(null);
+  const [tracksRefreshKey, setTracksRefreshKey] = useState(0);
 
   // function to fetch all courses
   const getCourses = useCallback(async () => {
@@ -46,6 +47,12 @@ export const CourseProvider = ({ children }) => {
   // Update Track
   const updateTrack = useCallback(async (data, id) => {
     return axiosInstance.put(`/tracks/${id}`, data);
+  }, []);
+  // Delete Track
+  const deleteTrack = useCallback(async (id) => {
+    const response = await axiosInstance.delete(`/tracks/${id}`);
+    setTracksRefreshKey((prev) => prev + 1); // trigger refetch in Tracks
+    return response;
   }, []);
   // Create Invoice
   const createInvoice = useCallback(async (data) => {
@@ -91,6 +98,7 @@ export const CourseProvider = ({ children }) => {
       courseInvoices,
       setCourseInvoices,
       createTrack,
+      deleteTrack,
       updateTrack,
       createInvoice,
       getLearner,
@@ -100,6 +108,8 @@ export const CourseProvider = ({ children }) => {
       getProfile,
       learners,
       setLearners,
+      tracksRefreshKey,
+      setTracksRefreshKey,
     }),
     [
       courseInvoices,
@@ -109,6 +119,7 @@ export const CourseProvider = ({ children }) => {
       createLearner,
       createTrack,
       deleteLearner,
+      deleteTrack,
       getCourses,
       getInvoices,
       getLearner,
@@ -117,7 +128,6 @@ export const CourseProvider = ({ children }) => {
       getSingleTrack,
       getallTracks,
       learners,
-      setLearners,
       setCourseInvoices,
       setCourses,
       setSelectedCourse,
@@ -126,6 +136,9 @@ export const CourseProvider = ({ children }) => {
       selectedCourse,
       singleTrack,
       tracks,
+      setLearners,
+      setTracksRefreshKey,
+      tracksRefreshKey,
       updateCourse,
       updateTrack,
     ],

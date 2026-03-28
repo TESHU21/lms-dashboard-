@@ -14,7 +14,8 @@ import { setPageSEO } from "../../utils/seo";
 const Tracks = () => {
   const [searchValue, setSearchValue] = useState("");
   const [open, setOpen] = useState(false);
-  const { getallTracks, tracks, setTracks, createTrack } = useCourse();
+  const { getallTracks, tracks, setTracks, createTrack, tracksRefreshKey } =
+    useCourse();
   const deferredSearchValue = useDeferredValue(searchValue);
 
   useEffect(() => {
@@ -27,7 +28,7 @@ const Tracks = () => {
       }
     };
     fetchTracks();
-  }, [getallTracks, setTracks]);
+  }, [getallTracks, setTracks, tracksRefreshKey]);
   useEffect(() => {
     setPageSEO({
       title: "Courses",
