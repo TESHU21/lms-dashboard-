@@ -9,6 +9,7 @@ import CourseCard from "./components/CourseCard";
 import TrackHeader from "./components/TrackHeader";
 import { useCourse } from "../../context/CourseContext";
 import TrackFormDialog from "./components/TrackFormDialog";
+import { setPageSEO } from "../../utils/seo";
 
 const Tracks = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -27,6 +28,13 @@ const Tracks = () => {
     };
     fetchTracks();
   }, [getallTracks, setTracks]);
+  useEffect(() => {
+    setPageSEO({
+      title: "Courses",
+      description:
+        "Browse and manage all available courses and tracks in the LMS dashboard.",
+    });
+  }, []);
 
   const filteredTracks = useMemo(() => {
     if (!Array.isArray(tracks)) return [];

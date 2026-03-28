@@ -1,10 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   BarChart,
   Bar,
@@ -16,7 +11,8 @@ import {
 } from "recharts";
 import { revenueData } from "./components/data";
 import { Banknote, Clock, FileText } from "lucide-react";
-import { useCourse } from "@/context/CourseContext";
+import { useCourse } from "../../context/CourseContext";
+import { setPageSEO } from "../../utils/seo";
 
 export default function Dashboard() {
   const [invoices, setInvoices] = useState([]);
@@ -43,22 +39,30 @@ export default function Dashboard() {
     fetchData();
   }, [getInvoices, getLearner]);
 
+  useEffect(() => {
+    setPageSEO({
+      title: "Dashboard",
+      description:
+        "LMS Dashboard: overview of learners, invoices, and recent revenue.",
+    });
+  }, []);
+
   const totalPaid = useMemo(
     () =>
       invoices.reduce(
         (sum, inv) => (inv.status === "paid" ? sum + inv.amount : sum),
-        0
+        0,
       ),
-    [invoices]
+    [invoices],
   );
 
   const totalPending = useMemo(
     () =>
       invoices.reduce(
         (sum, inv) => (inv.status === "pending" ? sum + inv.amount : sum),
-        0
+        0,
       ),
-    [invoices]
+    [invoices],
   );
 
   const latestInvoices = invoices.map((inv) => ({
@@ -70,13 +74,15 @@ export default function Dashboard() {
     image: inv.learner?.profileImage,
   }));
   // fetching user from session storage
-  const user=sessionStorage.getItem("User")
-  const parsedUser=JSON.parse(user)
+  const user = sessionStorage.getItem("User");
+  const parsedUser = JSON.parse(user);
 
   return (
     <div className="space-y-6 px-4">
       <h2 className="text-2xl font-bold">Dashboard</h2>
-      <p className="text-muted-foreground">Welcome back, {parsedUser.firstName}</p>
+      <p className="text-muted-foreground">
+        Welcome back, {parsedUser.firstName}
+      </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
@@ -84,18 +90,21 @@ export default function Dashboard() {
           { title: "Pending", value: totalPending, icon: Clock },
           { title: "Total invoices", value: invoiceCount, icon: FileText },
           { title: "Total Learners", value: learnersCount, icon: FileText },
-        ].map(({ title, value, icon: Icon }) => (
-          <Card key={title} className="bg-accent p-2 rounded-md">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-base">
-                <Icon size={24} /> {title}
-              </CardTitle>
-            </CardHeader>
+        ].map(({ title, value, icon: IconComponent }) => {
+          const Icon = IconComponent;
+          return (
+            <Card key={title} className="bg-accent p-2 rounded-md">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <Icon size={24} /> {title}
+                </CardTitle>
+              </CardHeader>
             <CardContent className="bg-card px-3 py-6 h-[96px] rounded-md">
-             <p className="text-sm text-center font-semibold">
-                {(title === "Collected" || title === "Pending") ? `$${value}` : value}
+              <p className="text-sm text-center font-semibold">
+                {title === "Collected" || title === "Pending"
+                  ? `$${value}`
+                  : value}
               </p>
-
             </CardContent>
           </Card>
         ))}
@@ -111,7 +120,13 @@ export default function Dashboard() {
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={revenueData}>
                     <defs>
-                      <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+                      <linearGradient
+                        id="barGradient"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
                         <stop offset="0%" stopColor="#01589A" />
                         <stop offset="100%" stopColor="#D0E6F7" />
                       </linearGradient>
@@ -169,7 +184,9 @@ export default function Dashboard() {
                           <p className="font-medium">
                             {inv.firstName} {inv.lastName}
                           </p>
-                          <p className="text-sm text-muted-foreground">{inv.role}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {inv.role}
+                          </p>
                         </div>
                       </div>
                       <p className="font-semibold">${inv.amount}</p>

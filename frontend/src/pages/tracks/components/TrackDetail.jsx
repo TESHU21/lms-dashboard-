@@ -3,6 +3,7 @@ import DescriptionStacksSection from "./Description";
 import { useParams } from "react-router-dom";
 import { useCourse } from "@/context/CourseContext";
 import TrackDetailCard from "./TrackDetailCard";
+import { setPageSEO } from "@/utils/seo";
 const TrackDetail = () => {
   const { id: trackId } = useParams();
   const { getSingleTrack, singleTrack, setSingleTrack } = useCourse();
@@ -25,6 +26,17 @@ const TrackDetail = () => {
 
     fetchSingleTrack(trackId);
   }, [getSingleTrack, setSingleTrack, trackId]);
+
+  useEffect(() => {
+    if (singleTrack?.name) {
+      setPageSEO({
+        title: singleTrack.name,
+        description:
+          singleTrack.description ||
+          `Details for the ${singleTrack.name} track.`,
+      });
+    }
+  }, [singleTrack]);
 
   return (
     <div className="flex flex-col px-30 gap-8">
