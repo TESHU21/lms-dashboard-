@@ -1,70 +1,80 @@
-import React, { useState, useEffect } from 'react';
-import CourseCard from './components/CourseCard';
-// import { courses } from './components/data'; // You might not need this if you're fetching from an API
-import TrackHeader from './components/TrackHeader';
-import DescriptionStacksSection from './components/Description'; // Not used in the provided snippet
-import CourseHeader from '../courses/components/CourseHeader'; // Not used in the provided snippet
-import { useCourse } from '../../context/CourseContext';
-import TrackFormDialog from './components/TrackFormDialog';
-
+import React, {
+  useCallback,
+  useDeferredValue,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import CourseCard from "./components/CourseCard";
+import TrackHeader from "./components/TrackHeader";
+import { useCourse } from "../../context/CourseContext";
+import TrackFormDialog from "./components/TrackFormDialog";
 
 const Tracks = () => {
   const [searchValue, setSearchValue] = useState("");
-  const [open,setOpen]=useState(false)
-  const [filteredTracks, setFilteredTracks] = useState([]); // Initialize as an empty array
-  const { getallTracks, tracks, setTracks,createTrack } = useCourse();
+  const [open, setOpen] = useState(false);
+  const { getallTracks, tracks, setTracks, createTrack } = useCourse();
+  const deferredSearchValue = useDeferredValue(searchValue);
 
-  // Effect to fetch tracks when the component mounts
   useEffect(() => {
     const fetchTracks = async () => {
       try {
         const response = await getallTracks();
-        setTracks(response?.data.tracks || []); // Ensure it's an array, even if empty
-        console.log("Fetched Tracks Response:", response);
+        setTracks(response?.data.tracks || []);
       } catch (error) {
-        console.error("Error fetching tracks:", error); // Use console.error for errors
+        console.error("Error fetching tracks:", error);
       }
     };
     fetchTracks();
-  }, [ setTracks]); 
+  }, [getallTracks, setTracks]);
 
-  useEffect(() => {
-    if (tracks) { // Ensure tracks is not null before filtering
-      const result = tracks.filter((track) =>
-        track.name.toLowerCase().includes(searchValue.toLowerCase())
-      );
-      setFilteredTracks(result);
-    }
-  }, [tracks, searchValue]); 
+  const filteredTracks = useMemo(() => {
+    if (!Array.isArray(tracks)) return [];
 
-const handleCreateTrack=async(data)=>{
-try{
-  const response=await createTrack(data)
-  setTracks(response?.data.tracks )
-  setOpen(false)
+    const q = (deferredSearchValue ?? "").trim().toLowerCase();
+    if (!q) return tracks;
 
-  return response
-}
-catch(error){
-  throw error
-}
+    return tracks.filter((track) =>
+      (track?.name ?? "").toLowerCase().includes(q),
+    );
+  }, [tracks, deferredSearchValue]);
 
-}
+  const handleCreateTrack = useCallback(
+    async (data) => {
+      try {
+        const response = await createTrack(data);
+        setTracks(response?.data.tracks);
+        setOpen(false);
+        return response;
+      } catch (error) {
+        throw error;
+      }
+    },
+    [createTrack, setTracks],
+  );
 
   return (
     <div className="flex flex-col  items-center px-25">
-      <h6 className='font-semibold text-[20px] leading-8 mb-[36px]'>Courses</h6>
-      <TrackHeader searchValue={searchValue} setSearchValue={setSearchValue} setOpen={setOpen}/>
-      <div className='grid grid-cols-1 md:grid-cols-3 gap-8 '>
-        {filteredTracks.length > 0 ? ( 
-          filteredTracks.map(course => (
+      <h6 className="font-semibold text-[20px] leading-8 mb-[36px]">Courses</h6>
+      <TrackHeader
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
+        setOpen={setOpen}
+      />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 ">
+        {filteredTracks.length > 0 ? (
+          filteredTracks.map((course) => (
             <CourseCard key={course._id} course={course} />
           ))
         ) : (
-          <p>No courses found.</p> 
+          <p>No courses found.</p>
         )}
       </div>
-      <TrackFormDialog open={open} setOpen={setOpen} onSubmit={handleCreateTrack}/>
+      <TrackFormDialog
+        open={open}
+        setOpen={setOpen}
+        onSubmit={handleCreateTrack}
+      />
     </div>
   );
 };

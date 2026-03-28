@@ -68,13 +68,13 @@ export const columns = ({ handleConfirm, handleEdit, handleDelete }) => [
     header: () => <div className="text-center">Status</div>,
     cell: ({ row }) => {
       const status = row.getValue("status");
-      const isPaid = status === "Paid";
+      const isPaid = status === "paid";
       return (
         <div className="flex justify-center min-w-[100px]">
-          <Badge variant={isPaid ? "success" : "secondary"}>
+          <Badge variant={isPaid ? "success " : "secondary"}>
             {isPaid ? (
               <>
-                Paid <Check className="ml-1 w-4 h-4" />
+                Paid <Check className="ml-1 w-4 h-4 bg-green-500" />
               </>
             ) : (
               <>

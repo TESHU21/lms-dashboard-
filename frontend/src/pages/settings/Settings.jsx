@@ -19,7 +19,9 @@ const Settings = () => {
 
     // Placeholder for profile picture URL/File
     const [profilePicture, setProfilePicture] = useState(null); // Could be a file object or URL
-
+    const user =sessionStorage.getItem("User")
+    const parsedUser=JSON.parse(user)
+console.log("users",parsedUser)
     const handleProfileImageUpload = (event) => {
         // Handle file upload logic here
         const file = event.target.files[0];
@@ -95,7 +97,7 @@ const Settings = () => {
                                 id="first-name"
                                 type="text"
                                 placeholder="First name"
-                                value={firstName}
+                                value={parsedUser?.firstName}
                                 onChange={(e) => setFirstName(e.target.value)}
                                 className="w-full"
                             />
@@ -106,7 +108,7 @@ const Settings = () => {
                                 id="last-name"
                                 type="text"
                                 placeholder="Last name"
-                                value={lastName}
+                                value={parsedUser?.lastName}
                                 onChange={(e) => setLastName(e.target.value)}
                                 className="w-full"
                             />
@@ -131,7 +133,7 @@ const Settings = () => {
                                 id="email"
                                 type="email"
                                 placeholder="johndoe@gmail.com"
-                                value={email}
+                                value={parsedUser?.email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="w-full pl-10"
                             />

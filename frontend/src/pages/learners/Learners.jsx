@@ -9,7 +9,7 @@ import DeleteLearnerDialog from './components/DeleteLearnerDialog'
 import LearnerFormDialog from './components/LearnerFormDialog'
 const Learners = () => {
   const [data,setData]=useState([])
-  const {getLearner,deleteLearner}=useCourse()
+  const {getLearner,deleteLearner,createLearner}=useCourse()
   const [columnFilters, setColumnFilters] = useState([]);
   const [sorting, setSorting] = useState([]); // New state for sorting
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false); 
@@ -27,9 +27,9 @@ const [isEditLearnerFormOpen, setIsEditLearnerFormOpen] = useState(false);   // 
     const fetchLearners=async()=>{
       try{
         const response=await getLearner()
-        const learnersData=response.data.learners;
-        console.log(learnersData)
-        const formattedLearners=learnersData.map((learner)=>{
+        const learnersData=response?.data?.learners;
+        console.log("response",response)
+        const formattedLearners=learnersData?.map((learner)=>{
           return{
             id: learner._id,
             firstName: learner.firstName,
@@ -97,7 +97,18 @@ const [isEditLearnerFormOpen, setIsEditLearnerFormOpen] = useState(false);   // 
  
   }
   const handleCreateLearner=async(data)=>{
-    console.log(data)
+    console.log("Submittttting cost",data)
+   
+      try{
+        const resp=await createLearner(data)
+        console.log("Leareners Created",resp)
+      }
+      catch(error){
+        console.log(error)
+      }
+
+    
+
 
   }
 
@@ -114,7 +125,7 @@ const [isEditLearnerFormOpen, setIsEditLearnerFormOpen] = useState(false);   // 
        onSubmit={handleCreateLearner}
        />
       <DataTable
-        data={data}
+        data={data || []}
         columns={columns({
           handleViewDetails, // Pass the new handler
           handleEdit,
