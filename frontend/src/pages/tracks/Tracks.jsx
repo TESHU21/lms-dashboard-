@@ -51,11 +51,13 @@ const Tracks = () => {
   const handleCreateTrack = useCallback(
     async (data) => {
       const response = await createTrack(data);
-      setTracks(response?.data.tracks);
+      // Refetch tracks after creation
+      const refetch = await getallTracks();
+      setTracks(refetch?.data.tracks || []);
       setOpen(false);
       return response;
     },
-    [createTrack, setTracks],
+    [createTrack, getallTracks, setTracks],
   );
 
   return (
