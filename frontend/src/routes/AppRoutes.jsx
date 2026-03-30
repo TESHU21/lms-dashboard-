@@ -52,103 +52,26 @@ const AppRoutes = () => {
 
           <Route path="password" element={<PasswordRest />} />
 
-          <Route path="/app" element={<Layout />}>
-            <Route
-              index
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="invoices"
-              element={
-                <ProtectedRoute>
-                  <Invoices />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="learners"
-              element={
-                <ProtectedRoute>
-                  <Learners />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="report"
-              element={
-                <ProtectedRoute>
-                  <Report />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="tracks"
-              element={
-                <ProtectedRoute>
-                  <Tracks />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="tracks/:id"
-              element={
-                <ProtectedRoute>
-                  <TrackDetail />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="courses"
-              element={
-                <ProtectedRoute>
-                  <Courses />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="create-learner"
-              element={
-                <ProtectedRoute>
-                  <CreateLearner />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="create-invoice"
-              element={
-                <ProtectedRoute>
-                  <CreateInvoices />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="track-update"
-              element={
-                <ProtectedRoute>
-                  <TrackUpdate />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="settings"
-              element={
-                <ProtectedRoute>
-                  <Settings />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="logout"
-              element={
-                <ProtectedRoute>
-                  <Logout />
-                </ProtectedRoute>
-              }
-            />
+          <Route
+            path="/app"
+            element={
+              <ProtectedRoute>
+                <Layout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Dashboard />} />
+            <Route path="invoices" element={<Invoices />} />
+            <Route path="learners" element={<Learners />} />
+            <Route path="report" element={<Report />} />
+            <Route path="tracks" element={<Tracks />} />
+            <Route path="tracks/:id" element={<TrackDetail />} />
+            <Route path="courses" element={<Courses />} />
+            <Route path="create-learner" element={<CreateLearner />} />
+            <Route path="create-invoice" element={<CreateInvoices />} />
+            <Route path="track-update" element={<TrackUpdate />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="logout" element={<Logout />} />
           </Route>
         </Routes>
       </Suspense>
