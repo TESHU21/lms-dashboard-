@@ -64,7 +64,11 @@ export const CourseProvider = ({ children }) => {
   }, []);
   // Get Learners
   const getLearner = useCallback(async () => {
-    return axiosInstance.get("/learners");
+    return axiosInstance.get("/learners", {
+      params: {
+        _t: Date.now(), // Cache-busting parameter
+      },
+    });
   }, []);
   // Create Learners
   const createLearner = useCallback(async (data) => {

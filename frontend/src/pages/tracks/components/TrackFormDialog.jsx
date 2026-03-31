@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
+import { handleImageUpload } from "@/utils/cloudinary";
 const TrackFormDialog = ({
   open,
   setOpen,
@@ -28,29 +29,33 @@ const TrackFormDialog = ({
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const handleSubmit = async (data) => {
-    console.log(data.image);
-    const formData = new FormData();
-    formData.append("name", data.name);
-    formData.append("price", data.price);
-    formData.append("instructor", data.instructor);
-    formData.append("duration", data.duration);
-    formData.append("description", data.description);
-    console.log(data.image instanceof File); // Should be true
-
-    // ✅ Append file (make sure data.image is a File object, not base64 or object)
-    formData.append("image", data.image); // where data.image is from a file input
-    console.log("is File?", data.image instanceof File);
+    console.log("Submitting track data:", data);
 
     try {
-      console.log("starting");
       setIsLoading(true);
-      await onSubmit(formData);
+      setErrorMessage("");
+
+      // Handle image upload using Cloudinary utility
+      const imageUrl = await handleImageUpload(data.image);
+
+      // Prepare final data as JSON
+      const finalData = {
+        name: data.name,
+        price: data.price,
+        instructor: data.instructor,
+        duration: data.duration,
+        description: data.description,
+        image: imageUrl, // Send URL string from Cloudinary
+      };
+
+      console.log("Submitting data to backend:", finalData);
+      await onSubmit(finalData);
       setSuccessMessage(
         `${mode === "create" ? "Created" : "Updated"} successfully`,
       );
     } catch (error) {
       console.log(error);
-      setErrorMessage(error.response.data.errors[0]);
+      setErrorMessage(error.response?.data?.errors?.[0] || error.message);
     } finally {
       setIsLoading(false);
     }

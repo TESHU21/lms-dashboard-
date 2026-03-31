@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import FormComp from '@/components/FormComp';
+import React, { useState } from "react";
+import FormComp from "@/components/FormComp";
 import {
   Dialog,
   DialogContent,
@@ -8,38 +8,41 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { LearnerSchema, initialValues, fields } from "./data";
+import { handleImageUpload } from "@/utils/cloudinary";
 
-const LearnerFormDialog = ({ open, setOpen, mode = "create", initialData, onSubmit }) => {
+const LearnerFormDialog = ({
+  open,
+  setOpen,
+  mode = "create",
+  initialData,
+  onSubmit,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (data) => {
-    console.log("Data",data)
-    // const formData = new FormData();
-    // formData.append("firstName", data.firstName);
-    // formData.append("lastName", data.lastName);
-    // formData.append("email", data.email);
-    // formData.append("phone", data.phone);
-    // formData.append("location", data.location);
-    // formData.append("disabled", data.disabled.toString()); // boolean → string
-    // // Remove or add duration field in schema/fields as needed
-    // // formData.append("duration", data.duration);
-    // formData.append("amount", data.amount);
-    // formData.append("description", data.description);
-
-    // if (data.image) {
-    //   formData.append("image", data.image);
-    // }
+    console.log("Submitting learner data:", data);
 
     try {
       setIsLoading(true);
       setErrorMessage("");
       setSuccessMessage("");
 
-      const response = await onSubmit(data);
+      // Handle image upload using Cloudinary utility
+      const imageUrl = await handleImageUpload(data.image);
 
-      setSuccessMessage(`${mode === "create" ? "Created" : "Updated"} successfully`);
+      // Prepare final data with image URL
+      const finalData = {
+        ...data,
+        image: imageUrl, // Send URL string from Cloudinary
+      };
+
+      const response = await onSubmit(finalData);
+
+      setSuccessMessage(
+        `${mode === "create" ? "Created" : "Updated"} successfully`,
+      );
       console.log(response);
     } catch (error) {
       console.error(error);
@@ -61,7 +64,9 @@ const LearnerFormDialog = ({ open, setOpen, mode = "create", initialData, onSubm
           <DialogTitle className="flex items-center text-black space-x-2 m-4">
             <span className="text-gray-500">Learner</span>
             <div className="border-l border-gray-300 h-5"></div>
-            <span className="font-semibold">{mode === "create" ? "Create Learner" : "Update Learner"}</span>
+            <span className="font-semibold">
+              {mode === "create" ? "Create Learner" : "Update Learner"}
+            </span>
           </DialogTitle>
         </DialogHeader>
 

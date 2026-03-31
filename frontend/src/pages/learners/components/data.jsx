@@ -1,90 +1,92 @@
 import { z } from "zod";
 import { CiUser } from "react-icons/ci";
-import { GraduationCap, Mail, MapPin, User, Phone, DollarSign, Image, PenIcon } from "lucide-react";
+import {
+  GraduationCap,
+  Mail,
+  MapPin,
+  User,
+  Phone,
+  DollarSign,
+  Image,
+  PenIcon,
+} from "lucide-react";
 
 export const LearnerSchema = z.object({
-  firstName: z.string().min(2, { message: "Name should be 2 or more characters long" }),
-  lastName: z.string().min(2, { message: "Name should be 2 or more characters long" }),
-  email: z.string().email({ message: "Invalid email address" }),
-
-  program: z.enum(['Addis Ababa', 'Dire Dawa']),
-  gender: z.enum(['male', 'female']),
-
-  phone: z.string().regex(
-    /^\+?[1-9]\d{7,14}$/,
-    "Enter a valid international phone number (e.g., +251912345678)"
-  ),
-
-  location: z.enum(['Addis Ababa', 'Dire Dawa']),
-
-  disabled: z.boolean(),
-
-  amount: z.preprocess(
-    val => val === "" ? undefined : Number(val),
-    z.number().positive("Amount must be greater than 0").optional()
-  ),
-
   image: z
-    .instanceof(File)
-    .refine(file => file.type.startsWith("image/"), {
-      message: "Only image files are allowed",
-    })
-    .refine(file => file.size <= 5 * 1024 * 1024, {
-      message: "Image must be less than 5MB",
+    .union([
+      z.string().url().optional(),
+      z.instanceof(File).optional(),
+      z.null(),
+    ])
+    .optional(),
+  firstName: z.string().min(1, { message: "First name is required" }),
+  lastName: z.string().min(1, { message: "Last name is required" }),
+  email: z.string().email({ message: "Invalid email address" }),
+  course: z.string().min(1, { message: "Course is required" }),
+  gender: z.enum(["male", "female", "other"]),
+  location: z.string().min(1, { message: "Location is required" }),
+  phone: z.string().min(1, { message: "Phone number is required" }),
+  disability: z.string().optional(),
+  created_by: z
+    .object({
+      role: z.string(),
+      email: z.string(),
     })
     .optional(),
 
-  description: z.string()
-    .min(5, "Description must be at least 5 characters")
-    .max(500, "Description must be less than 500 characters"),
+  description: z.string().min(1).optional(),
+  amount: z.number().positive().optional(),
 });
 
 export const initialValues = {
   firstName: "",
   lastName: "",
   email: "",
-  program: "Addis Ababa",
+  course: "",
   gender: "male",
   phone: "",
-  location: "Addis Ababa",
-  disabled: false,
-  amount: "",
-  image: null,
-  description: ""
+  location: "",
+  disability: "",
+  image: "",
+  description: "",
+  amount: undefined,
 };
 
 export const fields = [
+  {
+    name: "image",
+    placeholder: "Upload Image",
+    icon: Image,
+    type: "file",
+    className: "col-span-2",
+  },
   {
     name: "firstName",
     placeholder: "First Name",
     icon: CiUser,
     type: "text",
-    className: "col-span-2 md:col-span-1"
+    className: "col-span-2 md:col-span-1",
   },
   {
     name: "lastName",
     placeholder: "Last Name",
     icon: CiUser,
     type: "text",
-    className: "col-span-2 md:col-span-1"
+    className: "col-span-2 md:col-span-1",
   },
   {
     name: "email",
     placeholder: "Email",
     icon: Mail,
     type: "email",
-    className: "col-span-2"
+    className: "col-span-2",
   },
   {
-    name: "program",
-    placeholder: "Select program",
+    name: "course",
+    placeholder: "Course",
     icon: GraduationCap,
-    type: "select",
-    options: [
-      { name: "Addis Ababa", value: "Addis Ababa" },
-      { name: "Dire Dawa", value: "Dire Dawa" }
-    ],
-    className: "col-span-2 md:col-span-1"
+    type: "text",
+    className: "col-span-2 md:col-span-1",
   },
   {
     name: "gender",
@@ -93,58 +95,45 @@ export const fields = [
     type: "select",
     options: [
       { name: "Male", value: "male" },
-      { name: "Female", value: "female" }
+      { name: "Female", value: "female" },
+      { name: "Other", value: "other" },
     ],
-    className: "col-span-2 md:col-span-1"
+    className: "col-span-2 md:col-span-1",
   },
   {
     name: "location",
     placeholder: "Location",
     icon: MapPin,
-    type: "select",
-    options: [
-      { name: "Addis Ababa", value: "Addis Ababa" },
-      { name: "Dire Dawa", value: "Dire Dawa" }
-    ],
-    className: "col-span-2 md:col-span-1"
+    type: "text",
+    className: "col-span-2 md:col-span-1",
   },
   {
     name: "phone",
     placeholder: "Phone",
     icon: Phone,
     type: "text",
-    className: "col-span-2 md:col-span-1"
+    className: "col-span-2 md:col-span-1",
   },
   {
-    name: "disabled",
-    placeholder: "Disabled",
+    name: "disability",
+    placeholder: "Disability (optional)",
     icon: User,
-    type: "select",
-    options: [
-      { name: "True", value: true },
-      { name: "False", value: false }
-    ],
-    className: "col-span-2"
+    type: "text",
+    className: "col-span-2",
   },
   {
     name: "amount",
     placeholder: "$ Amount",
     icon: DollarSign,
-    type: "text",
-    className: "col-span-2"
+    type: "number",
+    className: "col-span-2",
   },
-  {
-    name: "image",
-    placeholder: "Upload Image",
-    icon: Image,
-    type: "file",
-    className: "col-span-2"
-  },
+
   {
     name: "description",
     placeholder: "Description",
     icon: PenIcon,
     type: "textarea",
-    className: "col-span-2"
-  }
+    className: "col-span-2",
+  },
 ];
