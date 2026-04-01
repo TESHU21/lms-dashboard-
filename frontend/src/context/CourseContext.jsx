@@ -31,6 +31,10 @@ export const CourseProvider = ({ children }) => {
   const updateCourse = useCallback(async (data, id) => {
     return axiosInstance.put(`/courses/${id}`, data);
   }, []);
+  // delete course
+  const deleteCourse = useCallback(async (id) => {
+    return axiosInstance.delete(`/courses/${id}`);
+  }, []);
 
   // Get all Tracks
   const getallTracks = useCallback(async () => {
@@ -93,6 +97,7 @@ export const CourseProvider = ({ children }) => {
       getSingleCourses,
       createCourse,
       updateCourse,
+      deleteCourse,
       getallTracks,
       getSingleTrack,
       tracks,
@@ -147,6 +152,7 @@ export const CourseProvider = ({ children }) => {
       tracksRefreshKey,
       updateCourse,
       updateTrack,
+      deleteCourse,
     ],
   );
 
