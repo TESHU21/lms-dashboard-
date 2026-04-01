@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
-import { handleImageUpload } from "@/utils/cloudinary";
 const TrackFormDialog = ({
   open,
   setOpen,
@@ -35,21 +34,19 @@ const TrackFormDialog = ({
       setIsLoading(true);
       setErrorMessage("");
 
-      // Handle image upload using Cloudinary utility
-      const imageUrl = await handleImageUpload(data.image);
+      // Build FormData for multipart upload (backend will handle image upload and return URL)
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("price", data.price);
+      formData.append("instructor", data.instructor);
+      formData.append("duration", data.duration);
+      formData.append("description", data.description);
+      if (data.image instanceof File) {
+        formData.append("image", data.image);
+      }
 
-      // Prepare final data as JSON
-      const finalData = {
-        name: data.name,
-        price: data.price,
-        instructor: data.instructor,
-        duration: data.duration,
-        description: data.description,
-        image: imageUrl, // Send URL string from Cloudinary
-      };
-
-      console.log("Submitting data to backend:", finalData);
-      await onSubmit(finalData);
+      console.log("Submitting FormData to backend:", formData);
+      await onSubmit(formData); // Pass FormData directly
       setSuccessMessage(
         `${mode === "create" ? "Created" : "Updated"} successfully`,
       );

@@ -41,8 +41,10 @@ export const CourseProvider = ({ children }) => {
     return axiosInstance.get(`/tracks/${trackId}`);
   }, []);
   // Create Track
-  const createTrack = useCallback(async (data) => {
-    return axiosInstance.post("/tracks", data);
+  const createTrack = useCallback(async (formData) => {
+    return axiosInstance.post("/tracks", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
   }, []);
   // Update Track
   const updateTrack = useCallback(async (data, id) => {
