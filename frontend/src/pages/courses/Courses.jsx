@@ -18,6 +18,7 @@ const Courses = () => {
   const [loadingTracks, setLoadingTracks] = useState(true);
   const [errorTracks, setErrorTracks] = useState(null);
   const [initialData, setInitialData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const {
     getCourses,
@@ -31,6 +32,7 @@ const Courses = () => {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
+        setIsLoading(true);
         const response = await getCourses();
         console.log(response);
         const courseData = response.data.courses;
@@ -52,6 +54,8 @@ const Courses = () => {
         setData(formattedCourses);
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchCourse();
@@ -188,18 +192,24 @@ const Courses = () => {
         />
 
         {/* The DataTable component */}
-        <DataTable
-          data={data}
-          columns={columns({
-            handleViewDetails,
-            handleEdit,
-            handleDelete,
-          })}
-          sorting={sorting}
-          setSorting={setSorting}
-          columnFilters={columnFilters}
-          setColumnFilters={setColumnFilters}
-        />
+        {isLoading ? (
+          <div className="flex items-center justify-center h-32">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-primary"></div>
+          </div>
+        ) : (
+          <DataTable
+            data={data}
+            columns={columns({
+              handleViewDetails,
+              handleEdit,
+              handleDelete,
+            })}
+            sorting={sorting}
+            setSorting={setSorting}
+            columnFilters={columnFilters}
+            setColumnFilters={setColumnFilters}
+          />
+        )}
         <CourseFormDialog
           initialData={initialData}
           formFieldsWithDynamicOptions={formFieldsWithDynamicOptions}
