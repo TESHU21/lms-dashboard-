@@ -173,9 +173,6 @@ const Courses = () => {
     return dynamicFields;
   }, [tracks, loadingTracks, errorTracks]); // Re-memoize if tracks or loading/error states change
 
-  console.log("form fields", formFieldsWithDynamicOptions);
-  console.log("form fields", tracks);
-
   return (
     <div className="flex flex-col justify-center items-center">
       <div className="w-full px-30">
