@@ -17,15 +17,25 @@ import {
 // Create a new learner
 export const createLearner = async (req, res) => {
   try {
-    const validatedData = validateLearner(req.body);
-    // Check if the learner exists
-    const learner = await Learner.findOne({ email: validatedData.email });
-    const user = await User.findOne({ email: validatedData.email });
-    if (import.meta.env.DEV) console.log(user);
-    if (learner) {
-      return res
-        .status(BAD_REQUEST)
-        .json({ success: false, message: "Learner already exist" });
+    const payload = { ...req.body };
+
+    if (
+      payload.image === "" ||
+      payload.image === "undefined" ||
+      payload.image === "null"
+    ) {
+      delete payload.image;
+    }
+
+    if (
+      payload.amount !== undefined &&
+      payload.amount !== null &&
+      payload.amount !== ""
+    ) {
+      const asNumber = Number(payload.amount);
+      payload.amount = Number.isNaN(asNumber) ? undefined : asNumber;
+    } else {
+      delete payload.amount;
     }
 
     let image = null;
@@ -38,12 +48,26 @@ export const createLearner = async (req, res) => {
       image = getOptimizedCloudinaryUrl(uploadResult?.public_id, {
         width: 400,
       });
-      if (!profileImage) {
+      if (!image) {
         return res
           .status(BAD_REQUEST)
           .json({ success: false, message: "Profile image upload failed" });
       }
     }
+
+    if (image) payload.image = image;
+
+    const validatedData = validateLearner(payload);
+    // Check if the learner exists
+    const learner = await Learner.findOne({ email: validatedData.email });
+    const user = await User.findOne({ email: validatedData.email });
+    if (import.meta.env.DEV) console.log(user);
+    if (learner) {
+      return res
+        .status(BAD_REQUEST)
+        .json({ success: false, message: "Learner already exist" });
+    }
+
     const password = generateRandomPassword();
     let hashedPassword = "";
     if (password) {
@@ -55,7 +79,7 @@ export const createLearner = async (req, res) => {
     //create new Learner
     const newLearner = new Learner({
       ...validatedData,
-      image,
+      image: validatedData.image || null,
       created_by: {
         role: req.role,
         user_id: req.userId,
