@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { DataTable } from "@/components/data-table";
 import { columns } from "./components/columns";
 import LearnerHeader from "./LearnersHeader";
@@ -9,7 +9,8 @@ import DeleteLearnerDialog from "./components/DeleteLearnerDialog";
 import LearnerFormDialog from "./components/LearnerFormDialog";
 const Learners = () => {
   const [data, setData] = useState([]);
-  const { getLearner, deleteLearner, createLearner } = useCourse();
+  const { getLearner, deleteLearner, createLearner, getCourses } = useCourse();
+  const [courses, setCourses] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [sorting, setSorting] = useState([]); // New state for sorting
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
@@ -19,7 +20,7 @@ const Learners = () => {
   const [isCreateLearnerFormOpen, setIsCreateLearnerFormOpen] = useState(false); // For "Create Learner" dialog
   const [isEditLearnerFormOpen, setIsEditLearnerFormOpen] = useState(false); // For "Edit Learner" dialog
 
-  const fetchLearners = async () => {
+  const fetchLearners = useCallback(async () => {
     try {
       const response = await getLearner();
       const learnersData = response?.data?.learners;
@@ -51,10 +52,35 @@ const Learners = () => {
       console.log(error);
       // Optionally show an error message to the user
     }
-  };
+  }, [getLearner]);
+
+  const fetchCourses = useCallback(async () => {
+    try {
+      const response = await getCourses();
+      const coursesData = response?.data?.courses;
+      const formattedCourses = coursesData?.map((course) => ({
+        id: course._id,
+        title: course.title,
+        description: course.description,
+        image: course.image,
+        createdAt: course.createdAt,
+        trackName: course.track?.name || "",
+        trackDescription: course.track?.description || "",
+        trackDuration: course.track?.duration || "",
+        trackPrice: course.track?.price || "",
+        trackInstructor: course.track?.instructor || "",
+        trackImage: course.track?.image || "",
+      }));
+      setCourses(formattedCourses);
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    }
+  }, [getCourses]);
+
   useEffect(() => {
     fetchLearners();
-  }, [getLearner]); // Empty dependency array means this runs once on mount
+    fetchCourses();
+  }, [fetchLearners, fetchCourses]);
 
   const handleViewDetails = (learner) => {
     setIsDetailDialogOpen(true);
@@ -77,7 +103,6 @@ const Learners = () => {
   const confirmDelete = async (learnerId) => {
     try {
       const response = await deleteLearner(learnerId);
-      console.log(response);
       fetchLearners();
     } catch (error) {
       console.log(error);
@@ -88,22 +113,44 @@ const Learners = () => {
     }
   };
   const handleCreateLearner = async (data) => {
-    console.log("Submitting learner data", data);
     try {
-      const resp = await createLearner(data);
-      console.log("Learner Created", resp);
+      // Create the learner via API (backend handles Cloudinary upload)
+      const response = await createLearner(data);
 
-      // Refresh the learners list
-      await fetchLearners();
+      // Format the new learner data to match the existing data structure
+      const newLearner = {
+        id: response.data.learner._id,
+        firstName: response.data.learner.firstname,
+        lastName: response.data.learner.lastname,
+        name: `${response.data.learner.firstname || ""} ${response.data.learner.lastname || ""}`,
+        email: response.data.learner.email,
+        role: response.data.learner.role,
+        contact: response.data.learner.contact,
+        date: response.data.learner.createdAt,
+        description: response.data.learner.description,
+        disabled: response.data.learner.disabled,
+        isVerified: response.data.learner.isVerified,
+        lastLogin: response.data.learner.lastLogin,
+        location: response.data.learner.location,
+        image:
+          response.data.learner.profileImage?.secure_url ||
+          response.data.learner.profileImage,
+        updatedAt: response.data.learner.updatedAt,
+        amount: response.data.learner.amount || 0,
+        gender: response.data.learner.gender || "N/A",
+      };
+
+      // Add the new learner to the existing data
+      setData((prev) => [...prev, newLearner]);
 
       // Close the create dialog
       setIsCreateLearnerFormOpen(false);
 
-      // Show success message (optional)
-      console.log("Learner created successfully");
+      return response;
     } catch (error) {
       console.error("Error creating learner:", error);
-      // Handle error - could show error message to user
+      // Re-throw the error so the calling component can handle it
+      throw error;
     }
   };
 
@@ -122,6 +169,7 @@ const Learners = () => {
         open={isCreateLearnerFormOpen}
         onOpenChange={setIsCreateLearnerFormOpen}
         onSubmit={handleCreateLearner}
+        courses={courses}
       />
       <DataTable
         data={data || []}

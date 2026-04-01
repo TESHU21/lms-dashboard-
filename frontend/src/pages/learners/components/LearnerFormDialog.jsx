@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import FormComp from "@/components/FormComp";
 import {
   Dialog,
@@ -8,7 +8,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { LearnerSchema, initialValues, fields } from "./data";
-import { handleImageUpload } from "@/utils/cloudinary";
 
 const LearnerFormDialog = ({
   open,
@@ -16,10 +15,35 @@ const LearnerFormDialog = ({
   mode = "create",
   initialData,
   onSubmit,
+  courses,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  // Clear messages when dialog is closed
+  React.useEffect(() => {
+    if (!open) {
+      setSuccessMessage("");
+      setErrorMessage("");
+    }
+  }, [open]);
+
+  // Create dynamic form fields with course options
+  const dynamicFields = useMemo(() => {
+    const fieldsCopy = fields.map((field) => ({ ...field }));
+    const courseField = fieldsCopy.find((field) => field.name === "course");
+
+    if (courseField && courses) {
+      courseField.type = "select";
+      courseField.options = courses.map((course) => ({
+        value: course.id,
+        name: course.title,
+      }));
+    }
+
+    return fieldsCopy;
+  }, [courses]);
 
   const handleSubmit = async (data) => {
     console.log("Submitting learner data:", data);
@@ -29,16 +53,23 @@ const LearnerFormDialog = ({
       setErrorMessage("");
       setSuccessMessage("");
 
-      // Handle image upload using Cloudinary utility
-      const imageUrl = await handleImageUpload(data.image);
+      // Create processed data with proper types
+      const processedData = {};
 
-      // Prepare final data with image URL
-      const finalData = {
-        ...data,
-        image: imageUrl, // Send URL string from Cloudinary
-      };
+      Object.keys(data).forEach((key) => {
+        if (key === "image" && data[key] instanceof File) {
+          // Handle file upload separately if needed
+          processedData[key] = data[key];
+        } else if (key === "amount") {
+          // Convert amount to number
+          processedData[key] = data[key] ? Number(data[key]) : undefined;
+        } else if (data[key] !== null && data[key] !== undefined) {
+          processedData[key] = data[key];
+        }
+      });
 
-      const response = await onSubmit(finalData);
+      // Send as JSON with proper data types
+      const response = await onSubmit(processedData);
 
       setSuccessMessage(
         `${mode === "create" ? "Created" : "Updated"} successfully`,
@@ -74,7 +105,7 @@ const LearnerFormDialog = ({
           <FormComp
             schema={LearnerSchema}
             initialValues={initialData || initialValues}
-            fields={fields}
+            fields={dynamicFields}
             onSubmit={handleSubmit}
             isLoading={isLoading}
             errorMessage={errorMessage}

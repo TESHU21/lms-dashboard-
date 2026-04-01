@@ -45,7 +45,6 @@ const TrackFormDialog = ({
         formData.append("image", data.image);
       }
 
-      console.log("Submitting FormData to backend:", formData);
       await onSubmit(formData); // Pass FormData directly
       setSuccessMessage(
         `${mode === "create" ? "Created" : "Updated"} successfully`,

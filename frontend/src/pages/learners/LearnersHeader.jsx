@@ -1,6 +1,6 @@
-import React,{useState} from 'react';
-import { Search, Plus } from 'lucide-react'; // ChevronDown and CustomSelect are no longer needed
-import LearnerFormDialog from './components/LearnerFormDialog';
+import React from "react";
+import { Search, Plus } from "lucide-react"; // ChevronDown and CustomSelect are no longer needed
+import LearnerFormDialog from "./components/LearnerFormDialog";
 import {
   Select,
   SelectContent,
@@ -10,17 +10,25 @@ import {
 } from "@/components/ui/select";
 // import CustomSelect from '@/components/CustomSelect'; // NO LONGER NEEDED
 
-const LearnerHeader = ({ columnFilters, setColumnFilters, sorting,setSorting,open,onOpenChange,onSubmit }) => {
-
+const LearnerHeader = ({
+  columnFilters,
+  setColumnFilters,
+  sorting,
+  setSorting,
+  open,
+  onOpenChange,
+  onSubmit,
+  courses,
+}) => {
   // Handler for sorting selection (only for isVerified)
   const handleSortChange = (value) => {
-    if (value === 'reset') {
+    if (value === "reset") {
       setSorting([]); // Clear all sorting
       return;
     }
     // The value will be 'isVerified_asc' or 'isVerified_desc'
-    const [id, order] = value.split('_');
-    setSorting([{ id: 'isVerified', desc: order === 'desc' }]);
+    const [, order] = value.split("_");
+    setSorting([{ id: "isVerified", desc: order === "desc" }]);
   };
 
   // Handler for search filter (for learner name, assumed to be 'firstName' accessorKey for filtering)
@@ -29,12 +37,17 @@ const LearnerHeader = ({ columnFilters, setColumnFilters, sorting,setSorting,ope
     setColumnFilters((prev) => {
       // Targeting 'firstName' accessorKey for filtering for the name search input
       const targetColumnId = "firstName";
-      const existingFilterIndex = prev.findIndex((f) => f.id === targetColumnId);
+      const existingFilterIndex = prev.findIndex(
+        (f) => f.id === targetColumnId,
+      );
 
       if (filterValue) {
         if (existingFilterIndex !== -1) {
           const updatedFilters = [...prev];
-          updatedFilters[existingFilterIndex] = { id: targetColumnId, value: filterValue };
+          updatedFilters[existingFilterIndex] = {
+            id: targetColumnId,
+            value: filterValue,
+          };
           return updatedFilters;
         } else {
           return [...prev, { id: targetColumnId, value: filterValue }];
@@ -58,9 +71,7 @@ const LearnerHeader = ({ columnFilters, setColumnFilters, sorting,setSorting,ope
           <input
             type="text"
             placeholder="Filter By First Name"
-            value={
-              columnFilters.find((f) => f.id === "firstName")?.value || ""
-            }
+            value={columnFilters.find((f) => f.id === "firstName")?.value || ""}
             onChange={handleSearchFilterChange}
             name="search"
             id="search-learners"
@@ -69,14 +80,16 @@ const LearnerHeader = ({ columnFilters, setColumnFilters, sorting,setSorting,ope
         </div>
 
         {/* Sort by Select - ONLY FOR IS VERIFIED */}
-        <div className='flex items-center space-x-2'> {/* Removed mr-4 as it's the element before the button */}
+        <div className="flex items-center space-x-2">
+          {" "}
+          {/* Removed mr-4 as it's the element before the button */}
           {/* <label className='text-sm font-medium whitespace-nowrap'>Sort By:</label> */}
           <Select
             onValueChange={handleSortChange}
             value={
-              sorting.length > 0 && sorting[0].id === 'isVerified'
-                ? `${sorting[0].id}_${sorting[0].desc ? 'desc' : 'asc'}`
-                : 'reset'
+              sorting.length > 0 && sorting[0].id === "isVerified"
+                ? `${sorting[0].id}_${sorting[0].desc ? "desc" : "asc"}`
+                : "reset"
             }
           >
             <SelectTrigger className="w-[180px] !h-[48px] bg-accent">
@@ -85,8 +98,12 @@ const LearnerHeader = ({ columnFilters, setColumnFilters, sorting,setSorting,ope
             <SelectContent>
               <SelectItem value="reset">None</SelectItem>
               {/* Only 'isVerified' sorting options */}
-              <SelectItem value="isVerified_asc">Verification (No to Yes)</SelectItem>
-              <SelectItem value="isVerified_desc">Verified (Yes to No)</SelectItem>
+              <SelectItem value="isVerified_asc">
+                Verification (No to Yes)
+              </SelectItem>
+              <SelectItem value="isVerified_desc">
+                Verified (Yes to No)
+              </SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -96,14 +113,20 @@ const LearnerHeader = ({ columnFilters, setColumnFilters, sorting,setSorting,ope
         {/* Right section: Create learner button */}
         <button
           type="button"
-          onClick={()=>onOpenChange(true)}
+          onClick={() => onOpenChange(true)}
           className="inline-flex items-center px-4 py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sidebar hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ml-auto"
         >
           Create learner
           <Plus className="ml-2 -mr-1 h-5 w-5" aria-hidden="true" />
         </button>
       </div>
-      <LearnerFormDialog open={open} setOpen={onOpenChange} mode="create" onSubmit={onSubmit}/>
+      <LearnerFormDialog
+        open={open}
+        setOpen={onOpenChange}
+        mode="create"
+        onSubmit={onSubmit}
+        courses={courses}
+      />
     </div>
   );
 };

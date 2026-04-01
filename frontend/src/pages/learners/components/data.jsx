@@ -12,21 +12,14 @@ import {
 } from "lucide-react";
 
 export const LearnerSchema = z.object({
-  image: z
-    .union([
-      z.string().url().optional(),
-      z.instanceof(File).optional(),
-      z.null(),
-    ])
-    .optional(),
-  firstName: z.string().min(1, { message: "First name is required" }),
-  lastName: z.string().min(1, { message: "Last name is required" }),
+  image: z.any().optional(),
+  firstname: z.string().min(1, { message: "First name is required" }),
+  lastname: z.string().min(1, { message: "Last name is required" }),
   email: z.string().email({ message: "Invalid email address" }),
   course: z.string().min(1, { message: "Course is required" }),
   gender: z.enum(["male", "female", "other"]),
   location: z.string().min(1, { message: "Location is required" }),
   phone: z.string().min(1, { message: "Phone number is required" }),
-  disability: z.string().optional(),
   created_by: z
     .object({
       role: z.string(),
@@ -35,40 +28,42 @@ export const LearnerSchema = z.object({
     .optional(),
 
   description: z.string().min(1).optional(),
-  amount: z.number().positive().optional(),
+  amount: z.preprocess(
+    (val) => Number(val),
+    z.number().positive("Amount must be greater than 0"),
+  ),
 });
 
 export const initialValues = {
-  firstName: "",
-  lastName: "",
+  firstname: "",
+  lastname: "",
   email: "",
   course: "",
   gender: "male",
   phone: "",
   location: "",
-  disability: "",
   image: "",
   description: "",
-  amount: undefined,
+  amount: 0,
 };
 
 export const fields = [
   {
     name: "image",
-    placeholder: "Upload Image",
+    placeholder: "Upload Learner Profile Picture",
     icon: Image,
     type: "file",
     className: "col-span-2",
   },
   {
-    name: "firstName",
+    name: "firstname",
     placeholder: "First Name",
     icon: CiUser,
     type: "text",
     className: "col-span-2 md:col-span-1",
   },
   {
-    name: "lastName",
+    name: "lastname",
     placeholder: "Last Name",
     icon: CiUser,
     type: "text",
@@ -114,13 +109,7 @@ export const fields = [
     type: "text",
     className: "col-span-2 md:col-span-1",
   },
-  {
-    name: "disability",
-    placeholder: "Disability (optional)",
-    icon: User,
-    type: "text",
-    className: "col-span-2",
-  },
+
   {
     name: "amount",
     placeholder: "$ Amount",
