@@ -1,20 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  //
   content: [
-    "./app/**/*.{js,ts,jsx,tsx,mdx}", // Common for Next.js App Router
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}", // Common for Next.js Pages Router
-    "./components/**/*.{js,ts,jsx,tsx,mdx}", // Your UI components
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
-      // Define your custom colors here using CSS variables from index.css
       colors: {
-        // Your custom input success background
         "input-sucess": "var(--input-sucess)",
-        // Your custom input text color
         "input-text": "var(--input-text)",
-        // Map your @theme colors for use as Tailwind utilities
         background: "var(--background)",
         foreground: "var(--foreground)",
         card: "var(--card)",
@@ -46,10 +42,9 @@ export default {
         "sidebar-accent-foreground": "var(--sidebar-accent-foreground)",
         "sidebar-border": "var(--sidebar-border)",
         "sidebar-ring": "var(--sidebar-ring)",
-        "input-primary": "var(--input-primary)", // Assuming this is distinct from --input
-        "blue-primary": "var(--color-blue-primary)", // From your @theme block
+        "input-primary": "var(--input-primary)",
+        "blue-primary": "var(--color-blue-primary)",
       },
-      // Extend borderRadius to use your custom radius variables
       borderRadius: {
         sm: "var(--radius-sm)",
         md: "var(--radius-md)",
