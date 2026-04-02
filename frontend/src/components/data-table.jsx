@@ -21,7 +21,15 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export function DataTable({ columns, data, columnFilters,setColumnFilters,sorting,setSorting }) {
+export function DataTable({
+  columns,
+  data,
+  loading = false,
+  columnFilters,
+  setColumnFilters,
+  sorting,
+  setSorting,
+}) {
   // const [sorting, setSorting] = React.useState([]);
   // const [columnFilters, setColumnFilters] = React.useState([]);
   const table = useReactTable({
@@ -44,12 +52,10 @@ export function DataTable({ columns, data, columnFilters,setColumnFilters,sortin
         pageSize: 4, //custom default page size
       },
     },
-  
   });
 
   return (
     <div>
-  
       <div className=" rounded-md border">
         <Table className=" w-full table-auto ">
           <TableHeader>
@@ -62,7 +68,7 @@ export function DataTable({ columns, data, columnFilters,setColumnFilters,sortin
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -81,7 +87,7 @@ export function DataTable({ columns, data, columnFilters,setColumnFilters,sortin
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
@@ -93,7 +99,7 @@ export function DataTable({ columns, data, columnFilters,setColumnFilters,sortin
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  {loading ? "" : "No results."}
                 </TableCell>
               </TableRow>
             )}
