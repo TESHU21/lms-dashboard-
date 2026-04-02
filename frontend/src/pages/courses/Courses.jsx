@@ -158,24 +158,19 @@ const Courses = () => {
           onSubmit={handleCreateCourse}
         />
 
-        {loading ? (
-          <div className="flex items-center justify-center h-32">
-            <div className="animate-spin h-12 w-12 border-b-2 border-blue-primary rounded-full"></div>
-          </div>
-        ) : (
-          <DataTable
-            data={data}
-            columns={columns({
-              handleViewDetails,
-              handleEdit,
-              handleDelete,
-            })}
-            sorting={sorting}
-            setSorting={setSorting}
-            columnFilters={columnFilters}
-            setColumnFilters={setColumnFilters}
-          />
-        )}
+        <DataTable
+          data={data}
+          loading={loading}
+          columns={columns({
+            handleViewDetails,
+            handleEdit,
+            handleDelete,
+          })}
+          sorting={sorting}
+          setSorting={setSorting}
+          columnFilters={columnFilters}
+          setColumnFilters={setColumnFilters}
+        />
 
         <CourseFormDialog
           initialData={initialData}
