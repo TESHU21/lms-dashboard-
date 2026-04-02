@@ -9,13 +9,19 @@ export const courseSchema = z.object({
     .min(3, { message: "Track should be at least three characters" }),
 
   image: z
-    .instanceof(File)
-    .refine((file) => file.type.startsWith("image/"), {
-      message: "Only image files are allowed",
-    })
-    .refine((file) => file.size <= 5 * 1024 * 1024, {
-      message: "Image must be less than 5MB",
-    }),
+    .union([
+      z.string().url().optional(),
+      z
+        .instanceof(File)
+        .refine((file) => file.type.startsWith("image/"), {
+          message: "Only image files are allowed",
+        })
+        .refine((file) => file.size <= 5 * 1024 * 1024, {
+          message: "Image must be less than 5MB",
+        })
+        .optional(),
+    ])
+    .optional(),
 
   description: z
     .string()
@@ -25,7 +31,7 @@ export const courseSchema = z.object({
 export const initialValues = {
   title: "",
   track: "",
-  image: "",
+  image: undefined,
   description: "",
 };
 export const fields = [

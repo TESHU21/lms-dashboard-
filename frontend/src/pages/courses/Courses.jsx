@@ -7,18 +7,35 @@ import CourseFormDialog from "./components/CourseFormDialog";
 import CourseDetailDialog from "./components/CourseDetailDialog";
 import { fields } from "./components/data";
 
+// Reusable mapper (DRY)
+const mapCourse = (course) => ({
+  id: course._id,
+  title: course.title,
+  image: course.image,
+  createdAt: course.createdAt,
+  description: course.description,
+  trackId: course.track?._id || "",
+  trackName: course.track?.name || "",
+  trackDescription: course.track?.description || "",
+  trackDuration: course.track?.duration || "",
+  trackPrice: course.track?.price || "",
+  trackInstructor: course.track?.instructor || "",
+  trackImage: course.track?.image || "",
+});
+
 const Courses = () => {
   const [data, setData] = useState([]);
-  const [sorting, setSorting] = useState([]); // New state for sorting
+  const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
-  const [isCreateCourseFormOpen, setIsCreateCourseFormOpen] = useState(false); // For "Create Learner" dialog
-  const [isEditCourseFormOpen, setIsEditCourseFormOpen] = useState(false); // For "Edit Learner" dialog
-  const [isViewCourseDetail, setIsViewCourseDetail] = useState(false); // For "Edit Learner" dialog
+
+  const [isCreateCourseFormOpen, setIsCreateCourseFormOpen] = useState(false);
+  const [isEditCourseFormOpen, setIsEditCourseFormOpen] = useState(false);
+  const [isViewCourseDetail, setIsViewCourseDetail] = useState(false);
+
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [loadingTracks, setLoadingTracks] = useState(true);
-  const [errorTracks, setErrorTracks] = useState(null);
   const [initialData, setInitialData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+
+  const [loading, setLoading] = useState(true);
 
   const {
     getCourses,
@@ -29,156 +46,109 @@ const Courses = () => {
     updateCourse,
     deleteCourse,
   } = useCourse();
+
+  //  Fetch courses
   useEffect(() => {
-    const fetchCourse = async () => {
+    const fetchCourses = async () => {
       try {
-        setIsLoading(true);
-        const response = await getCourses();
-        console.log(response);
-        const courseData = response.data.courses;
-        const formattedCourses = courseData.map((course) => {
-          return {
-            id: course._id,
-            title: course.title,
-            image: course.image,
-            createdAt: course.createdAt,
-            description: course.description,
-            trackName: course.track?.name || "", // optional chaining in case track is missing
-            trackDescription: course.track?.description || "",
-            trackDuration: course.track?.duration || "",
-            trackPrice: course.track?.price || "",
-            trackInstructor: course.track?.instructor || "",
-            trackImage: course.track?.image || "",
-          };
-        });
-        setData(formattedCourses);
-      } catch (error) {
-        console.log(error);
+        setLoading(true);
+        const res = await getCourses();
+        const courses = res?.data?.courses || [];
+        setData(courses.map(mapCourse));
+      } catch (err) {
+        console.error("Error fetching courses:", err);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
-    fetchCourse();
-  }, []);
 
-  // Fetch Tracks
+    fetchCourses();
+  }, [getCourses]);
+
+  // 📦 Fetch tracks
   useEffect(() => {
     const fetchTracks = async () => {
       try {
-        const response = await getallTracks();
-        const fetchedTrack = response?.data.tracks;
-        setTracks(fetchedTrack);
-      } catch (error) {
-        console.log(error);
+        const res = await getallTracks();
+        setTracks(res?.data?.tracks || []);
+      } catch (err) {
+        console.error("Error fetching tracks:", err);
       }
     };
+
     fetchTracks();
-  }, []);
-  // Handler function to mark an invoice as Paid
-  const handleConfirm = (row) => {
-    setData((prev) =>
-      prev.map((item) =>
-        item.id === row.id ? { ...item, status: "Paid" } : item,
-      ),
-    );
-  };
-  const handleViewDetails = (learner) => {
-    console.log(learner);
-    setSelectedCourse(learner);
+  }, [getallTracks, setTracks]);
+
+  // View
+  const handleViewDetails = (course) => {
+    setSelectedCourse(course);
     setIsViewCourseDetail(true);
-
-    // console.log("View Details for:", learnerData)
-    // Implement navigation or open a dialog to show details
   };
-  // open Edit Dialog Form
-  const handleEdit = async (data) => {
-    console.log("data...", data);
 
-    setInitialData(data);
-    setSelectedCourse(data);
+  // ✏ Edit
+  const handleEdit = (course) => {
+    setInitialData({
+      title: course.title,
+      track: course.trackId,
+      image: course.image,
+      description: course.description,
+    });
+    setSelectedCourse(course);
     setIsEditCourseFormOpen(true);
   };
-  // handle updaate form
+
+  // Update
   const updateFormData = async (formData) => {
     const courseId = selectedCourse.id;
+    const res = await updateCourse(formData, courseId);
 
-    const response = await updateCourse(formData, courseId);
-
-    // Update the single edited course in state
     setData((prev) =>
       prev.map((item) =>
-        item.id === courseId
-          ? {
-              id: response.data.course._id,
-              title: response.data.course.title,
-              image: response?.data.course.image,
-              createdAt: response?.data.course.createdAt,
-              description: response?.data.course.description,
-              trackName: response.data.course.track?.name || "",
-              trackDescription: response.data.course.track?.description || "",
-              trackDuration: response.data.course.track?.duration || "",
-              trackPrice: response.data.course.track?.price || "",
-              trackInstructor: response.data.course.track?.instructor || "",
-              trackImage: response.data.course.track?.image || "",
-            }
-          : item,
+        item.id === courseId ? mapCourse(res.data.course) : item,
       ),
     );
-    setIsEditCourseFormOpen(false);
 
-    return response;
+    setIsEditCourseFormOpen(false);
+    return res;
   };
 
-  // Handler function to delete a course by id
+  //  Delete
   const handleDelete = async (id) => {
     await deleteCourse(id);
     setData((prev) => prev.filter((item) => item.id !== id));
   };
-  const handleCreateCourse = async (data) => {
-    const response = await createCourse(data);
-    const newCourse = {
-      id: response.data.course._id,
-      title: response.data.course.title,
-      image: response?.data.course.image,
-      createdAt: response?.data.course.createdAt,
-      description: response?.data.course.description,
-      trackName: response.data.course.track?.name || "",
-      trackDescription: response.data.course.track?.description || "",
-      trackDuration: response.data.course.track?.duration || "",
-      trackPrice: response.data.course.track?.price || "",
-      trackInstructor: response.data.course.track?.instructor || "",
-      trackImage: response.data.course.track?.image || "",
-    };
-    setData((prev) => [...prev, newCourse]);
-    setIsCreateCourseFormOpen(false);
-    return response;
-  };
-  // --- NEW: Dynamically prepare fields with options ---
-  const formFieldsWithDynamicOptions = useMemo(() => {
-    // Create a copy of the base fields to avoid mutating the original
-    const dynamicFields = fields.map((field) => ({ ...field }));
 
-    // Find the 'track' field and add options
-    const trackField = dynamicFields.find((field) => field.name === "track");
-    if (trackField && trackField.type === "select") {
-      // Add a default empty option, then map your fetched tracks
-      trackField.options = [
-        //  { value: "", name: "Select a Track" },
-        ...tracks.map((track) => ({
-          value: track._id, // The value to be stored in the form state
-          name: track.name, // What the user sees
-        })),
-      ];
-    }
-    return dynamicFields;
-  }, [tracks, loadingTracks, errorTracks]); // Re-memoize if tracks or loading/error states change
+  // ➕ Create
+  const handleCreateCourse = async (formData) => {
+    const res = await createCourse(formData);
+
+    setData((prev) => [...prev, mapCourse(res.data.course)]);
+    setIsCreateCourseFormOpen(false);
+
+    return res;
+  };
+
+  // Dynamic fields
+  const formFieldsWithDynamicOptions = useMemo(() => {
+    return fields.map((field) => {
+      if (field.name === "track" && field.type === "select") {
+        return {
+          ...field,
+          options: tracks.map((track) => ({
+            value: track._id,
+            name: track.name,
+          })),
+        };
+      }
+      return field;
+    });
+  }, [tracks]);
 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col items-center">
       <div className="w-full px-30">
-        <h6 className="leading-8 text-[20px] font-semibold mb-[36px]">
-          Courses
-        </h6>
+        <h6 className="text-[20px] font-semibold mb-[36px]">Courses</h6>
+
         <CourseHeader
           columnFilters={columnFilters}
           setColumnFilters={setColumnFilters}
@@ -188,10 +158,9 @@ const Courses = () => {
           onSubmit={handleCreateCourse}
         />
 
-        {/* The DataTable component */}
-        {isLoading ? (
+        {loading ? (
           <div className="flex items-center justify-center h-32">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-primary"></div>
+            <div className="animate-spin h-12 w-12 border-b-2 border-blue-primary rounded-full"></div>
           </div>
         ) : (
           <DataTable
@@ -207,6 +176,7 @@ const Courses = () => {
             setColumnFilters={setColumnFilters}
           />
         )}
+
         <CourseFormDialog
           initialData={initialData}
           formFieldsWithDynamicOptions={formFieldsWithDynamicOptions}
@@ -215,6 +185,7 @@ const Courses = () => {
           mode="update"
           onSubmit={updateFormData}
         />
+
         <CourseDetailDialog
           course={selectedCourse}
           open={isViewCourseDetail}
