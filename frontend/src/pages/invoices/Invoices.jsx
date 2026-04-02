@@ -3,53 +3,45 @@ import { DataTable } from "@/components/data-table";
 import { columns } from "./components/columns";
 import InvoiceHeader from "./components/InvoiceHeader";
 import { useCourse } from "@/context/CourseContext";
-import { late } from "zod";
-
 const Invoices = () => {
-  const {getInvoices}=useCourse()
+  const { getInvoices } = useCourse();
+  const [isLoadingInvoice, setIsLoadingInvoice] = useState(false);
   // State to hold the invoice data
-      const [columnFilters, setColumnFilters] = useState([]);
-  
+  const [columnFilters, setColumnFilters] = useState([]);
+
   const [data, setData] = useState([]);
-  useEffect(()=>{
-    const fetchInvoice=async()=>{
-      try{
-        const response =await getInvoices()
-        console.log(response)
-        const invoices=response.data.invoices;
-        console.log("Invoicces",invoices)
-        const formattedData=invoices.map((invoice=>({
-          id:invoice._id,
-          firstName:invoice.learner.firstName,
-          lastName:invoice.learner.lastName,
-          email:invoice.learner.email,
-          amount:invoice.amount,
-          image:invoice.learner.profileImage,
-          date:invoice.createdAt,
-          status:invoice.status,
-
-
-
-          
-
-        })))
-        setData(formattedData)
+  useEffect(() => {
+    const fetchInvoice = async () => {
+      try {
+        setIsLoadingInvoice(true);
+        const response = await getInvoices();
+        const invoices = response.data.invoices;
+        const formattedData = invoices.map((invoice) => ({
+          id: invoice._id,
+          firstName: invoice.learner.firstName,
+          lastName: invoice.learner.lastName,
+          email: invoice.learner.email,
+          amount: invoice.amount,
+          image: invoice.learner.profileImage,
+          date: invoice.createdAt,
+          status: invoice.status,
+        }));
+        setData(formattedData);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoadingInvoice(false);
       }
-      
-      catch(error){
-        console.log(error)
-      }
-
-    }
+    };
     fetchInvoice();
-  },[])
+  }, [getInvoices]);
 
   // Handler function to mark an invoice as Paid
   const handleConfirm = (row) => {
     setData((prev) =>
       prev.map((item) =>
-        item.id === row.id ? { ...item, status: "Paid" } : item
-      )
+        item.id === row.id ? { ...item, status: "Paid" } : item,
+      ),
     );
   };
 
@@ -67,16 +59,19 @@ const Invoices = () => {
   return (
     // Main container for centering content
     <div className="flex flex-col justify-center  items-center">
-    
       <div className="w-full px-30">
-        <h6 className="leading-8 text-[20px] font-semibold mb-[36px]">Invoices</h6>
-        <InvoiceHeader  columnFilters={columnFilters}
-            setColumnFilters={setColumnFilters}/>
-        
-     
-          {/* The DataTable component */}
+        <h6 className="leading-8 text-[20px] font-semibold mb-[36px]">
+          Invoices
+        </h6>
+        <InvoiceHeader
+          columnFilters={columnFilters}
+          setColumnFilters={setColumnFilters}
+        />
+
+        {/* The DataTable component */}
+        <div className="relative">
           <DataTable
-            data={data} 
+            data={data}
             columns={columns({
               handleConfirm,
               handleEdit,
@@ -85,9 +80,14 @@ const Invoices = () => {
             columnFilters={columnFilters}
             setColumnFilters={setColumnFilters}
           />
+          {isLoadingInvoice && (
+            <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/60 rounded-md">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-primary"></div>
+            </div>
+          )}
         </div>
       </div>
-    
+    </div>
   );
 };
 
