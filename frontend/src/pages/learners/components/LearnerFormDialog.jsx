@@ -53,23 +53,20 @@ const LearnerFormDialog = ({
       setErrorMessage("");
       setSuccessMessage("");
 
-      // Create processed data with proper types
-      const processedData = {};
+      // Create FormData to handle file upload
+      const formData = new FormData();
 
+      // Add all fields to FormData
       Object.keys(data).forEach((key) => {
         if (key === "image" && data[key] instanceof File) {
-          // Handle file upload separately if needed
-          processedData[key] = data[key];
-        } else if (key === "amount") {
-          // Convert amount to number
-          processedData[key] = data[key] ? Number(data[key]) : undefined;
+          formData.append("image", data[key]);
         } else if (data[key] !== null && data[key] !== undefined) {
-          processedData[key] = data[key];
+          formData.append(key, data[key]);
         }
       });
 
-      // Send as JSON with proper data types
-      const response = await onSubmit(processedData);
+      // Send FormData to backend
+      const response = await onSubmit(formData);
 
       setSuccessMessage(
         `${mode === "create" ? "Created" : "Updated"} successfully`,

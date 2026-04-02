@@ -11,8 +11,50 @@ import {
   PenIcon,
 } from "lucide-react";
 
+// Image validation constants
+const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB (to match backend)
+const ACCEPTED_IMAGE_MIME_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];
+
 export const LearnerSchema = z.object({
-  image: z.any().optional(),
+  image: z
+    .union([
+      z.string().url().optional(),
+      z.instanceof(File).optional(),
+      z.null(),
+    ])
+    .optional()
+    .superRefine((file, ctx) => {
+      if (!file) {
+        return;
+      }
+
+      if (typeof file === "string") {
+        return;
+      }
+
+      if (file.size > MAX_FILE_SIZE) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "File must be less than 5MB",
+          fatal: true,
+        });
+        return;
+      }
+
+      if (!ACCEPTED_IMAGE_MIME_TYPES.includes(file.type)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Only JPEG, JPG, PNG, or WEBP files are allowed",
+          fatal: true,
+        });
+        return;
+      }
+    }),
   firstname: z.string().min(1, { message: "First name is required" }),
   lastname: z.string().min(1, { message: "Last name is required" }),
   email: z.string().email({ message: "Invalid email address" }),
@@ -20,6 +62,7 @@ export const LearnerSchema = z.object({
   gender: z.enum(["male", "female", "other"]),
   location: z.string().min(1, { message: "Location is required" }),
   phone: z.string().min(1, { message: "Phone number is required" }),
+  disability: z.string().optional(),
   created_by: z
     .object({
       role: z.string(),
@@ -28,10 +71,13 @@ export const LearnerSchema = z.object({
     .optional(),
 
   description: z.string().min(1).optional(),
-  amount: z.preprocess(
-    (val) => Number(val),
-    z.number().positive("Amount must be greater than 0"),
-  ),
+  amount: z.preprocess((val) => {
+    if (typeof val === "string") {
+      const num = Number(val);
+      return isNaN(num) ? undefined : num;
+    }
+    return val;
+  }, z.number().positive().optional()),
 });
 
 export const initialValues = {
@@ -42,7 +88,7 @@ export const initialValues = {
   gender: "male",
   phone: "",
   location: "",
-  image: "",
+  image: undefined,
   description: "",
   amount: 0,
 };

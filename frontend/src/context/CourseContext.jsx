@@ -78,7 +78,15 @@ export const CourseProvider = ({ children }) => {
   }, []);
   // Create Learners
   const createLearner = useCallback(async (data) => {
-    return axiosInstance.post("/learners", data);
+    const isFormData =
+      typeof FormData !== "undefined" && data instanceof FormData;
+    return axiosInstance.post(
+      "/learners",
+      data,
+      isFormData
+        ? { headers: { "Content-Type": "multipart/form-data" } }
+        : undefined,
+    );
   }, []);
   // delete Learners
   const deleteLearner = useCallback(async (learnerId) => {
