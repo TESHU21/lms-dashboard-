@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import { DataTable } from "@/components/data-table";
 import { columns } from "./components/columns";
 import LearnerHeader from "./LearnersHeader";
-import CreateLearner from "./components/LearnerFormDialog";
 import { useCourse } from "@/context/CourseContext";
 import LearnerDetailDialog from "./components/LearnerDetailDialog";
 import DeleteLearnerDialog from "./components/DeleteLearnerDialog";
@@ -11,6 +10,7 @@ const Learners = () => {
   const [data, setData] = useState([]);
   const { getLearner, deleteLearner, createLearner, getCourses } = useCourse();
   const [courses, setCourses] = useState([]);
+  const [isLoadingLearners, setIsLoadingLearners] = useState(false);
   const [columnFilters, setColumnFilters] = useState([]);
   const [sorting, setSorting] = useState([]); // New state for sorting
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
@@ -22,25 +22,25 @@ const Learners = () => {
 
   const fetchLearners = useCallback(async () => {
     try {
+      setIsLoadingLearners(true);
       const response = await getLearner();
-      const learnersData = response?.data?.learners;
+      const learnersData = response?.data;
       console.log("response", response);
       const formattedLearners = learnersData?.map((learner) => {
         return {
           id: learner._id,
-          firstName: learner.firstName,
-          lastName: learner.lastName,
-          name: `${learner.firstName || ""} ${learner.lastName || ""}`,
+          firstname: learner.firstname,
+          lastname: learner.lastname,
           email: learner.email,
           role: learner.role,
-          contact: learner.contact,
-          date: learner.createdAt, // Matches accessorKey 'date'
+          phone: learner.phone,
+          createdAt: learner.createdAt,
           description: learner.description,
           disabled: learner.disabled,
           isVerified: learner.isVerified,
           lastLogin: learner.lastLogin,
           location: learner.location,
-          image: learner.profileImage,
+          image: learner.image,
           updatedAt: learner.updatedAt,
 
           amount: learner.amount || 0, // Default to 0 if not present
@@ -48,9 +48,12 @@ const Learners = () => {
         };
       });
       setData(formattedLearners);
+      console.log("Format Learner Data", formattedLearners);
     } catch (error) {
       console.log(error);
       // Optionally show an error message to the user
+    } finally {
+      setIsLoadingLearners(false);
     }
   }, [getLearner]);
 
@@ -102,7 +105,7 @@ const Learners = () => {
 
   const confirmDelete = async (learnerId) => {
     try {
-      const response = await deleteLearner(learnerId);
+      await deleteLearner(learnerId);
       fetchLearners();
     } catch (error) {
       console.log(error);
@@ -120,21 +123,18 @@ const Learners = () => {
       // Format the new learner data to match the existing data structure
       const newLearner = {
         id: response.data.learner._id,
-        firstName: response.data.learner.firstname,
-        lastName: response.data.learner.lastname,
-        name: `${response.data.learner.firstname || ""} ${response.data.learner.lastname || ""}`,
+        firstname: response.data.learner.firstname,
+        lastname: response.data.learner.lastname,
         email: response.data.learner.email,
         role: response.data.learner.role,
-        contact: response.data.learner.contact,
-        date: response.data.learner.createdAt,
+        phone: response.data.learner.phone,
+        createdAt: response.data.learner.createdAt,
         description: response.data.learner.description,
         disabled: response.data.learner.disabled,
         isVerified: response.data.learner.isVerified,
         lastLogin: response.data.learner.lastLogin,
         location: response.data.learner.location,
-        image:
-          response.data.learner.profileImage?.secure_url ||
-          response.data.learner.profileImage,
+        image: response.data.learner.image,
         updatedAt: response.data.learner.updatedAt,
         amount: response.data.learner.amount || 0,
         gender: response.data.learner.gender || "N/A",
@@ -171,18 +171,25 @@ const Learners = () => {
         onSubmit={handleCreateLearner}
         courses={courses}
       />
-      <DataTable
-        data={data || []}
-        columns={columns({
-          handleViewDetails, // Pass the new handler
-          handleEdit,
-          handleDelete,
-        })}
-        columnFilters={columnFilters}
-        setColumnFilters={setColumnFilters}
-        sorting={sorting}
-        setSorting={setSorting}
-      />
+      <div className="relative">
+        <DataTable
+          data={data || []}
+          columns={columns({
+            handleViewDetails, // Pass the new handler
+            handleEdit,
+            handleDelete,
+          })}
+          columnFilters={columnFilters}
+          setColumnFilters={setColumnFilters}
+          sorting={sorting}
+          setSorting={setSorting}
+        />
+        {isLoadingLearners && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/60 rounded-md">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-primary"></div>
+          </div>
+        )}
+      </div>
       <LearnerDetailDialog
         learner={learnerToDelete}
         open={isDetailDialogOpen}

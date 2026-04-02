@@ -35,8 +35,8 @@ const LearnerHeader = ({
   const handleSearchFilterChange = (event) => {
     const filterValue = event.target.value;
     setColumnFilters((prev) => {
-      // Targeting 'firstName' accessorKey for filtering for the name search input
-      const targetColumnId = "firstName";
+      // Targeting 'firstname' accessorKey for filtering for the name search input
+      const targetColumnId = "firstname";
       const existingFilterIndex = prev.findIndex(
         (f) => f.id === targetColumnId,
       );
@@ -70,8 +70,8 @@ const LearnerHeader = ({
           </div>
           <input
             type="text"
-            placeholder="Filter By First Name"
-            value={columnFilters.find((f) => f.id === "firstName")?.value || ""}
+            placeholder="Filter By Firstname"
+            value={columnFilters.find((f) => f.id === "firstname")?.value || ""}
             onChange={handleSearchFilterChange}
             name="search"
             id="search-learners"
