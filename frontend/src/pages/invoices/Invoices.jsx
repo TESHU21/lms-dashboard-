@@ -10,23 +10,26 @@ const Invoices = () => {
   const [columnFilters, setColumnFilters] = useState([]);
 
   const [data, setData] = useState([]);
+  const mapInvoice = (invoice) => {
+    return {
+      id: invoice._id,
+      firstName: invoice.learner.firstName,
+      lastName: invoice.learner.lastName,
+      email: invoice.learner.email,
+      amount: invoice.amount,
+      image: invoice.learner.profileImage,
+      date: invoice.createdAt,
+      status: invoice.status,
+    };
+  };
   useEffect(() => {
     const fetchInvoice = async () => {
       try {
         setIsLoadingInvoice(true);
         const response = await getInvoices();
         const invoices = response.data.invoices;
-        const formattedData = invoices.map((invoice) => ({
-          id: invoice._id,
-          firstName: invoice.learner.firstName,
-          lastName: invoice.learner.lastName,
-          email: invoice.learner.email,
-          amount: invoice.amount,
-          image: invoice.learner.profileImage,
-          date: invoice.createdAt,
-          status: invoice.status,
-        }));
-        setData(formattedData);
+        console.log("response invoice", response);
+        setData(invoices.map(mapInvoice));
       } catch (error) {
         console.log(error);
       } finally {
@@ -77,11 +80,12 @@ const Invoices = () => {
               handleEdit,
               handleDelete,
             })}
+            loading={isLoadingInvoice}
             columnFilters={columnFilters}
             setColumnFilters={setColumnFilters}
           />
           {isLoadingInvoice && (
-            <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/60 rounded-md">
+            <div className="absolute inset-0 z-10 flex items-center justify-center  rounded-md">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-primary"></div>
             </div>
           )}

@@ -118,7 +118,7 @@ const Courses = () => {
     setData((prev) => prev.filter((item) => item.id !== id));
   };
 
-  // ➕ Create
+  //  Create
   const handleCreateCourse = async (formData) => {
     const res = await createCourse(formData);
 
@@ -157,21 +157,26 @@ const Courses = () => {
           formFieldsWithDynamicOptions={formFieldsWithDynamicOptions}
           onSubmit={handleCreateCourse}
         />
-
-        <DataTable
-          data={data}
-          loading={loading}
-          columns={columns({
-            handleViewDetails,
-            handleEdit,
-            handleDelete,
-          })}
-          sorting={sorting}
-          setSorting={setSorting}
-          columnFilters={columnFilters}
-          setColumnFilters={setColumnFilters}
-        />
-
+        <div className="relative">
+          <DataTable
+            data={data}
+            loading={loading}
+            columns={columns({
+              handleViewDetails,
+              handleEdit,
+              handleDelete,
+            })}
+            sorting={sorting}
+            setSorting={setSorting}
+            columnFilters={columnFilters}
+            setColumnFilters={setColumnFilters}
+          />
+          {loading && (
+            <div className="absolute inset-0 flex justify-center items-center   z-10 rounded-md">
+              <div className="animate-spin h-12 w-12 border-b-2 border-blue-primary rounded-full"></div>
+            </div>
+          )}
+        </div>
         <CourseFormDialog
           initialData={initialData}
           formFieldsWithDynamicOptions={formFieldsWithDynamicOptions}
