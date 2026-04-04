@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import CourseHeader from "./components/CourseHeader";
 import { DataTable } from "@/components/data-table";
 import { columns } from "./components/columns";
@@ -28,6 +28,9 @@ const Courses = () => {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
 
+  const [errorMessage, setErrorMessage] = useState("");
+  const [tracksErrorMessage, setTracksErrorMessage] = useState("");
+
   const [isCreateCourseFormOpen, setIsCreateCourseFormOpen] = useState(false);
   const [isEditCourseFormOpen, setIsEditCourseFormOpen] = useState(false);
   const [isViewCourseDetail, setIsViewCourseDetail] = useState(false);
@@ -47,32 +50,35 @@ const Courses = () => {
     deleteCourse,
   } = useCourse();
 
-  //  Fetch courses
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        setLoading(true);
-        const res = await getCourses();
-        const courses = res?.data?.courses || [];
-        setData(courses.map(mapCourse));
-      } catch (err) {
-        console.error("Error fetching courses:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCourses();
+  const fetchCourses = useCallback(async () => {
+    try {
+      setLoading(true);
+      setErrorMessage("");
+      const res = await getCourses();
+      const courses = res?.data?.courses || [];
+      setData(courses.map(mapCourse));
+    } catch (err) {
+      console.error("Error fetching courses:", err);
+      setErrorMessage("Failed to load courses. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }, [getCourses]);
+
+  useEffect(() => {
+    fetchCourses();
+  }, [fetchCourses]);
 
   // 📦 Fetch tracks
   useEffect(() => {
     const fetchTracks = async () => {
       try {
+        setTracksErrorMessage("");
         const res = await getallTracks();
         setTracks(res?.data?.tracks || []);
       } catch (err) {
         console.error("Error fetching tracks:", err);
+        setTracksErrorMessage("Failed to load tracks. Please try again.");
       }
     };
 
@@ -148,6 +154,42 @@ const Courses = () => {
     <div className="flex flex-col items-center">
       <div className="w-full px-30">
         <h6 className="text-[20px] font-semibold mb-[36px]">Courses</h6>
+
+        {errorMessage ? (
+          <div className="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 flex items-center justify-between gap-3">
+            <span>{errorMessage}</span>
+            <button
+              type="button"
+              onClick={fetchCourses}
+              className="shrink-0 rounded-md border border-red-200 bg-white px-3 py-1 text-xs font-medium"
+            >
+              Retry
+            </button>
+          </div>
+        ) : null}
+
+        {tracksErrorMessage ? (
+          <div className="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 flex items-center justify-between gap-3">
+            <span>{tracksErrorMessage}</span>
+            <button
+              type="button"
+              onClick={() => {
+                setTracksErrorMessage("");
+                getallTracks()
+                  .then((res) => setTracks(res?.data?.tracks || []))
+                  .catch((err) => {
+                    console.error("Error fetching tracks:", err);
+                    setTracksErrorMessage(
+                      "Failed to load tracks. Please try again.",
+                    );
+                  });
+              }}
+              className="shrink-0 rounded-md border border-red-200 bg-white px-3 py-1 text-xs font-medium"
+            >
+              Retry
+            </button>
+          </div>
+        ) : null}
 
         <CourseHeader
           columnFilters={columnFilters}

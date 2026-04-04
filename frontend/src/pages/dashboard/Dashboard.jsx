@@ -19,12 +19,14 @@ export default function Dashboard() {
   const [invoiceCount, setInvoiceCount] = useState(0);
   const [learnersCount, setLearnersCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const { getInvoices, getLearner } = useCourse();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
+        setErrorMessage("");
         const [invoiceRes, learnerRes] = await Promise.all([
           getInvoices(),
           getLearner(),
@@ -39,6 +41,7 @@ export default function Dashboard() {
         setLearnersCount(computedLearnersCount);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
+        setErrorMessage("Failed to load dashboard data. Please try again.");
       } finally {
         setIsLoading(false);
       }
@@ -91,6 +94,41 @@ export default function Dashboard() {
       <p className="text-muted-foreground">
         Welcome back, {parsedUser?.firstName || ""}
       </p>
+
+      {errorMessage ? (
+        <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 flex items-center justify-between gap-3">
+          <span>{errorMessage}</span>
+          <button
+            type="button"
+            onClick={() => {
+              setIsLoading(true);
+              setErrorMessage("");
+              Promise.all([getInvoices(), getLearner()])
+                .then(([invoiceRes, learnerRes]) => {
+                  setInvoices(invoiceRes.data.invoices || []);
+                  setInvoiceCount(invoiceRes.data.count || 0);
+                  const learnersData = learnerRes?.data;
+                  const computedLearnersCount = Array.isArray(learnersData)
+                    ? learnersData.length
+                    : (learnersData?.count ??
+                      learnersData?.learners?.length ??
+                      0);
+                  setLearnersCount(computedLearnersCount);
+                })
+                .catch((error) => {
+                  console.error("Error fetching dashboard data:", error);
+                  setErrorMessage(
+                    "Failed to load dashboard data. Please try again.",
+                  );
+                })
+                .finally(() => setIsLoading(false));
+            }}
+            className="shrink-0 rounded-md border border-red-200 bg-white px-3 py-1 text-xs font-medium"
+          >
+            Retry
+          </button>
+        </div>
+      ) : null}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[

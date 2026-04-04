@@ -48,6 +48,7 @@ const Learners = () => {
   const [courses, setCourses] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [columnFilters, setColumnFilters] = useState([]);
   const [sorting, setSorting] = useState([]);
@@ -64,10 +65,12 @@ const Learners = () => {
   const fetchLearners = useCallback(async () => {
     try {
       setIsLoading(true);
+      setErrorMessage("");
       const res = await getLearner();
       setData((res?.data || []).map(mapLearner));
     } catch (err) {
       console.error("Fetch learners error:", err);
+      setErrorMessage("Failed to load learners. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -115,6 +118,7 @@ const Learners = () => {
       setData((prev) => prev.filter((item) => item.id !== learnerToDelete.id));
     } catch (err) {
       console.error("Delete error:", err);
+      setErrorMessage("Failed to delete learner. Please try again.");
     } finally {
       setLearnerToDelete(null);
       setIsDeleteOpen(false);
@@ -132,6 +136,7 @@ const Learners = () => {
       return res;
     } catch (err) {
       console.error("Create learner error:", err);
+      setErrorMessage("Failed to create learner. Please try again.");
       throw err;
     }
   };
@@ -139,6 +144,19 @@ const Learners = () => {
   return (
     <div className="px-[30px] mx-30">
       <h6 className="text-[20px] font-semibold mb-[30px]">Learners</h6>
+
+      {errorMessage ? (
+        <div className="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 flex items-center justify-between gap-3">
+          <span>{errorMessage}</span>
+          <button
+            type="button"
+            onClick={fetchLearners}
+            className="shrink-0 rounded-md border border-red-200 bg-white px-3 py-1 text-xs font-medium"
+          >
+            Retry
+          </button>
+        </div>
+      ) : null}
 
       <LearnerHeader
         columnFilters={columnFilters}
