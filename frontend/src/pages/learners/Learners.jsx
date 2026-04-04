@@ -1,45 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { DataTable } from "@/components/data-table";
 import { columns } from "./components/columns";
-import LearnerHeader from "./LearnersHeader";
+import LearnerHeader from "./LearnersHeader.jsx";
 import { useCourse } from "@/context/CourseContext";
 import LearnerDetailDialog from "./components/LearnerDetailDialog";
 import DeleteLearnerDialog from "./components/DeleteLearnerDialog";
 import LearnerFormDialog from "./components/LearnerFormDialog";
-
-//  Reusable mapper functions
-const mapLearner = (learner) => ({
-  id: learner._id,
-  firstname: learner.firstname,
-  lastname: learner.lastname,
-  email: learner.email,
-  role: learner.role,
-  phone: learner.phone,
-  createdAt: learner.createdAt,
-  description: learner.description,
-  disabled: learner.disabled,
-  isVerified: learner.isVerified,
-  lastLogin: learner.lastLogin,
-  location: learner.location,
-  image: learner.image,
-  updatedAt: learner.updatedAt,
-  amount: learner.amount || 0,
-  gender: learner.gender || "N/A",
-});
-
-const mapCourse = (course) => ({
-  id: course._id,
-  title: course.title,
-  description: course.description,
-  image: course.image,
-  createdAt: course.createdAt,
-  trackName: course.track?.name || "",
-  trackDescription: course.track?.description || "",
-  trackDuration: course.track?.duration || "",
-  trackPrice: course.track?.price || "",
-  trackInstructor: course.track?.instructor || "",
-  trackImage: course.track?.image || "",
-});
+import { mapCourse, mapLearner } from "@/utils/mappers";
 
 const Learners = () => {
   const { getLearner, deleteLearner, createLearner, getCourses } = useCourse();
@@ -62,29 +29,35 @@ const Learners = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   //  Fetch learners
-  const fetchLearners = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      setErrorMessage("");
-      const res = await getLearner();
-      setData((res?.data || []).map(mapLearner));
-    } catch (err) {
-      console.error("Fetch learners error:", err);
-      setErrorMessage("Failed to load learners. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [getLearner]);
+  const fetchLearners = useCallback(
+    async (options) => {
+      try {
+        setIsLoading(true);
+        setErrorMessage("");
+        const res = await getLearner(options);
+        setData((res?.data || []).map(mapLearner));
+      } catch (err) {
+        console.error("Fetch learners error:", err);
+        setErrorMessage("Failed to load learners. Please try again.");
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [getLearner],
+  );
 
   // 📦 Fetch courses
-  const fetchCourses = useCallback(async () => {
-    try {
-      const res = await getCourses();
-      setCourses((res?.data?.courses || []).map(mapCourse));
-    } catch (err) {
-      console.error("Fetch courses error:", err);
-    }
-  }, [getCourses]);
+  const fetchCourses = useCallback(
+    async (options) => {
+      try {
+        const res = await getCourses(options);
+        setCourses((res?.data?.courses || []).map(mapCourse));
+      } catch (err) {
+        console.error("Fetch courses error:", err);
+      }
+    },
+    [getCourses],
+  );
 
   useEffect(() => {
     fetchLearners();
@@ -150,7 +123,10 @@ const Learners = () => {
           <span>{errorMessage}</span>
           <button
             type="button"
-            onClick={fetchLearners}
+            onClick={() => {
+              fetchLearners({ force: true });
+              fetchCourses({ force: true });
+            }}
             className="shrink-0 rounded-md border border-red-200 bg-white px-3 py-1 text-xs font-medium"
           >
             Retry

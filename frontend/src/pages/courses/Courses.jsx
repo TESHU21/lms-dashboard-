@@ -6,22 +6,7 @@ import { useCourse } from "@/context/CourseContext";
 import CourseFormDialog from "./components/CourseFormDialog";
 import CourseDetailDialog from "./components/CourseDetailDialog";
 import { fields } from "./components/data";
-
-// Reusable mapper (DRY)
-const mapCourse = (course) => ({
-  id: course._id,
-  title: course.title,
-  image: course.image,
-  createdAt: course.createdAt,
-  description: course.description,
-  trackId: course.track?._id || "",
-  trackName: course.track?.name || "",
-  trackDescription: course.track?.description || "",
-  trackDuration: course.track?.duration || "",
-  trackPrice: course.track?.price || "",
-  trackInstructor: course.track?.instructor || "",
-  trackImage: course.track?.image || "",
-});
+import { mapCourse } from "@/utils/mappers";
 
 const Courses = () => {
   const [data, setData] = useState([]);
@@ -50,20 +35,23 @@ const Courses = () => {
     deleteCourse,
   } = useCourse();
 
-  const fetchCourses = useCallback(async () => {
-    try {
-      setLoading(true);
-      setErrorMessage("");
-      const res = await getCourses();
-      const courses = res?.data?.courses || [];
-      setData(courses.map(mapCourse));
-    } catch (err) {
-      console.error("Error fetching courses:", err);
-      setErrorMessage("Failed to load courses. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  }, [getCourses]);
+  const fetchCourses = useCallback(
+    async (options) => {
+      try {
+        setLoading(true);
+        setErrorMessage("");
+        const res = await getCourses(options);
+        const courses = res?.data?.courses || [];
+        setData(courses.map(mapCourse));
+      } catch (err) {
+        console.error("Error fetching courses:", err);
+        setErrorMessage("Failed to load courses. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [getCourses],
+  );
 
   useEffect(() => {
     fetchCourses();
@@ -160,7 +148,7 @@ const Courses = () => {
             <span>{errorMessage}</span>
             <button
               type="button"
-              onClick={fetchCourses}
+              onClick={() => fetchCourses({ force: true })}
               className="shrink-0 rounded-md border border-red-200 bg-white px-3 py-1 text-xs font-medium"
             >
               Retry
@@ -175,7 +163,7 @@ const Courses = () => {
               type="button"
               onClick={() => {
                 setTracksErrorMessage("");
-                getallTracks()
+                getallTracks({ force: true })
                   .then((res) => setTracks(res?.data?.tracks || []))
                   .catch((err) => {
                     console.error("Error fetching tracks:", err);

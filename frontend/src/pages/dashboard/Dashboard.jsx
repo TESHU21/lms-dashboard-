@@ -103,7 +103,10 @@ export default function Dashboard() {
             onClick={() => {
               setIsLoading(true);
               setErrorMessage("");
-              Promise.all([getInvoices(), getLearner()])
+              Promise.all([
+                getInvoices({ force: true }),
+                getLearner({ force: true }),
+              ])
                 .then(([invoiceRes, learnerRes]) => {
                   setInvoices(invoiceRes.data.invoices || []);
                   setInvoiceCount(invoiceRes.data.count || 0);

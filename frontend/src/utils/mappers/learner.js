@@ -1,0 +1,18 @@
+export const mapLearner = (learner) => ({
+  id: learner._id,
+  firstname: learner.firstname,
+  lastname: learner.lastname,
+  email: learner.email,
+  role: learner.role,
+  phone: learner.phone,
+  createdAt: learner.createdAt,
+  description: learner.description,
+  disabled: learner.disabled,
+  isVerified: learner.isVerified,
+  lastLogin: learner.lastLogin,
+  location: learner.location,
+  image: learner.image,
+  updatedAt: learner.updatedAt,
+  amount: learner.amount || 0,
+  gender: learner.gender || "N/A",
+});

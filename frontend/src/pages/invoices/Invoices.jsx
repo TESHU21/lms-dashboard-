@@ -3,6 +3,7 @@ import { DataTable } from "@/components/data-table";
 import { columns } from "./components/columns";
 import InvoiceHeader from "./components/InvoiceHeader";
 import { useCourse } from "@/context/CourseContext";
+import { mapInvoice } from "@/utils/mappers";
 const Invoices = () => {
   const { getInvoices, cancelInvoice } = useCourse();
   const [isLoadingInvoice, setIsLoadingInvoice] = useState(false);
@@ -11,37 +12,27 @@ const Invoices = () => {
   const [columnFilters, setColumnFilters] = useState([]);
 
   const [data, setData] = useState([]);
-  const mapInvoice = useCallback((invoice) => {
-    return {
-      id: invoice._id,
-      firstName: invoice?.learner?.firstName,
-      lastName: invoice?.learner?.lastName,
-      email: invoice?.learner?.email,
-      amount: invoice.amount,
-      image: invoice?.learner?.profileImage,
-      date: invoice.createdAt,
-      status: invoice.status,
-    };
-  }, []);
-
-  const fetchInvoice = useCallback(async () => {
-    try {
-      setIsLoadingInvoice(true);
-      setErrorMessage("");
-      const response = await getInvoices();
-      const invoices = response.data.invoices;
-      const visibleInvoices = (invoices || []).filter((invoice) => {
-        const status = String(invoice?.status || "").toLowerCase();
-        return status !== "canceled" && status !== "cancelled";
-      });
-      setData(visibleInvoices.map(mapInvoice));
-    } catch (error) {
-      console.log(error);
-      setErrorMessage("Failed to load invoices. Please try again.");
-    } finally {
-      setIsLoadingInvoice(false);
-    }
-  }, [getInvoices, mapInvoice]);
+  const fetchInvoice = useCallback(
+    async (options) => {
+      try {
+        setIsLoadingInvoice(true);
+        setErrorMessage("");
+        const response = await getInvoices(options);
+        const invoices = response.data.invoices;
+        const visibleInvoices = (invoices || []).filter((invoice) => {
+          const status = String(invoice?.status || "").toLowerCase();
+          return status !== "canceled" && status !== "cancelled";
+        });
+        setData(visibleInvoices.map(mapInvoice));
+      } catch (error) {
+        console.log(error);
+        setErrorMessage("Failed to load invoices. Please try again.");
+      } finally {
+        setIsLoadingInvoice(false);
+      }
+    },
+    [getInvoices],
+  );
 
   useEffect(() => {
     fetchInvoice();
@@ -81,7 +72,7 @@ const Invoices = () => {
             <span>{errorMessage}</span>
             <button
               type="button"
-              onClick={fetchInvoice}
+              onClick={() => fetchInvoice({ force: true })}
               className="shrink-0 rounded-md border border-red-200 bg-white px-3 py-1 text-xs font-medium"
             >
               Retry
