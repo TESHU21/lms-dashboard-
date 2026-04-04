@@ -99,7 +99,13 @@ export function DataTable({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  {loading ? "" : "No results."}
+                  {loading ? (
+                    <div className="flex items-center justify-center">
+                      <div className="animate-spin h-8 w-8 border-b-2 border-blue-primary rounded-full" />
+                    </div>
+                  ) : (
+                    "No results."
+                  )}
                 </TableCell>
               </TableRow>
             )}

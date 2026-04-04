@@ -165,12 +165,6 @@ const Learners = () => {
           sorting={sorting}
           setSorting={setSorting}
         />
-
-        {isLoading && (
-          <div className="absolute inset-0 flex justify-center items-center   z-10 rounded-md">
-            <div className="animate-spin h-12 w-12 border-b-2 border-blue-primary rounded-full"></div>
-          </div>
-        )}
       </div>
 
       <LearnerDetailDialog

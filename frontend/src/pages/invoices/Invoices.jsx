@@ -85,11 +85,6 @@ const Invoices = () => {
             columnFilters={columnFilters}
             setColumnFilters={setColumnFilters}
           />
-          {isLoadingInvoice && (
-            <div className="absolute inset-0 z-10 flex items-center justify-center  rounded-md">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-primary"></div>
-            </div>
-          )}
         </div>
       </div>
     </div>
