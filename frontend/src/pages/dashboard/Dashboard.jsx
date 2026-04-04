@@ -18,11 +18,13 @@ export default function Dashboard() {
   const [invoices, setInvoices] = useState([]);
   const [invoiceCount, setInvoiceCount] = useState(0);
   const [learnersCount, setLearnersCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const { getInvoices, getLearner } = useCourse();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
         const [invoiceRes, learnerRes] = await Promise.all([
           getInvoices(),
           getLearner(),
@@ -30,9 +32,15 @@ export default function Dashboard() {
 
         setInvoices(invoiceRes.data.invoices || []);
         setInvoiceCount(invoiceRes.data.count || 0);
-        setLearnersCount(learnerRes.data.count || 0);
+        const learnersData = learnerRes?.data;
+        const computedLearnersCount = Array.isArray(learnersData)
+          ? learnersData.length
+          : (learnersData?.count ?? learnersData?.learners?.length ?? 0);
+        setLearnersCount(computedLearnersCount);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -75,13 +83,13 @@ export default function Dashboard() {
   }));
   // fetching user from session storage
   const user = sessionStorage.getItem("User");
-  const parsedUser = JSON.parse(user);
+  const parsedUser = user ? JSON.parse(user) : {};
 
   return (
-    <div className="space-y-6 px-4">
+    <div className="relative space-y-6 px-4">
       <h2 className="text-2xl font-bold">Dashboard</h2>
       <p className="text-muted-foreground">
-        Welcome back, {parsedUser.firstName}
+        Welcome back, {parsedUser?.firstName || ""}
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -100,11 +108,18 @@ export default function Dashboard() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="bg-card px-3 py-6 h-[96px] rounded-md">
-                <p className="text-sm text-center font-semibold">
-                  {title === "Collected" || title === "Pending"
-                    ? `$${value}`
-                    : value}
-                </p>
+                {isLoading ? (
+                  <div className="h-full flex flex-col items-center justify-center gap-2 animate-pulse">
+                    <div className="h-4 w-24 bg-muted rounded" />
+                    <div className="h-3 w-16 bg-muted rounded" />
+                  </div>
+                ) : (
+                  <p className="text-sm text-center font-semibold">
+                    {title === "Collected" || title === "Pending"
+                      ? `$${value}`
+                      : value}
+                  </p>
+                )}
               </CardContent>
             </Card>
           );
@@ -118,39 +133,55 @@ export default function Dashboard() {
           <div className="bg-accent p-2 rounded-md h-full flex flex-col">
             <Card className="flex-1 flex flex-col">
               <CardContent className="flex-1">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={revenueData}>
-                    <defs>
-                      <linearGradient
-                        id="barGradient"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                      >
-                        <stop offset="0%" stopColor="#01589A" />
-                        <stop offset="100%" stopColor="#D0E6F7" />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: "#1f2937",
-                        border: "1px solid #4b5563",
-                        color: "#f9fafb",
-                      }}
-                      labelStyle={{ color: "#f9fafb" }}
-                    />
-                    <Bar
-                      dataKey="value"
-                      fill="url(#barGradient)"
-                      radius={[4, 4, 0, 0]}
-                      barSize={20}
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
+                {isLoading ? (
+                  <div className="h-full w-full animate-pulse space-y-4 py-4">
+                    <div className="h-4 w-1/3 bg-muted rounded" />
+                    <div className="h-4 w-1/4 bg-muted rounded" />
+                    <div className="grid grid-cols-6 gap-3 items-end h-[220px]">
+                      {Array.from({ length: 6 }).map((_, i) => (
+                        <div
+                          key={i}
+                          className="w-full bg-muted rounded-md"
+                          style={{ height: `${80 + i * 18}px` }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={revenueData}>
+                      <defs>
+                        <linearGradient
+                          id="barGradient"
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="1"
+                        >
+                          <stop offset="0%" stopColor="#01589A" />
+                          <stop offset="100%" stopColor="#D0E6F7" />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: "#1f2937",
+                          border: "1px solid #4b5563",
+                          color: "#f9fafb",
+                        }}
+                        labelStyle={{ color: "#f9fafb" }}
+                      />
+                      <Bar
+                        dataKey="value"
+                        fill="url(#barGradient)"
+                        radius={[4, 4, 0, 0]}
+                        barSize={20}
+                      />
+                    </BarChart>
+                  </ResponsiveContainer>
+                )}
               </CardContent>
             </Card>
           </div>
@@ -163,36 +194,52 @@ export default function Dashboard() {
             <Card className="flex-1 flex flex-col">
               <CardContent className="flex-1">
                 <div className="space-y-4">
-                  {latestInvoices.map((inv, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between border-b pb-2"
-                    >
-                      <div className="flex items-center gap-3">
-                        {inv.image ? (
-                          <img
-                            src={inv.image}
-                            alt="Profile"
-                            className="w-10 h-10 rounded-full object-cover"
-                          />
-                        ) : (
-                          <span className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-medium text-sm text-gray-700">
-                            {inv.firstName?.[0]}
-                            {inv.lastName?.[0]}
-                          </span>
-                        )}
-                        <div>
-                          <p className="font-medium">
-                            {inv.firstName} {inv.lastName}
-                          </p>
-                          <p className="text-sm text-muted-foreground">
-                            {inv.role}
-                          </p>
+                  {isLoading
+                    ? Array.from({ length: 5 }).map((_, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between border-b pb-2 animate-pulse"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-muted" />
+                            <div className="space-y-2">
+                              <div className="h-4 w-32 bg-muted rounded" />
+                              <div className="h-3 w-20 bg-muted rounded" />
+                            </div>
+                          </div>
+                          <div className="h-4 w-16 bg-muted rounded" />
                         </div>
-                      </div>
-                      <p className="font-semibold">${inv.amount}</p>
-                    </div>
-                  ))}
+                      ))
+                    : latestInvoices.map((inv, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between border-b pb-2"
+                        >
+                          <div className="flex items-center gap-3">
+                            {inv.image ? (
+                              <img
+                                src={inv.image}
+                                alt="Profile"
+                                className="w-10 h-10 rounded-full object-cover"
+                              />
+                            ) : (
+                              <span className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-medium text-sm text-gray-700">
+                                {inv.firstName?.[0]}
+                                {inv.lastName?.[0]}
+                              </span>
+                            )}
+                            <div>
+                              <p className="font-medium">
+                                {inv.firstName} {inv.lastName}
+                              </p>
+                              <p className="text-sm text-muted-foreground">
+                                {inv.role}
+                              </p>
+                            </div>
+                          </div>
+                          <p className="font-semibold">${inv.amount}</p>
+                        </div>
+                      ))}
                 </div>
               </CardContent>
             </Card>

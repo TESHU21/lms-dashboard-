@@ -1,23 +1,26 @@
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, Pencil, Trash2, Check, Clock } from "lucide-react";
+import { ArrowUpDown, Check, Clock, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export const columns = ({ handleConfirm, handleEdit, handleDelete }) => [
+export const columns = ({ handleConfirm, handleCancel }) => [
   {
     accessorKey: "firstName",
     header: () => <div className="text-left">Learners</div>,
     cell: ({ row }) => {
-      const { firstName,lastName, image } = row.original;
+      const { firstName, lastName, image } = row.original;
       return (
         <div className="flex items-center gap-3 min-w-[150px]">
           <Avatar>
             <AvatarImage src={image} />
-            <AvatarFallback>{firstName?.charAt(0)}
+            <AvatarFallback>
+              {firstName?.charAt(0)}
               {lastName?.charAt(0)}
             </AvatarFallback>
           </Avatar>
-          <span>{firstName} {lastName}</span>
+          <span>
+            {firstName} {lastName}
+          </span>
         </div>
       );
     },
@@ -67,21 +70,24 @@ export const columns = ({ handleConfirm, handleEdit, handleDelete }) => [
     accessorKey: "status",
     header: () => <div className="text-center">Status</div>,
     cell: ({ row }) => {
-      const status = row.getValue("status");
+      const status = String(row.getValue("status") || "").toLowerCase();
       const isPaid = status === "paid";
+      const isCancelled = status === "cancelled" || status === "canceled";
       return (
         <div className="flex justify-center min-w-[100px]">
-          <Badge variant={isPaid ? "success " : "secondary"}>
-            {isPaid ? (
-              <>
-                Paid <Check className="ml-1 w-4 h-4 bg-green-500" />
-              </>
-            ) : (
-              <>
-                Pending <Clock className="ml-1 w-4 h-4" />
-              </>
-            )}
-          </Badge>
+          {isPaid ? (
+            <Badge variant="success ">
+              Paid <Check className="ml-1 w-4 h-4 bg-green-500" />
+            </Badge>
+          ) : isCancelled ? (
+            <Badge variant="destructive">
+              Canceled <X className="ml-1 w-4 h-4" />
+            </Badge>
+          ) : (
+            <Badge variant="secondary">
+              Pending <Clock className="ml-1 w-4 h-4" />
+            </Badge>
+          )}
         </div>
       );
     },
@@ -91,14 +97,20 @@ export const columns = ({ handleConfirm, handleEdit, handleDelete }) => [
     header: () => <div className="text-center">Actions</div>,
     cell: ({ row }) => (
       <div className="flex justify-center gap-2 min-w-[120px]">
-        <Button size="icon" variant="ghost" onClick={() => handleConfirm(row.original)}>
+        <Button
+          size="icon"
+          variant="ghost"
+          onClick={() => handleConfirm(row.original)}
+        >
           <Check className="h-4 w-4 text-green-600" />
         </Button>
-        <Button size="icon" variant="ghost" onClick={() => handleEdit(row.original)}>
-          <Pencil className="h-4 w-4 text-muted-foreground" />
-        </Button>
-        <Button size="icon" variant="ghost" onClick={() => handleDelete(row.original.id)}>
-          <Trash2 className="h-4 w-4 text-red-600" />
+
+        <Button
+          size="icon"
+          variant="ghost"
+          onClick={() => handleCancel(row.original.id)}
+        >
+          <X className="h-4 w-4 text-red-600" />
         </Button>
       </div>
     ),

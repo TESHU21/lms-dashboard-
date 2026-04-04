@@ -68,6 +68,10 @@ export const CourseProvider = ({ children }) => {
   const getInvoices = useCallback(async () => {
     return axiosInstance.get("/invoices");
   }, []);
+  // cancel Invoice
+  const cancelInvoice = useCallback(async (id) => {
+    return axiosInstance.patch(`/invoices/${id}/cancel`);
+  }, []);
   // Get Learners
   const getLearner = useCallback(async () => {
     return axiosInstance.get("/learners", {
@@ -124,7 +128,9 @@ export const CourseProvider = ({ children }) => {
       createLearner,
       deleteLearner,
       getInvoices,
+      cancelInvoice,
       getProfile,
+
       learners,
       setLearners,
       tracksRefreshKey,
@@ -158,6 +164,7 @@ export const CourseProvider = ({ children }) => {
       setLearners,
       setTracksRefreshKey,
       tracksRefreshKey,
+      cancelInvoice,
       updateCourse,
       updateTrack,
       deleteCourse,

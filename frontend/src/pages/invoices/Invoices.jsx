@@ -4,7 +4,7 @@ import { columns } from "./components/columns";
 import InvoiceHeader from "./components/InvoiceHeader";
 import { useCourse } from "@/context/CourseContext";
 const Invoices = () => {
-  const { getInvoices } = useCourse();
+  const { getInvoices, cancelInvoice } = useCourse();
   const [isLoadingInvoice, setIsLoadingInvoice] = useState(false);
   // State to hold the invoice data
   const [columnFilters, setColumnFilters] = useState([]);
@@ -13,11 +13,11 @@ const Invoices = () => {
   const mapInvoice = (invoice) => {
     return {
       id: invoice._id,
-      firstName: invoice.learner.firstName,
-      lastName: invoice.learner.lastName,
-      email: invoice.learner.email,
+      firstName: invoice?.learner?.firstName,
+      lastName: invoice?.learner?.lastName,
+      email: invoice?.learner?.email,
       amount: invoice.amount,
-      image: invoice.learner.profileImage,
+      image: invoice?.learner?.profileImage,
       date: invoice.createdAt,
       status: invoice.status,
     };
@@ -28,8 +28,11 @@ const Invoices = () => {
         setIsLoadingInvoice(true);
         const response = await getInvoices();
         const invoices = response.data.invoices;
-        console.log("response invoice", response);
-        setData(invoices.map(mapInvoice));
+        const visibleInvoices = (invoices || []).filter((invoice) => {
+          const status = String(invoice?.status || "").toLowerCase();
+          return status !== "canceled" && status !== "cancelled";
+        });
+        setData(visibleInvoices.map(mapInvoice));
       } catch (error) {
         console.log(error);
       } finally {
@@ -43,20 +46,19 @@ const Invoices = () => {
   const handleConfirm = (row) => {
     setData((prev) =>
       prev.map((item) =>
-        item.id === row.id ? { ...item, status: "Paid" } : item,
+        item.id === row.id ? { ...item, status: "paid" } : item,
       ),
     );
   };
 
-  // Placeholder handler for editing an invoice
-  const handleEdit = (row) => {
-    console.log("Edit:", row);
-    // You would typically open a modal or navigate to an edit page here
-  };
-
   // Handler function to delete an invoice by id
-  const handleDelete = (id) => {
-    setData((prev) => prev.filter((item) => item.id !== id));
+  const handleCancel = async (id) => {
+    try {
+      await cancelInvoice(id);
+      setData((prev) => prev.filter((item) => item.id !== id));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -77,8 +79,7 @@ const Invoices = () => {
             data={data}
             columns={columns({
               handleConfirm,
-              handleEdit,
-              handleDelete,
+              handleCancel,
             })}
             loading={isLoadingInvoice}
             columnFilters={columnFilters}
