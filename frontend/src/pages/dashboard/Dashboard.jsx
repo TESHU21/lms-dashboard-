@@ -278,7 +278,9 @@ export default function Dashboard() {
                               </p>
                             </div>
                           </div>
-                          <p className="font-semibold">${inv.amount}</p>
+                          <p className="font-semibold">
+                            ${Number(inv.amount || 0).toLocaleString("en-US")}
+                          </p>
                         </div>
                       ))}
                 </div>
