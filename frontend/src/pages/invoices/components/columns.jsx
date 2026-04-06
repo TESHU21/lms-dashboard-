@@ -15,6 +15,8 @@ export const columns = ({ handleConfirm, handleCancel }) => [
             <AvatarImage
               src={image}
               alt={`${firstName || ""} ${lastName || ""}`.trim()}
+              loading="lazy"
+              decoding="async"
             />
             <AvatarFallback>
               {firstName?.charAt(0)}

@@ -37,10 +37,19 @@ const VerifyEmail = lazy(() => import("@/components/VerifyEmail"));
 const Settings = lazy(() => import("@/pages/settings/Settings"));
 const NotFound = lazy(() => import("@/pages/not-found/NotFound"));
 
+const RouteLoader = () => (
+  <div className="min-h-[40vh] flex items-center justify-center">
+    <div className="flex items-center gap-3 text-sm text-muted-foreground">
+      <div className="h-4 w-4 rounded-full border-2 border-muted-foreground/30 border-t-muted-foreground animate-spin" />
+      <span>Loading…</span>
+    </div>
+  </div>
+);
+
 const AppRoutes = () => {
   return (
     <div>
-      <Suspense fallback={null}>
+      <Suspense fallback={<RouteLoader />}>
         <Routes>
           <Route
             path="/"

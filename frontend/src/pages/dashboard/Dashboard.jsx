@@ -261,6 +261,8 @@ export default function Dashboard() {
                               <img
                                 src={inv.image}
                                 alt="Profile"
+                                loading="lazy"
+                                decoding="async"
                                 className="w-10 h-10 rounded-full object-cover"
                               />
                             ) : (

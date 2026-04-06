@@ -24,7 +24,12 @@ export const columns = ({ handleViewDetails, handleEdit, handleDelete }) => [
       return (
         <div className="flex items-center gap-3 min-w-[150px]">
           <Avatar>
-            <AvatarImage src={image} alt={fullName} />
+            <AvatarImage
+              src={image}
+              alt={fullName}
+              loading="lazy"
+              decoding="async"
+            />
             <AvatarFallback>{fullName.charAt(0) || "?"}</AvatarFallback>
           </Avatar>
           <span>{fullName}</span>

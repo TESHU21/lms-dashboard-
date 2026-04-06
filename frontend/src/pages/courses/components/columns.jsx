@@ -14,6 +14,8 @@ export const columns = ({ handleViewDetails, handleEdit, handleDelete }) => [
           <img
             src={image}
             alt="Course image"
+            loading="lazy"
+            decoding="async"
             className="object-cover w-15 h-15"
           />
         </div>
