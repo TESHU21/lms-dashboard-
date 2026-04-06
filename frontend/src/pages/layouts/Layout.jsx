@@ -19,9 +19,9 @@ const Layout = () => {
         <TopBar />
 
         {/* Page content */}
-        <div className="flex-grow p-4 overflow-auto scrollbar-container">
+        <main className="flex-grow p-4 overflow-auto scrollbar-container">
           <Outlet />
-        </div>
+        </main>
       </div>
     </div>
   );

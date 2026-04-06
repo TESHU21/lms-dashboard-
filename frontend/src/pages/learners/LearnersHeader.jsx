@@ -84,6 +84,9 @@ const LearnerHeader = ({
           {" "}
           {/* Removed mr-4 as it's the element before the button */}
           {/* <label className='text-sm font-medium whitespace-nowrap'>Sort By:</label> */}
+          <span id="verification-sort-label" className="sr-only">
+            Sort learners by verification status
+          </span>
           <Select
             onValueChange={handleSortChange}
             value={
@@ -92,7 +95,11 @@ const LearnerHeader = ({
                 : "reset"
             }
           >
-            <SelectTrigger className="w-[180px] !h-[48px] bg-accent">
+            <SelectTrigger
+              aria-label="Sort learners by verification status"
+              aria-labelledby="verification-sort-label"
+              className="w-[180px] !h-[48px] bg-accent"
+            >
               <SelectValue placeholder="Sort by Verification Status" />
             </SelectTrigger>
             <SelectContent>

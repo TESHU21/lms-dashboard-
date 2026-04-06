@@ -11,48 +11,51 @@ export const columns = ({ handleViewDetails, handleEdit, handleDelete }) => [
       const { name, image } = row.original;
       return (
         <div className="flex items-center gap-3 min-w-[150px]">
-          <img src={image} alt="Course Image" className=" object-cover w-15 h-15" />
+          <img
+            src={image}
+            alt="Course image"
+            className="object-cover w-15 h-15"
+          />
         </div>
       );
     },
   },
- {
-  accessorKey: "title",
-   header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="text-left"
-        >
-          Courses
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+  {
+    accessorKey: "title",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="text-left"
+      >
+        Courses
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
     ),
-  cell: ({ row }) => (
-    <div className="text-start break-words max-w-[200px] whitespace-normal">
-      {row.original.title}
-    </div>
-  ),
-},
-
+    cell: ({ row }) => (
+      <div className="text-start break-words max-w-[200px] whitespace-normal">
+        {row.original.title}
+      </div>
+    ),
+  },
 
   {
     accessorKey: "trackName",
-     header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className=" flex items-center"
-        >
-          Track
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className=" flex items-center"
+      >
+        Track
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
     ),
     cell: ({ row }) => (
       <div className="text-center min-w-[100px]">{row.original.trackName}</div>
     ),
   },
- 
+
   {
     id: "actions",
     header: () => <div className="text-center">Actions</div>,
@@ -61,6 +64,8 @@ export const columns = ({ handleViewDetails, handleEdit, handleDelete }) => [
         <Button
           size="icon"
           variant="ghost"
+          aria-label="View course details"
+          className="h-10 w-10"
           onClick={() => handleViewDetails(row.original)}
         >
           <Eye className="h-4 w-4 text-blue-600" />
@@ -68,6 +73,8 @@ export const columns = ({ handleViewDetails, handleEdit, handleDelete }) => [
         <Button
           size="icon"
           variant="ghost"
+          aria-label="Edit course"
+          className="h-10 w-10"
           onClick={() => handleEdit(row.original)}
         >
           <Pencil className="h-4 w-4 text-muted-foreground" />
@@ -75,6 +82,8 @@ export const columns = ({ handleViewDetails, handleEdit, handleDelete }) => [
         <Button
           size="icon"
           variant="ghost"
+          aria-label="Delete course"
+          className="h-10 w-10"
           onClick={() => handleDelete(row.original.id)}
         >
           <Trash2 className="h-4 w-4 text-red-600" />

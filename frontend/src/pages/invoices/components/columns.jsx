@@ -12,7 +12,10 @@ export const columns = ({ handleConfirm, handleCancel }) => [
       return (
         <div className="flex items-center gap-3 min-w-[150px]">
           <Avatar>
-            <AvatarImage src={image} />
+            <AvatarImage
+              src={image}
+              alt={`${firstName || ""} ${lastName || ""}`.trim()}
+            />
             <AvatarFallback>
               {firstName?.charAt(0)}
               {lastName?.charAt(0)}
@@ -100,6 +103,8 @@ export const columns = ({ handleConfirm, handleCancel }) => [
         <Button
           size="icon"
           variant="ghost"
+          aria-label="Mark invoice as paid"
+          className="h-10 w-10"
           onClick={() => handleConfirm(row.original)}
         >
           <Check className="h-4 w-4 text-green-600" />
@@ -108,6 +113,8 @@ export const columns = ({ handleConfirm, handleCancel }) => [
         <Button
           size="icon"
           variant="ghost"
+          aria-label="Cancel invoice"
+          className="h-10 w-10"
           onClick={() => handleCancel(row.original.id)}
         >
           <X className="h-4 w-4 text-red-600" />

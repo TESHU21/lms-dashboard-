@@ -128,6 +128,8 @@ export const columns = ({ handleViewDetails, handleEdit, handleDelete }) => [
         <Button
           size="icon"
           variant="ghost"
+          aria-label="View learner details"
+          className="h-10 w-10"
           onClick={() => handleViewDetails(row.original)}
         >
           <Eye className="h-4 w-4 text-blue-600" />
@@ -135,6 +137,8 @@ export const columns = ({ handleViewDetails, handleEdit, handleDelete }) => [
         <Button
           size="icon"
           variant="ghost"
+          aria-label="Edit learner"
+          className="h-10 w-10"
           onClick={() => handleEdit(row.original)}
         >
           <Pencil className="h-4 w-4 text-muted-foreground" />
@@ -142,6 +146,8 @@ export const columns = ({ handleViewDetails, handleEdit, handleDelete }) => [
         <Button
           size="icon"
           variant="ghost"
+          aria-label="Delete learner"
+          className="h-10 w-10"
           onClick={() => handleDelete(row.original)}
         >
           <Trash2 className="h-4 w-4 text-red-600" />
