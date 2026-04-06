@@ -8,7 +8,6 @@ const ProtectedRoute = ({ children }) => {
   const token = sessionStorage.getItem("authToken");
   if (!token) {
     // Redirect to login with a return url
-    console.log("No token, redirecting to login");
     return <Navigate to="/" state={{ from: location }} replace />;
   }
 

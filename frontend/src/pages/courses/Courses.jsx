@@ -57,7 +57,7 @@ const Courses = () => {
     fetchCourses();
   }, [fetchCourses]);
 
-  // 📦 Fetch tracks
+  //  Fetch tracks
   useEffect(() => {
     const fetchTracks = async () => {
       try {

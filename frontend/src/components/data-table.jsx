@@ -1,7 +1,6 @@
 "use client";
 import * as React from "react";
 import Pagination from "./Pagination";
-import TrackHeader from "@/pages/tracks/components/TrackHeader";
 import {
   flexRender,
   getCoreRowModel,
@@ -18,8 +17,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
 export function DataTable({
   columns,

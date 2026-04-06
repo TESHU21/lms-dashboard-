@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom"; // Ensure Routes and Route are imported
 import ProtectedRoute from "@/components/ProtectedRoute";
+import PublicRoute from "@/components/PublicRoute";
 
 // Import your components
 const Layout = lazy(() => import("@/pages/layouts/Layout"));
@@ -34,13 +35,21 @@ const EmailVerification = lazy(
 );
 const VerifyEmail = lazy(() => import("@/components/VerifyEmail"));
 const Settings = lazy(() => import("@/pages/settings/Settings"));
+const NotFound = lazy(() => import("@/pages/not-found/NotFound"));
 
 const AppRoutes = () => {
   return (
     <div>
       <Suspense fallback={null}>
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route
+            path="/"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
 
           <Route path="signup" element={<SignUp />} />
           <Route path="forgotpassword" element={<ForgotPassword />} />
@@ -73,6 +82,8 @@ const AppRoutes = () => {
             <Route path="settings" element={<Settings />} />
             <Route path="logout" element={<Logout />} />
           </Route>
+
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
     </div>
